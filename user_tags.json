@@ -1,0 +1,13 @@
+{
+  "data" : {
+    "tagMap" : {
+      "larry" : {
+        "name" : "larry",
+        "content" : "Larry!",
+        "owner" : "347959633518002177",
+        "modified" : "2020-06-17"
+      }
+    },
+    "whitelist" : [ "347959633518002177" ]
+  }
+}
