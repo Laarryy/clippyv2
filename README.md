@@ -8,7 +8,7 @@ This bot will hopefully one day grow big and strong enough to let good ol' clipp
 
 ### What is this in? 
 
-It be a Javacord bot
+It be Javacord
 
 ### What can Clippy II do that Clippy I could not?
 
