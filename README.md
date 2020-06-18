@@ -1,11 +1,25 @@
-# MinecraftOSS Discord
+# Clippy the Second
 
-For information about the Discord **server**, [click here](https://github.com/MinecraftOSS/Discord/wiki/Discord-Info).
+The dream modbot, assistant, and pancake chef for any discord.
 
 ## Bot
 
-This bot (will) power the bot on the MinecraftOSS Discord server.
+This bot will hopefully one day grow big and strong enough to let good ol' clippy retire and take his place.
 
-### !bstats <plugin>
+### What is this in? 
 
-Retrieves information about the given plugin from [bStats](https://bstats.org). Note that this only provides information about the frst plugin it finds, so if multiple plugins share a name, only one will be displayed.
+It be a Javacord bot
+
+### What can Clippy II do that Clippy I could not?
+
+* personal tags for displaying information, full moderatable
+* pancakes, really well
+* serverwide tags for displaying luckperms info
+* fully editable command list that doesn't show everything (thank goodness)
+* role on join
+* full user mod
+* some fun commands to ventriloquise with
+* embed support to make and display useful embeds both as tags, usertags, and commands
+* WolframAplha API connection, allowing for cool questions to get answered
+* bot status control
+* much, much more
