@@ -12,7 +12,7 @@ import org.laarryy.clippyv2.listeners.AutoModListeners;
 import org.laarryy.clippyv2.listeners.ModLogListeners;
 import org.laarryy.clippyv2.listeners.PrivateListener;
 import org.laarryy.clippyv2.listeners.StarboardListener;
-import org.moss.discord.commands.*;
+import org.laarryy.clippyv2.commands.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
