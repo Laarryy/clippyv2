@@ -61,6 +61,7 @@ public class Main {
         commandHandler.registerCommand(new WolframAlphaCommand());
         commandHandler.registerCommand(new EightBallCommand());
         commandHandler.registerCommand(new FbiCommand());
+        commandHandler.registerCommand(new CakeCommand());
 
         // Register listeners
         api.addListener(new ModLogListeners(api));

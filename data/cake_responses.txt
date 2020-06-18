@@ -1,0 +1,16 @@
+#00cd00|https://i.imgur.com/rVQc9vT.jpg
+#00cd00|https://i.imgur.com/K5i4m7P.jpg
+#00cd00|https://i.imgur.com/uveryDL.jpg
+#00cd00|https://i.imgur.com/F7Inp03.jpg
+#00cd00|https://i.imgur.com/8oTVzet.jpg
+#ff0000|https://i.imgur.com/zFWH1Tx.jpg
+#00cd00|https://i.imgur.com/nm2UO2Y.jpg
+#00cd00|https://i.imgur.com/fc58kWo.jpg
+#00cd00|https://i.imgur.com/A1MeUYn.jpg
+#00cd00|https://i.imgur.com/w1q93Zr.jpg
+#00cd00|https://i.imgur.com/fAkoSEl.jpg
+#00cd00|https://i.imgur.com/GOhMXEa.jpg
+#ff3030|https://i.imgur.com/F26l1xU.gif
+#00ffff|https://i.imgur.com/qo1kQIw.gif
+#00cd00|https://i.imgur.com/FcR9wSF.gif
+
