@@ -22,4 +22,5 @@ It be Javacord
 * embed support to make and display useful embeds both as tags, usertags, and commands
 * WolframAplha API connection, allowing for cool questions to get answered
 * bot status control
+* make cake!! yes finally!
 * much, much more
