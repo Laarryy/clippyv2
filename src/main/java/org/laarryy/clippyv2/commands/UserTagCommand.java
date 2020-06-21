@@ -63,11 +63,11 @@ public class UserTagCommand implements CommandExecutor, MessageCreateListener {
     @Command(aliases = {"!utagset"}, usage = "!utagset <name> [message]", description = "Set a user tag")
     public void onSet(DiscordApi api, TextChannel channel, String[] args, User user, Server server) {
         String key = args[0].toLowerCase();
-        if (!channel.getIdAsString().equals(Constants.CHANNEL_RANDOM) && !server.canKickUsers(user)) {
+        if (!channel.getIdAsString().equals(Constants.CHANNEL_OFFTOPIC) && !server.canKickUsers(user)) {
             return;
         }
         if (key.contains("\\n")) {
-            channel.sendMessage("Please do not be a DoNotSpamPls, pls");
+            channel.sendMessage("Invalid tag name!");
             return;
         }
         if (args.length >= 2 && data.tagMap.containsKey(key)) {
@@ -103,7 +103,7 @@ public class UserTagCommand implements CommandExecutor, MessageCreateListener {
 
     @Command(aliases = {"!utaginfo", "!uti"}, usage = "!utaginfo <name>", description = "Info of a user tag")
     public void onInfo(DiscordApi api, TextChannel channel, String[] args, User user, Server server) {
-        if (!channel.getIdAsString().equals(Constants.CHANNEL_RANDOM) && !server.canKickUsers(user)) {
+        if (!channel.getIdAsString().equals(Constants.CHANNEL_OFFTOPIC) && !server.canKickUsers(user)) {
             return;
         }
         if (args.length >= 1 && data.tagMap.containsKey(args[0].toLowerCase())) {

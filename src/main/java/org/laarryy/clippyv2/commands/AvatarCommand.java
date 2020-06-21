@@ -9,15 +9,29 @@ import org.javacord.api.entity.message.MessageAuthor;
 import org.javacord.api.entity.message.embed.EmbedBuilder;
 import org.javacord.api.entity.server.Server;
 import org.javacord.api.entity.user.User;
+import org.laarryy.clippyv2.Constants;
 
 import java.awt.*;
 import java.net.URL;
+import java.text.Format;
+import java.time.Instant;
+import java.util.Optional;
 
 public class AvatarCommand implements CommandExecutor {
 
+    private DiscordApi api;
+    private Optional<TextChannel> modChannel;
+
+    public AvatarCommand(DiscordApi api) {
+        modChannel = api.getTextChannelById(Constants.CHANNEL_LOGS);
+        this.api = api;
+    }
+
+
+
     @Command(aliases = {"!avatar", ".avatar"}, usage = "!avatar <User>", description = "Shows the users' avatar")
-    public void onCommand(DiscordApi api, String[] args, TextChannel channel, Message message, Server server) {
-        if (args.length >= 1) {
+    public void onCommand(DiscordApi api, String[] args, TextChannel channel, Message message, Server server, MessageAuthor messageAuthor) {
+        if (args.length >= 1 && messageAuthor.canBanUsersFromServer()) {
             if (message.getMentionedUsers().size() >= 1) {
                 channel.sendMessage(new EmbedBuilder().setImage(message.getMentionedUsers().get(0).getAvatar()));
                 return;
@@ -33,7 +47,16 @@ public class AvatarCommand implements CommandExecutor {
 
     @Command(aliases = {"!setavatar"}, usage = "!setavatar <img>", description = "Sets the bot's avatar")
     public void onSetAvatar(DiscordApi api, String[] args, TextChannel channel, Message message, MessageAuthor messageAuthor) {
-        if (args.length >= 1 && messageAuthor.canManageServer()) {
+        if (args.length >= 1 && messageAuthor.canBanUsersFromServer()) {
+            EmbedBuilder embed = new EmbedBuilder();
+            embed.setAuthor("Bot Avatar Changed");
+            embed.setColor(Color.YELLOW);
+            embed.setThumbnail("https://i.imgur.com/2Hbdxuz.png");
+            embed.addInlineField("Bot Avatar Changed By", message.getAuthor().asUser().get().getMentionTag());
+            embed.addField("Their ID", messageAuthor.getIdAsString());
+            embed.setFooter("Done by "+messageAuthor.getName());
+            embed.setTimestamp(Instant.now());
+            modChannel.get().sendMessage(embed);
             try {
                 URL url = new URL(args[0]); //pray to god its a URL
                 message.delete();

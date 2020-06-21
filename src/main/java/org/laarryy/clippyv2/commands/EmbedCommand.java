@@ -18,13 +18,17 @@ public class EmbedCommand implements CommandExecutor {
 
     @Command(aliases = {"!embed", ".embed"}, usage = "!embed <url>", description = "Makes an embed from a json text")
     public void onCommand(String[] args, User user, TextChannel channel, MessageAuthor messageAuthor, Server server) {
+        if (!channel.getIdAsString().equals(Constants.CHANNEL_OFFTOPIC)) {
+            channel.sendMessage("This command must be done in #off-topic");
+            return;
+        }
         if (args.length == 0) {
             channel.sendMessage(new EmbedBuilder().setTitle("Invalid URL").setColor(Color.RED));
             return;
         }
         if (messageAuthor.canKickUsersFromServer()) {
             channel.sendMessage(user.getMentionTag(), embedUtil.parseString(String.join(" ", args), user, server));
-        } else if (channel.getIdAsString().equals(Constants.CHANNEL_RANDOM)) {
+        } else if (channel.getIdAsString().equals(Constants.CHANNEL_OFFTOPIC)) {
             channel.sendMessage(user.getMentionTag(), embedUtil.parseString(String.join(" ", args), user, server));
         }
     }

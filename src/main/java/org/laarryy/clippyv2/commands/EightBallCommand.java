@@ -6,6 +6,7 @@ import org.javacord.api.DiscordApi;
 import org.javacord.api.entity.channel.TextChannel;
 import org.javacord.api.entity.message.embed.EmbedBuilder;
 import org.javacord.api.entity.user.User;
+import org.laarryy.clippyv2.Constants;
 
 import java.awt.*;
 import java.io.File;
@@ -34,11 +35,11 @@ public class EightBallCommand implements CommandExecutor {
 
     @Command(aliases = {"!8ball"}, usage = "!8ball", description = "Asks the all knowing 8ball")
     public void onCommand(DiscordApi api, TextChannel channel, User user, String[] args) {
-        if (args.length == 0) {
-            channel.sendMessage(user.getMentionTag() + " `!8ball <question>`");
+        if (args.length == 0 || !channel.getIdAsString().equals(Constants.CHANNEL_OFFTOPIC)) {
+            channel.sendMessage(user.getMentionTag() + " The 8ball can only be consulted in #off-topic and `!8ball <question>` must be used.");
             return;
         }
-        channel.sendMessage(new EmbedBuilder().setTitle("Mike shakes the magic 8ball..").setImage(img)).thenAcceptAsync(message -> {
+        channel.sendMessage(new EmbedBuilder().setTitle("Clippy shakes the magic 8ball..").setImage(img)).thenAcceptAsync(message -> {
             String[] answer = responses.get(ThreadLocalRandom.current().nextInt(responses.size() -1)).split("\\|");
             EmbedBuilder builder = new EmbedBuilder().setColor(Color.decode(answer[0])).setTitle(answer[1]);
             message.getApi().getThreadPool().getScheduler().schedule(() -> message.edit(user.getMentionTag(), builder),4, TimeUnit.SECONDS);

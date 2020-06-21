@@ -8,8 +8,10 @@ import de.btobastian.sdcf4j.CommandExecutor;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import org.javacord.api.entity.channel.TextChannel;
+import org.javacord.api.entity.message.MessageAuthor;
 import org.javacord.api.entity.message.embed.EmbedBuilder;
 import org.javacord.api.entity.user.User;
+import org.laarryy.clippyv2.Constants;
 import org.laarryy.clippyv2.util.PagedEmbed;
 
 import java.awt.*;
@@ -86,7 +88,11 @@ public class EssentialsXCommand implements CommandExecutor {
     }
 
     @Command(aliases = {"!essc", ".essc"}, usage = "!essc <command>", description = "Show info about an EssentialsX command")
-    public void onCommand(String[] args, User user, TextChannel textChannel) {
+    public void onCommand(String[] args, User user, TextChannel textChannel, MessageAuthor messageAuthor) {
+        if (!textChannel.getIdAsString().equals(Constants.CHANNEL_OFFTOPIC)) {
+                textChannel.sendMessage("Please do this in #off-topic");
+                return;
+            }
         if (args.length >= 1) {
             List<JsonNode> commands = searchCommands(args[0]);
             if (commands.size() >= 1) {
@@ -109,6 +115,10 @@ public class EssentialsXCommand implements CommandExecutor {
 
     @Command(aliases = {"!essp", ".essp"}, usage = "!essp <permission>", description = "Show info about an EssentialsX permission")
     public void onPermCommand(String[] args, User user, TextChannel textChannel) {
+        if (!textChannel.getIdAsString().equals(Constants.CHANNEL_OFFTOPIC)) {
+            textChannel.sendMessage("Please do this in #off-topic");
+            return;
+        }
         if (args.length >= 1) {
             List<JsonNode> perm = searchPermissions(args[0]);
             if (perm.size() != 0) {
@@ -130,6 +140,10 @@ public class EssentialsXCommand implements CommandExecutor {
 
     @Command(aliases = {"!itemdb", ".itemdb"}, usage = "!itemdb <item>", description = "Show info about an EssentialsX Item")
     public void onItemDbCommand(String[] args, User user, TextChannel textChannel) {
+        if (!textChannel.getIdAsString().equals(Constants.CHANNEL_OFFTOPIC)) {
+            textChannel.sendMessage("Please do this in #off-topic");
+            return;
+        }
         if (args.length >= 1) {
             List<String> items = searchItems(args[0]);
             if (items.size() != 0) {

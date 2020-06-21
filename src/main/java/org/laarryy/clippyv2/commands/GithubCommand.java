@@ -8,6 +8,7 @@ import org.javacord.api.entity.channel.TextChannel;
 import org.javacord.api.entity.message.embed.EmbedBuilder;
 import org.javacord.api.exception.MissingPermissionsException;
 import org.javacord.api.util.logging.ExceptionLogger;
+import org.laarryy.clippyv2.Constants;
 import org.laarryy.clippyv2.util.BStatsUtil;
 
 import java.awt.*;
@@ -22,17 +23,18 @@ public class GithubCommand implements CommandExecutor {
     String issuerepos = "https://api.github.com/repos/%s/issues";
 
     public GithubCommand() {
-        shortcuts.put("essx", "EssentialsX/Essentials"); //TODO: Make configurable
-        shortcuts.put("ess", "EssentialsX/Essentials");
-        shortcuts.put("essentialsx", "EssentialsX/Essentials");
-        shortcuts.put("essentials", "EssentialsX/Essentials");
-        shortcuts.put("paper", "PaperMC/Paper");
-        shortcuts.put("papermc", "PaperMC/Paper");
-        shortcuts.put("factions", "drtshock/Factions");
-        shortcuts.put("fuuid", "drtshock/Factions");
-        shortcuts.put("factionsuuid", "drtshock/Factions");
-        shortcuts.put("playervaults", "drtshock/PlayerVaults");
-        shortcuts.put("pvx", "drtshock/PlayerVaults");
+        shortcuts.put("lp", "lucko/LuckPerms"); //TODO: Make configurable
+        shortcuts.put("lperms", "lucko/LuckPerms");
+        shortcuts.put("luckperms", "EssentialsX/Essentials");
+        shortcuts.put("lpw", "lucko/LuckPermsWeb");
+        shortcuts.put("lpweb", "lucko/LuckPermsWeb");
+        shortcuts.put("luckpermsweb", "lucko/LuckPermsWeb");
+        shortcuts.put("vcf", "lucko/VaultChatFormatter");
+        shortcuts.put("vaultchatformatter", "lucko/VaultChatFormatter");
+        shortcuts.put("ec", "LuckPerms/ExtraContexts");
+        shortcuts.put("extracontexts", "LuckPerms/ExtraContexts");
+        shortcuts.put("cookbook", "LuckPerms/api-cookbook");
+        shortcuts.put("clippy", "LuckPerms/clippy");
     }
 
     @Command(aliases = {"!github", "!gh"}, usage = "!github <username|repo> <issue #>", description = "Shows some stats about the given repository.")
@@ -63,21 +65,11 @@ public class GithubCommand implements CommandExecutor {
         }
     }
 
-    @Command(aliases = {".supaham"}, usage = ".supaham", description = "Shows some stats about the given repository.")
-    public void onSupaham(DiscordApi api, TextChannel channel, String[] args) {
+    @Command(aliases = {".luck", ".lucko"}, usage = ".luck", description = "Something for Luck to brag about.")
+    public void onluck(DiscordApi api, TextChannel channel, String[] args) {
         try {
-            JsonNode repo = new BStatsUtil(api).makeRequest(String.format(repos, shortcuts.get("essx")));
-            channel.sendMessage(new EmbedBuilder().setColor(Color.RED).setTitle(String.format("EssentialsX has %s open issues", repo.get("open_issues_count").asText())));
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
-
-    @Command(aliases = {".md678685", ".md"}, usage = ".md", description = "Shows some stats about the given repository.")
-    public void onmd678685(DiscordApi api, TextChannel channel, String[] args) {
-        try {
-            JsonNode repo = new BStatsUtil(api).makeRequest("https://api.github.com/search/issues?q=repo:EssentialsX/Essentials/+type:issue+state:closed");
-            channel.sendMessage(new EmbedBuilder().setColor(Color.GREEN).setTitle(String.format("EssentialsX has %s closed issues", repo.get("total_count").asText())));
+            JsonNode repo = new BStatsUtil(api).makeRequest("https://api.github.com/search/issues?q=repo:lucko/LuckPerms/+type:issue+state:closed");
+            channel.sendMessage(new EmbedBuilder().setColor(Color.GREEN).setTitle(String.format("LuckPerms has %s closed issues", repo.get("total_count").asText())));
         } catch (Exception e) {
             e.printStackTrace();
         }

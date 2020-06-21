@@ -38,7 +38,7 @@ public class ModLogListeners implements MessageEditListener, MessageDeleteListen
     private Object Role;
 
     public ModLogListeners(DiscordApi api) {
-        modChannel = api.getTextChannelById(Constants.CHANNEL_MODLOG);
+        modChannel = api.getTextChannelById(Constants.CHANNEL_LOGS);
         this.api = api;
     }
 
@@ -269,4 +269,5 @@ public class ModLogListeners implements MessageEditListener, MessageDeleteListen
     public String stripGrave(String string) {
         return string.replace("`", "");
     }
+
 }

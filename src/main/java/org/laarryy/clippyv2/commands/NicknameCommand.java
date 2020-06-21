@@ -26,7 +26,7 @@ public class NicknameCommand implements CommandExecutor {
     public Boolean hasPermission(List<Role> roles) { //TODO one class to rule them all
         for (Role role : roles) {
             String roleId = role.getIdAsString();
-            if ((roleId.equals(Constants.ROLE_MODERATOR) || roleId.equals(Constants.ROLE_ADMIN))) {
+            if ((roleId.equals(Constants.ROLE_STAFF))) {
                 return true;
             }
         }

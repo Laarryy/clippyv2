@@ -7,6 +7,7 @@ import org.javacord.api.DiscordApi;
 import org.javacord.api.entity.channel.TextChannel;
 import org.javacord.api.entity.message.embed.EmbedBuilder;
 import org.javacord.api.entity.user.User;
+import org.laarryy.clippyv2.Constants;
 
 import java.awt.*;
 import java.io.File;
@@ -35,8 +36,10 @@ public class CakeCommand implements CommandExecutor{
 
     @Command(aliases = {"!cake"}, usage = "!cake", description = "Maybe some cake?")
     public void onCommand(DiscordApi api, TextChannel channel, User user, String[] args) {
-        if (args.length == 0) {
-            channel.sendMessage(user.getMentionTag() + " `!cake <extra icing?>`");
+        if (channel.getIdAsString() != Constants.CHANNEL_OFFTOPIC)
+            return;
+        if (args.length < 0) {
+            channel.sendMessage(user.getMentionTag() + " `!cake <ingredients>`");
             return;
         }
         channel.sendMessage(new EmbedBuilder().setTitle("What's the cake?").setImage(img)).thenAcceptAsync(message -> {

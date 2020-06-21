@@ -98,7 +98,7 @@ public class AutoModListeners implements MessageCreateListener, CommandExecutor 
     public AutoModListeners(DiscordApi api, CommandHandler commandHandler) {
         this.api = api;
         commandHandler.registerCommand(this);
-        modChannel = api.getTextChannelById(Constants.CHANNEL_MODLOG);
+        modChannel = api.getTextChannelById(Constants.CHANNEL_LOGS);
         data = new ModerationData();
         try {
             JsonNode jsonNode = mapper.readTree(new File("./moddata.json")).get("data");

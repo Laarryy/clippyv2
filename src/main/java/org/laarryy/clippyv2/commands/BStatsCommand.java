@@ -1,3 +1,4 @@
+/*
 package org.laarryy.clippyv2.commands;
 
 import com.fasterxml.jackson.databind.JsonNode;
@@ -23,9 +24,11 @@ import java.io.InputStream;
 
 public class BStatsCommand implements CommandExecutor {
 
-    /**
+    */
+/**
      * The logger for this class.
-     */
+     *//*
+
     private static final Logger logger = LoggerFactory.getLogger(BStatsCommand.class);
 
     @Command(aliases = {"!bStats"}, usage = "!bStats <pluginName>", description = "Shows some stats about the given plugin.")
@@ -78,12 +81,14 @@ public class BStatsCommand implements CommandExecutor {
         }
     }
 
-    /**
+    */
+/**
      * Converts a svg bStats signature image to a jpeg image.
      *
      * @param url The url to the signature image.
      * @return An input stream for the jpeg image.
-     */
+     *//*
+
     private InputStream convertSignatureImageToJpeg(String url) {
         // Create a JPEG transcoder
         JPEGTranscoder t = new JPEGTranscoder();
@@ -112,3 +117,4 @@ public class BStatsCommand implements CommandExecutor {
 
 
 }
+*/

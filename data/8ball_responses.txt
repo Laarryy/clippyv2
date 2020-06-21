@@ -26,3 +26,9 @@
 #ff0000|My sources say no
 #ff0000|Outlook not so good
 #ff0000|Very doubtful
+#ff0000|Negatory
+#ff0000|That would be a nope
+#ff0000|Absolutely not
+#ff0000|No
+#ff0000|No, definitely not
+

@@ -52,7 +52,7 @@ public class StarboardListener implements ReactionAddListener {
     }
     
     private void postStarboard(Message message) {
-        Optional<TextChannel> starboardChannel = api.getTextChannelById(Constants.CHANNEL_CHAMBERS);
+        Optional<TextChannel> starboardChannel = api.getTextChannelById(Constants.CHANNEL_STAFF);
         if (!starboardChannel.isPresent()) return; // Starboard is disabled
 
         EmbedBuilder embed = new EmbedBuilder();

@@ -1,3 +1,4 @@
+/*
 package org.laarryy.clippyv2.commands;
 
 import de.btobastian.sdcf4j.Command;
@@ -66,4 +67,4 @@ public class FbiCommand implements CommandExecutor {
             }
         }
     }
-}
+}*/

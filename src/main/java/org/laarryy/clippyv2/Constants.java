@@ -10,20 +10,21 @@ import java.awt.*;
 public class Constants {
 
     // Guilds
-    public static final String GUILD_VICS = "709909618591269074";
+    public static final String GUILD_LUCKPERMS = "insert here";
 
     // Channels
-    public static final String CHANNEL_CHAMBERS = "712906710448209942";
-    public static final String CHANNEL_MODLOG = "712908476904505344";
-    public static final String CHANNEL_TABLE = "712906461151363072";
-    public static final String CHANNEL_RANDOM = "712890544799612978";
+    public static final String CHANNEL_STAFF = "724025798616547370";
+    public static final String CHANNEL_LOGS = "724025798616547375";
+    public static final String CHANNEL_REPORTS = "724100606759010315";
+    public static final String CHANNEL_OFFTOPIC = "724025798339592277";
 
     // Roles
-    public static final String ROLE_MODERATOR = "712888529520164915";
-    public static final String ROLE_ADMIN = "712889498815561749";
-    public static final String ROLE_PROJECT_LEAD = "712905679093891173";
-    public static final String ROLE_CITIZEN = "712888917287895062";
-    public static final String ROLE_PIRATE = "720206070601220116";
+    public static final String ROLE_STAFF = "724025797861572647";
+    public static final String ROLE_HELPFUL = "724025797882675251";
+    public static final String ROLE_PATREON = "724025797861572644";
+    public static final String ROLE_VERIFIED = "724025797861572643";
+    public static final String ROLE_MEMBER = "724025797861572641";
+    // public static final String ROLE_PIRATE = "720206070601220116";
 
     public static final String ROLE_PURCHASER = "401686955336663041";
     public static final String ROLE_PURCHASER_PVX = "401687126242230274";
@@ -41,8 +42,6 @@ public class Constants {
     public static final String ROLE_PRISM_UPDATES = "675867609589219339";
     public static final String ROLE_PSTONES_UPDATES = "676305976378523649";
 
-    //Users (literally just zml right now)
-    public static final String USER_ZML = "97139815404810240";
 
     // Emojis
     public static final String[] EMOJI_STARS_UNICODE = {"\u2B50", "\uD83C\uDF1F", "\uD83E\uDD54"};
