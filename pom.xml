@@ -92,11 +92,6 @@
             <version>2.6</version>
             <scope>compile</scope>
         </dependency>
-        <dependency>
-            <groupId>org.moss</groupId>
-            <artifactId>discord</artifactId>
-            <version>1.0-SNAPSHOT</version>
-        </dependency>
 
     </dependencies>
 
