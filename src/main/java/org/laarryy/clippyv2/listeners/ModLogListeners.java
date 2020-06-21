@@ -149,14 +149,15 @@ public class ModLogListeners implements MessageEditListener, MessageDeleteListen
     @Override
     public void onServerMemberJoin(ServerMemberJoinEvent ev) {
         Server server = ev.getServer();
-        Optional<org.javacord.api.entity.permission.Role> citizen = ev.getServer().getRoleById("712888917287895062");
+        // Role on join
+        Optional<org.javacord.api.entity.permission.Role> member = ev.getServer().getRoleById(Constants.ROLE_MEMBER);
         {
         if (ev.getUser().getRoles(server).get(0).isEveryoneRole()) {
-            ev.getUser().addRole((citizen.get()));
+            ev.getUser().addRole((member.get()));
         };
 
     }
-
+    // Log it
     EmbedBuilder embed = new EmbedBuilder();
 
         embed.setAuthor(ev.getUser());

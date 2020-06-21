@@ -20,7 +20,7 @@ public class BanCommand implements CommandExecutor {
 
                 message.getServer().ifPresent(server -> server.banUser(user, 1, reason));
 
-                channel.sendMessage("Succesfully banned " + user.getMentionTag() + " for " + reason);
+                channel.sendMessage("Successfully banned " + user.getMentionTag() + " for " + reason);
             } else {
                 channel.sendMessage("You need to specify a user and reason to ban!");
             }

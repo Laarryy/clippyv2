@@ -7,6 +7,7 @@ import org.javacord.api.DiscordApiBuilder;
 import org.laarryy.clippyv2.commands.*;
 import org.laarryy.clippyv2.commands.moderation.BanCommand;
 import org.laarryy.clippyv2.commands.moderation.KickCommand;
+import org.laarryy.clippyv2.commands.moderation.MuteCommand;
 import org.laarryy.clippyv2.commands.moderation.PruneCommand;
 import org.laarryy.clippyv2.listeners.AutoModListeners;
 import org.laarryy.clippyv2.listeners.ModLogListeners;
@@ -51,6 +52,7 @@ public class Main {
         commandHandler.registerCommand(new AvatarCommand(api));
         commandHandler.registerCommand(new NicknameCommand());
         commandHandler.registerCommand(new RoleReactionCommand(api));
+        commandHandler.registerCommand(new MuteCommand());
 
     //Everyone-Commands:
         commandHandler.registerCommand(new GithubCommand());

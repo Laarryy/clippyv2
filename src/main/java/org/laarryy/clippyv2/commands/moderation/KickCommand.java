@@ -19,7 +19,7 @@ public class KickCommand implements CommandExecutor {
 
                 message.getServer().ifPresent(server -> server.kickUser(user, reason));
 
-                channel.sendMessage("Succesfully kicked " + user.getMentionTag() + " for " + reason);
+                channel.sendMessage("Successfully kicked " + user.getMentionTag() + " for " + reason);
             } else {
                 channel.sendMessage("You need to specify a user and reason to kick!");
             }
