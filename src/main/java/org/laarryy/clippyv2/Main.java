@@ -37,34 +37,44 @@ public class Main {
         // Give bot owner all permissions.
         commandHandler.addPermission(String.valueOf(api.getOwnerId()), "*");
 
-        // Register commands
+    // Register commands
         // To enable a command, add or uncomment it here. To disable, comment it out. Be sure to comment out the class file as well, to avoid problems.
-        //commandHandler.registerCommand(new BStatsCommand());
+
+
+    //Staff-Only Commands:
         commandHandler.registerCommand(new TagCommand(api));
-        commandHandler.registerCommand(new GithubCommand());
+        commandHandler.registerCommand(new PresenceCommand());
         commandHandler.registerCommand(new BanCommand());
         commandHandler.registerCommand(new KickCommand());
         commandHandler.registerCommand(new PruneCommand());
-        commandHandler.registerCommand(new MojangCommand());
-        //commandHandler.registerCommand(new RoleCheckCommand());
-        commandHandler.registerCommand(new PresenceCommand());
-        commandHandler.registerCommand(new NicknameCommand());
+        commandHandler.registerCommand(new SayCommand());
         commandHandler.registerCommand(new AvatarCommand(api));
+        commandHandler.registerCommand(new NicknameCommand());
+        commandHandler.registerCommand(new RoleReactionCommand(api));
+
+    //Everyone-Commands:
+        commandHandler.registerCommand(new GithubCommand());
         commandHandler.registerCommand(new SpigetCommand());
         commandHandler.registerCommand(new CommandsCommand(commandHandler));
-        //commandHandler.registerCommand(new EssentialsXCommand());
-        commandHandler.registerCommand(new RoleReactionCommand(api));
+        //commandHandler.registerCommand(new RoleCheckCommand());
+        //commandHandler.registerCommand(new FbiCommand());
+
+    //Everyone-Offtopic Commands:
+        commandHandler.registerCommand(new MojangCommand());
+        commandHandler.registerCommand(new CakeCommand());
         commandHandler.registerCommand(new EmbedCommand());
-        commandHandler.registerCommand(new SayCommand());
-        commandHandler.registerCommand(new UserTagCommand(api));
+        //commandHandler.registerCommand(new EssentialsXCommand());
         //commandHandler.registerCommand(new SpaceXCommand());
-        //commandHandler.registerCommand(new XkcdCommand());
+        //commandHandler.registerCommand(new BStatsCommand());
+
+    //Patreon-Only Commands:
+        commandHandler.registerCommand(new UserTagCommand(api));
+        commandHandler.registerCommand(new XkcdCommand());
         commandHandler.registerCommand(new WolframAlphaCommand());
         //commandHandler.registerCommand(new EightBallCommand());
-        //commandHandler.registerCommand(new FbiCommand());
-        commandHandler.registerCommand(new CakeCommand());
 
-        // Register listeners
+
+    // Register listeners
         api.addListener(new ModLogListeners(api));
         api.addListener(new AutoModListeners(api, commandHandler));
         api.addListener(new PrivateListener(api));

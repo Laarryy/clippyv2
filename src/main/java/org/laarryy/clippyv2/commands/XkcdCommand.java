@@ -11,6 +11,7 @@ import org.javacord.api.DiscordApi;
 import org.javacord.api.entity.channel.TextChannel;
 import org.javacord.api.entity.message.embed.EmbedBuilder;
 import org.javacord.api.entity.user.User;
+import org.laarryy.clippyv2.Constants;
 
 import java.awt.*;
 import java.util.Objects;
@@ -23,6 +24,9 @@ public class XkcdCommand implements CommandExecutor {
 
     @Command(aliases = {"!xkcd", "!.xkcd"}, usage = "!xkcd <Query>", description = "Search xkcd")
     public void onCommand(DiscordApi api, User user, TextChannel channel, String[] args) {
+        if (!channel.getIdAsString().equals(Constants.CHANNEL_PATREONS) || !channel.getIdAsString().equals(Constants.CHANNEL_STAFF)) {
+            channel.sendMessage("Sorry, can't do that!");
+        }
         if (args.length >= 1) {
             String id = search(String.join(" ", args));
             if (id != null) {

@@ -7,6 +7,7 @@ import org.javacord.api.entity.channel.TextChannel;
 import org.javacord.api.entity.message.Message;
 import org.javacord.api.entity.message.embed.EmbedBuilder;
 import org.javacord.api.entity.user.User;
+import org.laarryy.clippyv2.Constants;
 
 import java.awt.*;
 import java.io.BufferedReader;
@@ -29,6 +30,10 @@ public class WolframAlphaCommand implements CommandExecutor {
         long epoch = System.currentTimeMillis();
         String url = query.replace("<QUERY>", String.join("%20", args))+key;
         String link = queryLink.replace("<QUERY>", String.join("%20", args));
+        if (!channel.getIdAsString().equals(Constants.CHANNEL_PATREONS)) {
+            channel.sendMessage("Sorry, can't do that!");
+            return;
+        }
         channel.sendMessage(new EmbedBuilder().setTitle("Querying WolframAlpha")).thenAcceptAsync(message -> msg = message);
         try {
             String reply = "Yes";
