@@ -240,13 +240,24 @@ public class ModLogListeners implements MessageEditListener, MessageDeleteListen
     @Override
     public void onUserChangeNickname(UserChangeNicknameEvent ev) {
         EmbedBuilder embed = new EmbedBuilder();
+        Optional<String> oldnick = ev.getOldNickname();
+        Optional<String> newnick = ev.getNewNickname();
+        String name = ev.getUser().getName();
 
         embed.setAuthor("Nickname Changed");
         embed.setColor(Color.YELLOW);
         embed.setThumbnail("https://i.imgur.com/IncrMxo.jpg");
 
-        embed.addInlineField("Old", ev.getOldNickname().get());
-        embed.addInlineField("New", ev.getNewNickname().get());
+        {
+            if (newnick.isPresent()) {
+                embed.addInlineField("New", newnick.get());
+            } else
+                embed.addInlineField("New", name);
+            if (oldnick.isPresent()) {
+                embed.addInlineField("Old", oldnick.get());
+            } else
+                embed.addInlineField("Old", "**Nothing**");
+        }
         embed.addField("ID", ev.getUser().getIdAsString());
 
         embed.setFooter(ev.getUser().getIdAsString());

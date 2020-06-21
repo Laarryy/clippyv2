@@ -1,6 +1,5 @@
 package org.laarryy.clippyv2.commands;
 
-import ch.qos.logback.classic.Logger;
 import de.btobastian.sdcf4j.Command;
 import de.btobastian.sdcf4j.CommandExecutor;
 import org.javacord.api.entity.channel.TextChannel;
@@ -10,15 +9,22 @@ import org.javacord.api.entity.message.embed.EmbedBuilder;
 import org.javacord.api.entity.server.Server;
 import org.javacord.api.entity.user.User;
 import org.laarryy.clippyv2.Constants;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.awt.*;
 import java.time.Instant;
 import java.util.Optional;
 
+import static org.slf4j.LoggerFactory.getLogger;
+
 public class FbiCommand implements CommandExecutor {
 
+    // This command will create and send an anti-piracy embed, and
+    // add the role ROLE_PIRATE to any users mentioned, unless they
+    // are zml or have permission to kick users from the server.
 
-    private static final Logger LOGGER = null;
+    private static final Logger logger = getLogger(FbiCommand.class);
 
     @Command(aliases = {"!fbi", ".fbi", "!piracy", ".piracy", ".pirate", "!pirate"}, usage = "!fbi", description = "Special message for thieves and their friends")
     public void onCommand(String[] args, TextChannel channel, MessageAuthor messageAuthor, Server server, Message message) {
@@ -45,7 +51,7 @@ public class FbiCommand implements CommandExecutor {
             return;
             {
                 if (!pirate.isPresent()) {
-                    LOGGER.error("Could not find pirate role in Server {0}", server);
+                    logger.error("Could not find pirate role in Server {0}", server);
                     return;
                 }
                 if (!message.getAuthor().canKickUsersFromServer())

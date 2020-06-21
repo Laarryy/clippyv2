@@ -38,6 +38,7 @@ public class Main {
         commandHandler.addPermission(String.valueOf(api.getOwnerId()), "*");
 
         // Register commands
+        // To enable a command, add or uncomment it here. To disable, comment it out!
         commandHandler.registerCommand(new BStatsCommand());
         commandHandler.registerCommand(new TagCommand(api));
         commandHandler.registerCommand(new GithubCommand());
@@ -51,23 +52,23 @@ public class Main {
         commandHandler.registerCommand(new AvatarCommand());
         commandHandler.registerCommand(new SpigetCommand());
         commandHandler.registerCommand(new CommandsCommand(commandHandler));
-        commandHandler.registerCommand(new EssentialsXCommand());
+        //commandHandler.registerCommand(new EssentialsXCommand());
         commandHandler.registerCommand(new RoleReactionCommand(api));
         commandHandler.registerCommand(new EmbedCommand());
         commandHandler.registerCommand(new SayCommand());
         commandHandler.registerCommand(new UserTagCommand(api));
-        commandHandler.registerCommand(new SpaceXCommand());
-        commandHandler.registerCommand(new XkcdCommand());
+        //commandHandler.registerCommand(new SpaceXCommand());
+        //commandHandler.registerCommand(new XkcdCommand());
         commandHandler.registerCommand(new WolframAlphaCommand());
-        commandHandler.registerCommand(new EightBallCommand());
-        commandHandler.registerCommand(new FbiCommand());
+        //commandHandler.registerCommand(new EightBallCommand());
+        //commandHandler.registerCommand(new FbiCommand());
         commandHandler.registerCommand(new CakeCommand());
 
         // Register listeners
         api.addListener(new ModLogListeners(api));
         api.addListener(new AutoModListeners(api, commandHandler));
         api.addListener(new PrivateListener(api));
-        api.addReactionAddListener(new StarboardListener(api));
+        //api.addReactionAddListener(new StarboardListener(api));
 
     }
 

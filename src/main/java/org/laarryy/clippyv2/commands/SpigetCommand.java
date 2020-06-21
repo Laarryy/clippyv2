@@ -3,6 +3,7 @@ package org.laarryy.clippyv2.commands;
 import com.fasterxml.jackson.databind.JsonNode;
 import de.btobastian.sdcf4j.Command;
 import de.btobastian.sdcf4j.CommandExecutor;
+import org.apache.batik.ext.awt.image.codec.PNGEncodeParam;
 import org.apache.commons.lang.ArrayUtils;
 import org.apache.commons.lang.StringUtils;
 import org.javacord.api.DiscordApi;
@@ -11,6 +12,7 @@ import org.javacord.api.entity.message.embed.EmbedBuilder;
 import org.laarryy.clippyv2.util.BStatsUtil;
 
 import java.awt.*;
+import java.text.DecimalFormat;
 import java.text.MessageFormat;
 import java.util.Iterator;
 
@@ -26,6 +28,7 @@ public class SpigetCommand implements CommandExecutor {
         if (StringUtils.isNumeric(lastIndex) && !lastIndex.equals("1")) {
             page = Integer.valueOf(lastIndex);
             query = String.join(" ", (String[]) ArrayUtils.remove(args, args.length-1));
+
         }
         BStatsUtil bStatsUtil = new BStatsUtil(api);
         EmbedBuilder embed = new EmbedBuilder();
@@ -35,13 +38,16 @@ public class SpigetCommand implements CommandExecutor {
                 StringBuilder result = new StringBuilder();
                 for (Iterator<JsonNode> i = search.elements(); i.hasNext();) {
                     JsonNode resource = i.next();
-                    String name = String.format("[%s](https://www.spigotmc.org/resources/%s/) | %s \u2605", resource.get("name").asText(), resource.get("id").asText(), resource.get("rating").get("average").asText());
+                    DecimalFormat df = new DecimalFormat("#.##");
+                    double input = resource.get("rating").get("average").asDouble();
+                    String message = df.format(input);
+                    String name = String.format("[%s](https://www.spigotmc.org/resources/%s/) | %s \u2605", resource.get("name").asText(), resource.get("id").asText(), message);
                     String tag = String.format("```%s```", resource.get("tag").asText());
                     result.append(name).append(tag).append("\n");
                 }
 
                 embed.setAuthor("Spiget Search");
-                embed.setColor(Color.GREEN);
+                embed.setColor(new Color(248, 151, 36));
                 embed.addField("Results", result.toString());
 
                 embed.setTimestampToNow();
