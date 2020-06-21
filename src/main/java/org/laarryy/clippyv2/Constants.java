@@ -17,6 +17,7 @@ public class Constants {
     public static final String CHANNEL_LOGS = "724025798616547375";
     public static final String CHANNEL_REPORTS = "724100606759010315";
     public static final String CHANNEL_OFFTOPIC = "724025798339592277";
+    public static final String CHANNEL_ANNOUNCEMENTS = "724158751262638100";
 
     // Roles
     public static final String ROLE_STAFF = "724025797861572647";
@@ -24,6 +25,7 @@ public class Constants {
     public static final String ROLE_PATREON = "724025797861572644";
     public static final String ROLE_VERIFIED = "724025797861572643";
     public static final String ROLE_MEMBER = "724025797861572641";
+    public static final String ROLE_LUCKPERMS_UPDATES = "724157299114901584";
     // public static final String ROLE_PIRATE = "720206070601220116";
 
     public static final String ROLE_PURCHASER = "401686955336663041";
