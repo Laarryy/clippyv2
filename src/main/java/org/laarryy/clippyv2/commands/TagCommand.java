@@ -103,7 +103,7 @@ public class TagCommand implements CommandExecutor, MessageCreateListener {
     @Override
     public void onMessageCreate(MessageCreateEvent ev) {
         String message = ev.getMessage().getContent();
-        if (message.startsWith("?") && message.length() >= 2) {
+        if (message.startsWith("!") && message.length() >= 2) {
             String[] args = message.split(" ");
             String tag = args[0].substring(1).toLowerCase();
             args = (String[]) ArrayUtils.remove(args, 0);
