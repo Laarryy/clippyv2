@@ -10,6 +10,7 @@ import org.javacord.api.entity.channel.TextChannel;
 import org.javacord.api.entity.message.Message;
 import org.javacord.api.entity.message.MessageAuthor;
 import org.javacord.api.entity.message.embed.EmbedBuilder;
+import org.javacord.api.entity.permission.Role;
 import org.javacord.api.entity.server.Server;
 import org.javacord.api.entity.user.User;
 import org.javacord.api.event.message.MessageCreateEvent;
@@ -61,18 +62,21 @@ public class UserTagCommand implements CommandExecutor, MessageCreateListener {
 
 
     @Command(aliases = {"!utagset"}, usage = "!utagset <name> [message]", description = "Set a user tag")
-    public void onSet(DiscordApi api, TextChannel channel, String[] args, User user, Server server) {
+    public void onSet(DiscordApi api, TextChannel channel, String[] args, User user, Server server, MessageAuthor messageAuthor) {
         String key = args[0].toLowerCase();
-        if (!channel.getIdAsString().equals(Constants.CHANNEL_OFFTOPIC) && !server.canKickUsers(user)) {
-            return;
-        }
+
+
         if (key.contains("\\n")) {
             channel.sendMessage("Invalid tag name!");
             return;
         }
+        if ((!channel.getIdAsString().equals(Constants.CHANNEL_PATREONS))) {
+            channel.sendMessage("Sorry, can't do that!");
+            return;
+        }
         if (args.length >= 2 && data.tagMap.containsKey(key)) {
             if (!user.getIdAsString().equals(data.tagMap.get(key).owner)) {
-                channel.sendMessage(new EmbedBuilder().setTitle("Tag already exist").setColor(Color.RED));
+                channel.sendMessage(new EmbedBuilder().setTitle("Tag already exists").setColor(Color.RED));
                 return;
             }
         }
@@ -102,9 +106,9 @@ public class UserTagCommand implements CommandExecutor, MessageCreateListener {
     }
 
     @Command(aliases = {"!utaginfo", "!uti"}, usage = "!utaginfo <name>", description = "Info of a user tag")
-    public void onInfo(DiscordApi api, TextChannel channel, String[] args, User user, Server server) {
-        if (!channel.getIdAsString().equals(Constants.CHANNEL_OFFTOPIC) && !server.canKickUsers(user)) {
-            return;
+    public void onInfo(DiscordApi api, TextChannel channel, String[] args, User user, Server server, MessageAuthor messageAuthor) {
+        if ((messageAuthor.canSeeChannel() && channel.getIdAsString().equals(Constants.ROLE_PATREON)));
+        channel.sendMessage("Sorry, can't do that!"); {
         }
         if (args.length >= 1 && data.tagMap.containsKey(args[0].toLowerCase())) {
             UserTag userTag = data.tagMap.get(args[0].toLowerCase());
@@ -114,7 +118,7 @@ public class UserTagCommand implements CommandExecutor, MessageCreateListener {
 
     @Command(aliases = {"!utw"}, usage = "!utw", description = "Adds user to user tag whitelist.")
     public void onadd(DiscordApi api, TextChannel channel, Server server, MessageAuthor author, Message message) {
-        if (author.canKickUsersFromServer() && message.getMentionedUsers().size() >= 1) {
+        if (author.canBanUsersFromServer() && message.getMentionedUsers().size() >= 1) {
             for (User target : message.getMentionedUsers()) {
                 String id = target.getIdAsString();
                 if (data.whitelist.contains(id)) {
