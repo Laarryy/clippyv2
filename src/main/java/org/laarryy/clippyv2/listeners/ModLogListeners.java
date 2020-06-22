@@ -29,6 +29,7 @@ import java.util.Date;
 import java.time.Duration;
 import java.time.Instant;
 import java.util.Optional;
+import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.Future;
 
 public class ModLogListeners implements MessageEditListener, MessageDeleteListener, ServerMemberBanListener, ServerMemberJoinListener, ServerMemberLeaveListener, UserChangeNicknameListener, UserChangeNameListener {
@@ -112,17 +113,19 @@ public class ModLogListeners implements MessageEditListener, MessageDeleteListen
     @Override
     public void onServerMemberBan(ServerMemberBanEvent ev) {
         String bannedBy = "Unknown";
-        String reason = "Because";
-        AuditLog auditLog;
+        String banReason = "Being bad";
+        AuditLog log;
 
-        Future<AuditLog> future = ev.getServer().getAuditLog(10, AuditLogActionType.MEMBER_BAN_ADD);
+        // TODO: Resolve minor bug here
+        // where if a user joins, gets kicked/banned, joins, and then leaves BEFORE anything else happens in the audit log, it's logged as a kick/ban
+        Future<AuditLog> future = ev.getServer().getAuditLog(1, AuditLogActionType.MEMBER_BAN_ADD);
 
         try {
-            auditLog = future.get();
-            for (AuditLogEntry entry : auditLog.getEntries()) {
+            log = future.get();
+            for (AuditLogEntry entry : log.getEntries()) {
                 if (entry.getTarget().get().getId() == ev.getUser().getId()) {
                     bannedBy = entry.getUser().get().getNicknameMentionTag();
-                    reason = entry.getReason().get();
+                    banReason = entry.getReason().get();
                     break;
                 }
             }
@@ -138,7 +141,7 @@ public class ModLogListeners implements MessageEditListener, MessageDeleteListen
 
         embed.addInlineField("Banned By: ", bannedBy);
         embed.addInlineField("ID", ev.getUser().getIdAsString());
-        embed.addField("Reason", reason);
+        embed.addField("Reason", banReason);
 
         embed.setFooter(ev.getUser().getIdAsString());
         embed.setTimestamp(Instant.now());
@@ -180,14 +183,16 @@ public class ModLogListeners implements MessageEditListener, MessageDeleteListen
     sendMessage(embed);
 }
 
-
+    //* TODO: Resolve minor bug here
+    // where if a user joins, gets kicked/banned, joins, and then leaves BEFORE anything else happens in the audit log, it's logged as a kick/ban
     @Override
     public void onServerMemberLeave(ServerMemberLeaveEvent ev) {
         String kickedBy = "Unknown";
         String kickReason = "Because";
+
         AuditLog log;
 
-        Future<AuditLog> future = ev.getServer().getAuditLog(10, AuditLogActionType.MEMBER_KICK);
+        Future<AuditLog> future = ev.getServer().getAuditLog(1, AuditLogActionType.MEMBER_KICK);
 
         try {
             log = future.get();

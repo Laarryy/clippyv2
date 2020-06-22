@@ -8,7 +8,6 @@ import org.javacord.api.entity.channel.TextChannel;
 import org.javacord.api.entity.message.embed.EmbedBuilder;
 import org.javacord.api.exception.MissingPermissionsException;
 import org.javacord.api.util.logging.ExceptionLogger;
-import org.laarryy.clippyv2.Constants;
 import org.laarryy.clippyv2.util.BStatsUtil;
 
 import java.awt.*;
@@ -59,7 +58,7 @@ public class GithubCommand implements CommandExecutor {
         if (args.length == 0) {
             EmbedBuilder embed = new EmbedBuilder()
                     .setDescription("**Usage**: !github <username|repo> <issue #>")
-                    .setColor(Color.RED);
+                    .setColor(Color.GREEN);
             channel.sendMessage(embed)
                     .exceptionally(ExceptionLogger.get(MissingPermissionsException.class));
         }
