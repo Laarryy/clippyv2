@@ -6,6 +6,7 @@ import de.btobastian.sdcf4j.Command;
 import de.btobastian.sdcf4j.CommandExecutor;
 import de.btobastian.sdcf4j.CommandHandler;
 import org.javacord.api.DiscordApi;
+import org.javacord.api.entity.channel.Channel;
 import org.javacord.api.entity.channel.TextChannel;
 import org.javacord.api.entity.message.Message;
 import org.javacord.api.entity.message.MessageAttachment;
@@ -48,8 +49,8 @@ public class AutoModListeners implements MessageCreateListener, CommandExecutor 
     private ObjectMapper mapper = new ObjectMapper();
     private List<String> protectedRoles = new ArrayList<String>() {
         {
-            add("391029845225766912");
-            add("425708417663893505");
+            add(Constants.ROLE_STAFF);
+            add(Constants.ROLE_HELPFUL);
         }
     };
 
@@ -73,26 +74,7 @@ public class AutoModListeners implements MessageCreateListener, CommandExecutor 
     };
 
     String[] nopes = {
-            "https://i.imgur.com/z8UBrh5.png",
-            "https://i.imgur.com/J015ZK5.png",
-            "https://i.imgur.com/RJAtyAg.png",
-            "https://i.imgur.com/aPVrnKl.gif",
-            "https://media0.giphy.com/media/rFvtiIevmj0zu/giphy.gif",
-            "https://i.imgur.com/dTMWtkp.png",
-            "https://i.imgur.com/KbsSxlR.gif",
-            "https://i.imgur.com/8r5mriG.jpg",
-            "https://i.imgur.com/ced9xSC.gif",
-            "https://i.imgur.com/HFRKIpb.gif",
-            "https://i.imgur.com/ebngidh.gif",
-            "https://i.imgur.com/7h0YLxS.gif",
-            "https://i.imgur.com/hI6plU6.jpg",
-            "https://i.imgur.com/pWBhrwI.gif",
-            "https://i.imgur.com/g639DXN.gif",
-            "https://i.imgur.com/u4Wixvd.gif",
-            "https://i.imgur.com/ThMKJ7P.gif",
-            "https://i.imgur.com/cdsdmYA.gif",
-            "https://i.imgur.com/cVvUkWK.gif",
-            "https://i.imgur.com/soBdcGC.gif"
+            "Do not ping staff/helpful people.",
     };
 
     public AutoModListeners(DiscordApi api, CommandHandler commandHandler) {
@@ -208,39 +190,34 @@ public class AutoModListeners implements MessageCreateListener, CommandExecutor 
         if (message.getMentionedUsers().size() >= 1) {
             User perp = message.getUserAuthor().get();
             Server server = message.getServer().get();
+            Channel channel = message.getChannel();
             MessageTracker tracker = getTrackedUser(perp.getId());
             boolean warn = false;
             for (User user : message.getMentionedUsers()) {
-                if ((server.canKickUsers(user) || hasProtectedRole(user.getRoles(server))) && !userIsActive(user.getId())) {
+                if (server.canKickUsers(user) || hasProtectedRole(user.getRoles(server))) {
                     if (data.exempts.containsKey(user.getId()) && data.exempts.get(user.getId()).contains(message.getChannel().getIdAsString())) {
                         continue;
                     }
                     tracker.updatePings();
                     warn = true;
                 }
-                if (tracker.getCount() > 3) { //4th ping will ban the user.
+                if (tracker.getCount() > 5) { //6th ping will ban the user.
                     message.getServer().get().banUser(perp, 0, "Mass ping");
-                    message.getChannel().sendMessage(new EmbedBuilder().setColor(Color.RED).setDescription(String.format("User %s has been permanently banned for mass ping.", perp.getMentionTag())));
+                    message.getChannel().sendMessage(new EmbedBuilder().setColor(Color.RED).setDescription(String.format("%s has been banned for not listening.", perp.getMentionTag())));
                     return;
                 }
             }
             if (warn) {
                 EmbedBuilder embed = new EmbedBuilder();
                 embed.setColor(Color.RED);
-                embed.setImage(nopes[ThreadLocalRandom.current().nextInt(nopes.length)]);
-                embed.setDescription("It looks like you're trying to randomly ping a staff");
+                embed.setImage("https://i.imgur.com/j5P7kdV.png");
+                embed.setDescription("Please do not ping staff!");
                 embed.setFooter(String.format(" Warning %d/3", tracker.getCount()) + " | " + donts[ThreadLocalRandom.current().nextInt(donts.length)] );
-                message.getChannel().sendMessage(perp.getMentionTag(),embed).thenAcceptAsync(msg -> api.getThreadPool().getScheduler().schedule((Callable<CompletableFuture<Void>>) msg::delete, 30, TimeUnit.MINUTES));
+                message.getChannel().sendMessage(perp.getMentionTag(),embed);
                 perp.sendMessage(embed);
+                modChannel.get().sendMessage(embed);
             }
         }
-    }
-
-    private boolean userIsActive(long userId) {
-        if (!active.keySet().contains(userId)) {
-            return false;
-        }
-        return (Duration.between(active.get(userId), Instant.now()).toMinutes() <= 15);
     }
 
     public void logCensorMessage(Optional<User> user, String pattern, String chanId) {

@@ -12,8 +12,6 @@ import org.laarryy.clippyv2.commands.moderation.PruneCommand;
 import org.laarryy.clippyv2.listeners.AutoModListeners;
 import org.laarryy.clippyv2.listeners.ModLogListeners;
 import org.laarryy.clippyv2.listeners.PrivateListener;
-import org.laarryy.clippyv2.listeners.StarboardListener;
-import org.laarryy.clippyv2.commands.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -54,10 +52,10 @@ public class Main {
         commandHandler.registerCommand(new RoleReactionCommand(api));
         commandHandler.registerCommand(new MuteCommand());
 
-    //Everyone-Commands:
+     //Everyone-Commands:
         commandHandler.registerCommand(new GithubCommand());
         commandHandler.registerCommand(new SpigetCommand());
-        commandHandler.registerCommand(new CommandsCommand(commandHandler));
+        commandHandler.registerCommand(new SecretCommandsCommand(commandHandler));
         //commandHandler.registerCommand(new RoleCheckCommand());
         //commandHandler.registerCommand(new FbiCommand());
 
