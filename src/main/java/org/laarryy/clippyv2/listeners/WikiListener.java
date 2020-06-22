@@ -50,21 +50,39 @@ public class WikiListener implements MessageCreateListener {
                 }
             }
         }
+        if (commandName.equalsIgnoreCase("help")) command = getHelpCommand();
         if (command == null) return;
         event.getChannel().sendMessage(command.asEmbed()).join();
     }
 
+    private WikiCommand getHelpCommand() {
+        WikiCommand command = new WikiCommand();
+        command.setTitle("Available Commands");
+        StringBuilder commands1 = new StringBuilder();
+        StringBuilder commands2 = new StringBuilder();
+        commands.forEach(wikiCommand -> {
+            if (commands.indexOf(wikiCommand) <= commands.size()/2)
+                commands1.append("`!").append(wikiCommand.getName()).append("`\n");
+            else
+                commands2.append("`!").append(wikiCommand.getName()).append("`\n");
+        });
+        command.setFields(new WikiCommand.Field[]{
+                new WikiCommand.Field().setKey("\u200B").setValue(commands1.toString()).setInline(true),
+                new WikiCommand.Field().setKey("\u200B").setValue(commands2.toString()).setInline(true)
+        });
+        return command;
+    }
 
     static class WikiCommand {
-        String name;
-        String[] aliases;
-        String title;
-        String url;
-        String description;
-        Field[] fields;
-        boolean wiki;
-        String message;
-        boolean sendMessageAfterEmbed;
+        private String name;
+        private String[] aliases;
+        private String title;
+        private String url;
+        private String description;
+        private Field[] fields;
+        private boolean wiki;
+        private String message;
+        private boolean sendMessageAfterEmbed;
 
         public EmbedBuilder asEmbed() {
             EmbedBuilder embed = new EmbedBuilder();
@@ -169,32 +187,35 @@ public class WikiListener implements MessageCreateListener {
         }
 
         static class Field {
-            String key;
-            String value;
-            boolean inline;
+            private String key;
+            private String value;
+            private boolean inline;
 
             public String getKey() {
                 return key;
             }
 
-            public void setKey(String key) {
+            public Field setKey(String key) {
                 this.key = key;
+                return this;
             }
 
             public String getValue() {
                 return value;
             }
 
-            public void setValue(String value) {
+            public Field setValue(String value) {
                 this.value = value;
+                return this;
             }
 
             public boolean isInline() {
                 return inline;
             }
 
-            public void setInline(boolean inline) {
+            public Field setInline(boolean inline) {
                 this.inline = inline;
+                return this;
             }
         }
     }
