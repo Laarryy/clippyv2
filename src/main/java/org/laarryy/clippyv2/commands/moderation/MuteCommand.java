@@ -24,9 +24,8 @@ public class MuteCommand implements CommandExecutor {
         if (!messageAuthor.canKickUsersFromServer()) {
             return;
         }
-        Boolean muted = message.getMentionedUsers().get(0).getRoles(server).contains(Constants.ROLE_STAFF);
-        {
-            if (muted.equals(Constants.ROLE_STAFF)) {
+        String staff = message.getMentionedUsers().get(0).getRoles(server).toString();
+            if (staff.equals(Constants.ROLE_STAFF)) {
                 channel.sendMessage("Can't do that!");
                 return;
             }
@@ -40,7 +39,7 @@ public class MuteCommand implements CommandExecutor {
             }
             else
                 channel.sendMessage("No.");
-        }
+
     }
 
     @Command(aliases = {"!unmute"}, usage = "!unmute <username>", description =  "Unmutes a user.")
@@ -48,8 +47,11 @@ public class MuteCommand implements CommandExecutor {
         if (!messageAuthor.canKickUsersFromServer()) {
             return;
         }
-            Boolean muted = message.getMentionedUsers().get(0).getRoles(server).contains(Constants.ROLE_STAFF); {
-            if (muted.equals(Constants.ROLE_STAFF)) {
+        if (message.getMentionedUsers().isEmpty()) {
+            return;
+        }
+            Boolean staff = message.getMentionedUsers().get(0).getRoles(server).contains(Constants.ROLE_STAFF); {
+            if (staff.equals(Constants.ROLE_STAFF)) {
                 channel.sendMessage("Can't do that!");
                 return;
                 }
