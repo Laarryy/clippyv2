@@ -36,7 +36,7 @@ public class CakeCommand implements CommandExecutor{
 
     @Command(aliases = {"!cake"}, usage = "!cake", description = "Maybe some cake?")
     public void onCommand(DiscordApi api, TextChannel channel, User user, String[] args) {
-        if (channel.getIdAsString() != Constants.CHANNEL_OFFTOPIC)
+        if (!channel.getIdAsString().equals(Constants.CHANNEL_OFFTOPIC))
             return;
         if (args.length < 0) {
             channel.sendMessage(user.getMentionTag() + " `!cake <ingredients>`");
