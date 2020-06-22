@@ -24,10 +24,12 @@ import java.io.InputStream;
 
 public class BStatsCommand implements CommandExecutor {
 
+
     */
 /**
      * The logger for this class.
      *//*
+
 
     private static final Logger logger = LoggerFactory.getLogger(BStatsCommand.class);
 
@@ -80,14 +82,18 @@ public class BStatsCommand implements CommandExecutor {
                     .exceptionally(ExceptionLogger.get(MissingPermissionsException.class));
         }
     }
+}
 
-    */
+
+*/
 /**
      * Converts a svg bStats signature image to a jpeg image.
      *
      * @param url The url to the signature image.
      * @return An input stream for the jpeg image.
      *//*
+*/
+/*
 
     private InputStream convertSignatureImageToJpeg(String url) {
         // Create a JPEG transcoder
@@ -117,4 +123,5 @@ public class BStatsCommand implements CommandExecutor {
 
 
 }
+
 */

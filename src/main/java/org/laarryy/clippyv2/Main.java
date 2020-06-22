@@ -51,10 +51,10 @@ public class Main {
         commandHandler.registerCommand(new RoleReactionCommand(api));
         commandHandler.registerCommand(new MuteCommand());
 
-    //Everyone-Commands:
+     //Everyone-Commands:
         commandHandler.registerCommand(new GithubCommand());
         commandHandler.registerCommand(new SpigetCommand());
-        commandHandler.registerCommand(new CommandsCommand(commandHandler));
+        commandHandler.registerCommand(new SecretCommandsCommand(commandHandler));
         //commandHandler.registerCommand(new RoleCheckCommand());
         //commandHandler.registerCommand(new FbiCommand());
 
