@@ -12,15 +12,16 @@ import org.javacord.api.entity.permission.Role;
 import org.javacord.api.entity.server.Server;
 import org.javacord.api.entity.user.User;
 import org.laarryy.clippyv2.Constants;
+import org.laarryy.clippyv2.util.RoleUtil;
 
 import java.awt.*;
 import java.util.List;
 
 public class MuteCommand implements CommandExecutor {
 
-
     @Command(aliases = {"!mute"}, usage = "!mute <username> <reason>", description = "Mutes a chosen user.")
     public void onCommand(TextChannel channel, String[] args, Message message, MessageAuthor messageAuthor, Server server) {
+        RoleUtil roleUtil = new RoleUtil(message, server);
         if (!messageAuthor.canKickUsersFromServer()) {
             return;
         }
