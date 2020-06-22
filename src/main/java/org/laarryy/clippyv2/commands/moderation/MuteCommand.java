@@ -28,7 +28,7 @@ public class MuteCommand implements CommandExecutor {
             channel.sendMessage("Mute who?");
             return;
         }
-        if (RoleUtil.isStaffMention = true) {
+        if (RoleUtil.hasStaffMention(message)) {
             channel.sendMessage("Can't mute staff!");
             return;
         }
