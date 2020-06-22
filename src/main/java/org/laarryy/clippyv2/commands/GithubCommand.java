@@ -24,7 +24,7 @@ public class GithubCommand implements CommandExecutor {
     public GithubCommand() {
         shortcuts.put("lp", "lucko/LuckPerms"); //TODO: Make configurable
         shortcuts.put("lperms", "lucko/LuckPerms");
-        shortcuts.put("luckperms", "EssentialsX/Essentials");
+        shortcuts.put("luckperms", "lucko/Luckperms");
         shortcuts.put("lpw", "lucko/LuckPermsWeb");
         shortcuts.put("lpweb", "lucko/LuckPermsWeb");
         shortcuts.put("luckpermsweb", "lucko/LuckPermsWeb");

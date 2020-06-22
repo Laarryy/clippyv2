@@ -1,4 +1,4 @@
-/*
+
 package org.laarryy.clippyv2.commands;
 
 import com.fasterxml.jackson.databind.JsonNode;
@@ -102,4 +102,4 @@ public class SpaceXCommand implements CommandExecutor {
         return null;
     }
 }
-*/
+
