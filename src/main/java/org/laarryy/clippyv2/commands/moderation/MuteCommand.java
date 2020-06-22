@@ -24,23 +24,25 @@ public class MuteCommand implements CommandExecutor {
         if (!messageAuthor.canKickUsersFromServer()) {
             return;
         }
-        Boolean muted = message.getMentionedUsers().get(0).getRoles(server).contains(Constants.ROLE_STAFF);
-        {
-            if (muted.equals(Constants.ROLE_STAFF)) {
-                channel.sendMessage("Can't do that!");
-                return;
-            }
-            if (args.length >= 2) {
-                User user = message.getMentionedUsers().get(0);
-                String reason = String.join(" ", args).substring(args[0].length());
-
-                server.muteUser(user, reason);
-
-                channel.sendMessage("Successfully muted " + user.getMentionTag() + " for: " + reason);
-            }
-            else
-                channel.sendMessage("No.");
+        if (message.getMentionedUsers().size() == 0) {
+            channel.sendMessage("Mute who?");
+            return;
         }
+        boolean staff = message.getMentionedUsers().get(0).getRoles(server).stream().anyMatch(role -> {return role.getIdAsString().equals(Constants.ROLE_STAFF);});
+        if (staff) {
+            channel.sendMessage("Can't do that!");
+            return;
+        }
+        if (args.length >= 2) {
+            User user = message.getMentionedUsers().get(0);
+            String reason = String.join(" ", args).substring(args[0].length());
+
+            server.muteUser(user, reason);
+
+            channel.sendMessage("Successfully muted " + user.getMentionTag() + " for: " + reason);
+        }
+        else
+            channel.sendMessage("No.");
     }
 
     @Command(aliases = {"!unmute"}, usage = "!unmute <username>", description =  "Unmutes a user.")
@@ -48,21 +50,23 @@ public class MuteCommand implements CommandExecutor {
         if (!messageAuthor.canKickUsersFromServer()) {
             return;
         }
-            Boolean muted = message.getMentionedUsers().get(0).getRoles(server).contains(Constants.ROLE_STAFF); {
-            if (muted.equals(Constants.ROLE_STAFF)) {
-                channel.sendMessage("Can't do that!");
-                return;
-                }
-            if (args.length <= 2) {
-                String reason = String.join(" ", args).substring(args[0].length());
-
-                message.getServer().get().unmuteUser(message.getMentionedUsers().get(0));
-
-
-                channel.sendMessage("Unmuted " + message.getMentionedUsers().get(0).getMentionTag());
-            } else {
-                channel.sendMessage("Please specify a user!");
+        if (message.getMentionedUsers().size() == 0) {
+            channel.sendMessage("Mute who?");
+            return;
+        }
+        boolean staff = message.getMentionedUsers().get(0).getRoles(server).stream().anyMatch(role -> {return role.getIdAsString().equals(Constants.ROLE_STAFF);});
+        if (staff) {
+            channel.sendMessage("Can't do that!");
+            return;
             }
+        if (args.length <= 2) {
+            String reason = String.join(" ", args).substring(args[0].length());
+
+            message.getServer().get().unmuteUser(message.getMentionedUsers().get(0));
+
+            channel.sendMessage("Unmuted " + message.getMentionedUsers().get(0).getMentionTag());
+        } else {
+            channel.sendMessage("Please specify a user!");
         }
     }
 }
