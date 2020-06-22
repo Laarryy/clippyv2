@@ -95,7 +95,8 @@ public class WikiListener implements MessageCreateListener {
             }
             //embed RGB 148,223,3
             embed.setColor(new Color(148, 223, 3));
-            Arrays.asList(fields).forEach(field -> embed.addField(field.key, field.value, field.inline));
+            if (fields != null)
+                Arrays.asList(fields).forEach(field -> embed.addField(field.key, field.value, field.inline));
             return embed;
         }
 
