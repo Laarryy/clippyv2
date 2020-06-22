@@ -8,6 +8,7 @@ import org.javacord.api.entity.user.User;
 
 import de.btobastian.sdcf4j.Command;
 import de.btobastian.sdcf4j.CommandExecutor;
+import org.laarryy.clippyv2.util.RoleUtil;
 
 public class BanCommand implements CommandExecutor {
 
@@ -17,6 +18,11 @@ public class BanCommand implements CommandExecutor {
             if (args.length >= 2) {
                 User user = message.getMentionedUsers().get(0);
                 String reason = String.join(" ", args).substring(args[0].length());
+
+                if (RoleUtil.hasStaffMention(message)) {
+                    channel.sendMessage("Can't ban staff!");
+                    return;
+                }
 
                 message.getServer().ifPresent(server -> server.banUser(user, 1, reason));
 
@@ -32,6 +38,12 @@ public class BanCommand implements CommandExecutor {
         if (author.canBanUsersFromServer()) {
             if (args.length == 2 && StringUtils.isNumeric(args[1])) {
                 User user = message.getMentionedUsers().get(0);
+
+                if (RoleUtil.hasStaffMention(message)) {
+                    channel.sendMessage("Can't softban staff!");
+                    return;
+                }
+
                 message.getServer().ifPresent(server -> server.banUser(user, Integer.valueOf(args[1]), "Softban"));
 
                 channel.sendMessage("Soft-banned " + user.getMentionTag() + " successfully!");

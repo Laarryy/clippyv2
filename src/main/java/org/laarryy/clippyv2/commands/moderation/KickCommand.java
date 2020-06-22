@@ -7,6 +7,7 @@ import org.javacord.api.entity.user.User;
 
 import de.btobastian.sdcf4j.Command;
 import de.btobastian.sdcf4j.CommandExecutor;
+import org.laarryy.clippyv2.util.RoleUtil;
 
 public class KickCommand implements CommandExecutor {
 
@@ -15,8 +16,13 @@ public class KickCommand implements CommandExecutor {
         if (author.canKickUsersFromServer()) {
             if (args.length >= 2) {
                 User user = message.getMentionedUsers().get(0);
+
                 String reason = String.join(" ", args).substring(args[0].length());
 
+                if (RoleUtil.hasStaffMention(message)) {
+                    channel.sendMessage("Can't kick staff!");
+                    return;
+                }
                 message.getServer().ifPresent(server -> server.kickUser(user, reason));
 
                 channel.sendMessage("Successfully kicked " + user.getMentionTag() + " for " + reason);
