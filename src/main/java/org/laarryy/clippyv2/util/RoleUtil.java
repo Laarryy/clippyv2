@@ -8,15 +8,14 @@ import org.laarryy.clippyv2.Constants;
 
 public class RoleUtil {
 
-    private Boolean isStaff;
+    public static boolean isStaffMention;
 
     public RoleUtil(Message message, Server server) {
-        boolean isStaff = message.getMentionedUsers().get(0).getRoles(server).stream().anyMatch(role -> {return role.getIdAsString().equals(Constants.ROLE_STAFF);
-        });
-                if (isStaff == true) {
-
+        boolean mentionStaff = message.getMentionedUsers().get(0).getRoles(server).stream().anyMatch(role -> role.getIdAsString().equals(Constants.ROLE_STAFF));
+                if (mentionStaff) {
+                    isStaffMention = true;
                 }
-                else return;
-        ;
+                else isStaffMention = false;
     }
 }
+

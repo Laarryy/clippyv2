@@ -21,7 +21,6 @@ public class MuteCommand implements CommandExecutor {
 
     @Command(aliases = {"!mute"}, usage = "!mute <username> <reason>", description = "Mutes a chosen user.")
     public void onCommand(TextChannel channel, String[] args, Message message, MessageAuthor messageAuthor, Server server) {
-        RoleUtil roleUtil = new RoleUtil(message, server);
         if (!messageAuthor.canKickUsersFromServer()) {
             return;
         }
@@ -29,9 +28,8 @@ public class MuteCommand implements CommandExecutor {
             channel.sendMessage("Mute who?");
             return;
         }
-        boolean staff = message.getMentionedUsers().get(0).getRoles(server).stream().anyMatch(role -> {return role.getIdAsString().equals(Constants.ROLE_STAFF);});
-        if (staff) {
-            channel.sendMessage("Can't do that!");
+        if (RoleUtil.isStaffMention = true) {
+            channel.sendMessage("Can't mute staff!");
             return;
         }
         if (args.length >= 2) {
@@ -55,11 +53,6 @@ public class MuteCommand implements CommandExecutor {
             channel.sendMessage("Mute who?");
             return;
         }
-        boolean staff = message.getMentionedUsers().get(0).getRoles(server).stream().anyMatch(role -> {return role.getIdAsString().equals(Constants.ROLE_STAFF);});
-        if (staff) {
-            channel.sendMessage("Can't do that!");
-            return;
-            }
         if (args.length <= 2) {
             String reason = String.join(" ", args).substring(args[0].length());
 
