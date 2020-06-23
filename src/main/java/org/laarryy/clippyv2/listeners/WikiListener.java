@@ -274,30 +274,4 @@ public class WikiListener implements MessageCreateListener {
         }
     }
 
-
-    private WikiCommand getHelpCommand() {
-        WikiCommand command = new WikiCommand();
-        command.setTitle("Available Commands");
-        StringBuilder commands1 = new StringBuilder();
-        StringBuilder commands2 = new StringBuilder();
-        commands.forEach(wikiCommand -> {
-            if (wikiCommand.wiki) {
-
-                if (commands.indexOf(wikiCommand) <= commands.size() / 2) {
-                    commands1.append("`!").append(wikiCommand.getName()).append("`\n");
-                    logger.debug(String.valueOf((commands.indexOf(wikiCommand))));
-                } else {
-                    commands2.append("`!").append(wikiCommand.getName()).append("`\n");
-                    logger.debug(String.valueOf(commands.indexOf(commands2)));
-                }
-
-            }
-        });
-        command.setFields(new WikiCommand.Field[]{
-                new WikiCommand.Field().setKey("\u200B").setValue(commands1.toString()).setInline(true),
-                new WikiCommand.Field().setKey("\u200B").setValue(commands2.toString()).setInline(true),
-        });
-        return command;
-
-    }
 }
