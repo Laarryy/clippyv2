@@ -109,9 +109,9 @@ public class WikiListener implements MessageCreateListener {
         for (WikiCommand wikiCommand : commands) {
             if (wikiCommand.wiki) {
                 if (commands.indexOf(wikiCommand) <= (count / 2)) {
-                    commands1.append("`!").append(wikiCommand.getName()).append("`\n");
+                    commands1.append("\u200B").append(wikiCommand.getName()).append("`\n");
                 } else {
-                    commands2.append("`!").append(wikiCommand.getName()).append("`\n");
+                    commands2.append("\u200B").append(wikiCommand.getName()).append("`\n");
                 }
             }
         }
