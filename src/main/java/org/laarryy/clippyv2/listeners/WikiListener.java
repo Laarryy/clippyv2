@@ -37,7 +37,6 @@ public class WikiListener implements MessageCreateListener {
                 StringBuilder json = new StringBuilder();
                 while (commandData.hasNext())
                     json.append(commandData.next()).append(" ");
-                logger.info(json.toString());
                 commands = Arrays.asList(new ObjectMapper().readValue(json.toString(), WikiCommand[].class));
                 logger.info("Loaded command data from JAR successfully!");
             } catch (IOException | NullPointerException e2) {
