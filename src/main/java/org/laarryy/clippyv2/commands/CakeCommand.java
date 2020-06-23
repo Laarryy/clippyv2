@@ -36,10 +36,10 @@ public class CakeCommand implements CommandExecutor{
 
     @Command(aliases = {"!cake"}, usage = "!cake", description = "Maybe some cake?")
     public void onCommand(DiscordApi api, TextChannel channel, User user, String[] args) {
-        if (!channel.getIdAsString().equals(Constants.CHANNEL_OFFTOPIC))
+        if (!(channel.getIdAsString().equals(Constants.CHANNEL_OFFTOPIC) || channel.getIdAsString().equals(Constants.CHANNEL_PATREONS) || channel.getIdAsString().equals(Constants.CHANNEL_HELPFUL)))
             return;
-        if (args.length < 0) {
-            channel.sendMessage(user.getMentionTag() + " `!cake <ingredients>`");
+        if (args.length == 13) {
+            channel.sendMessage(user.getMentionTag() + " 13 Ingredients? No thank you!");
             return;
         }
         channel.sendMessage(new EmbedBuilder().setTitle("What's the cake?").setImage(img)).thenAcceptAsync(message -> {
