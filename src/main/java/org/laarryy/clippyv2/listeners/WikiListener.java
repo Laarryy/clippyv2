@@ -117,8 +117,8 @@ public class WikiListener implements MessageCreateListener {
         }
 
         command.setFields(new WikiCommand.Field[]{
-                new WikiCommand.Field().setKey("\u200B").setValue(commands1.toString()).setInline(true),
-                new WikiCommand.Field().setKey("\u200B").setValue(commands2.toString()).setInline(true)
+                new WikiCommand.Field().setKey("\u200B").setValue(commands1.toString()).setInline(false),
+                new WikiCommand.Field().setKey("\u200B").setValue(commands2.toString()).setInline(false)
         });
 
         return command;
