@@ -201,8 +201,8 @@ public class AutoModListeners implements MessageCreateListener, CommandExecutor 
                     tracker.updatePings();
                     warn = true;
                 }
-                if (tracker.getCount() > 3) { //4th ping will ban the user.
-                    message.getServer().get().banUser(perp, 0, "Mass ping");
+                if (tracker.getCount() > 3) { //4th ping will kick the user.
+                    message.getServer().get().kickUser(perp, "Mass ping");
                     message.getChannel().sendMessage(new EmbedBuilder().setColor(Color.RED).setDescription(String.format("%s has been banned for not listening.", perp.getMentionTag())));
                     return;
                 }
