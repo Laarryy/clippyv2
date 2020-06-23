@@ -1,5 +1,10 @@
 {
   "tags" : [ {
+    "name" : "lp",
+    "content" : "<embed>https://gist.githubusercontent.com/pop4959/0215b60933d4d1783fb26c3f6c56d75f/raw/adc07065cc6409a16240436ab031bed406970f5c/lp",
+    "owner" : "347959633518002177",
+    "modified" : "2020-06-23T05:13:13.250565800Z"
+  }, {
     "name" : "gn",
     "content" : "<embed>https://gist.githubusercontent.com/zml2008/2def9a12c8229bcaf58440b88f879be5/raw/07e4ad57d2eafb3dd8cf3be782a5a87d80ebbc23/inbed.json",
     "owner" : "184165847940464641",

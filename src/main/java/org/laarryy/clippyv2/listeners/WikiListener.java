@@ -21,7 +21,7 @@ import java.util.regex.Pattern;
 
 public class WikiListener implements MessageCreateListener {
     private static final Pattern pattern = Pattern.compile("^[!.](\\w+)");
-    private static final String url = "https://raw.githubusercontent.com/Laarryy/clippyv2/master/src/main/resources/aaaawikicommands.json";
+    private static final String url = "https://raw.githubusercontent.com/Laarryy/clippyv2/master/src/main/resources/wikicommands.json";
     private static final Logger logger = LoggerFactory.getLogger(Main.class);
     List<WikiCommand> commands;
 
@@ -37,7 +37,6 @@ public class WikiListener implements MessageCreateListener {
                 StringBuilder json = new StringBuilder();
                 while (commandData.hasNext())
                     json.append(commandData.next()).append(" ");
-                logger.info(json.toString());
                 commands = Arrays.asList(new ObjectMapper().readValue(json.toString(), WikiCommand[].class));
                 logger.info("Loaded command data from JAR successfully!");
             } catch (IOException | NullPointerException e2) {
