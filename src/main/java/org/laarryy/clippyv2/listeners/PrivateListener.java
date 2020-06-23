@@ -50,6 +50,10 @@ public class PrivateListener implements MessageCreateListener {
 
             embed.setTimestamp(Instant.now());
 
+            if (ev.getMessageAuthor().isYourself()) {
+                return;
+            }
+
             privateChannel.get().sendMessage(embed);
 
             if (!(ev.getChannel().getType() == ChannelType.PRIVATE_CHANNEL)) {

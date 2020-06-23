@@ -201,7 +201,7 @@ public class AutoModListeners implements MessageCreateListener, CommandExecutor 
                     tracker.updatePings();
                     warn = true;
                 }
-                if (tracker.getCount() > 5) { //6th ping will ban the user.
+                if (tracker.getCount() > 3) { //4th ping will ban the user.
                     message.getServer().get().banUser(perp, 0, "Mass ping");
                     message.getChannel().sendMessage(new EmbedBuilder().setColor(Color.RED).setDescription(String.format("%s has been banned for not listening.", perp.getMentionTag())));
                     return;
@@ -210,11 +210,20 @@ public class AutoModListeners implements MessageCreateListener, CommandExecutor 
             if (warn) {
                 EmbedBuilder embed = new EmbedBuilder();
                 embed.setColor(Color.RED);
-                embed.setImage("https://i.imgur.com/j5P7kdV.png");
                 embed.setDescription("Please do not ping staff!");
-                embed.setFooter(String.format(" Warning %d/3", tracker.getCount()) + " | " + donts[ThreadLocalRandom.current().nextInt(donts.length)] );
-                message.getChannel().sendMessage(perp.getMentionTag(),embed);
+                embed.setFooter(String.format(" Warning %d", tracker.getCount()) + " | " + donts[ThreadLocalRandom.current().nextInt(donts.length)]);
+                message.getChannel().sendMessage(perp.getMentionTag(), embed);
+                embed.setImage("https://i.imgur.com/j5P7kdV.png");
+                // DMs them a warning
                 perp.sendMessage(embed);
+            }
+            if (warn) {
+                EmbedBuilder embed = new EmbedBuilder();
+                embed.setColor((new Color(174, 38, 245)));
+                embed.setImage(perp.getAvatar());
+                embed.setAuthor("Staff Pinged!");
+                embed.setDescription("What a madlad that " + perp.getMentionTag() + " is!");
+                embed.setFooter(String.format(" Warning %d", tracker.getCount()));
                 modChannel.get().sendMessage(embed);
             }
         }
@@ -304,7 +313,7 @@ public class AutoModListeners implements MessageCreateListener, CommandExecutor 
                 if (count.get() > 0) {
                     count.decrementAndGet();
                 }
-            }, 0,5, TimeUnit.MINUTES);
+            }, 0,30, TimeUnit.MINUTES);
         }
     }
 }

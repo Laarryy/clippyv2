@@ -23,6 +23,7 @@ public class WikiListener implements MessageCreateListener {
     public WikiListener(DiscordApi api) {
         try {
             ObjectMapper mapper = new ObjectMapper();
+
             commands = Arrays.asList(mapper.readValue(new URL("https://raw.githubusercontent.com/LuckPerms/clippy/master/modules/commands/list.json"), WikiCommand[].class));
         } catch (IOException e) {
             e.printStackTrace();
@@ -88,6 +89,7 @@ public class WikiListener implements MessageCreateListener {
             EmbedBuilder embed = new EmbedBuilder();
             embed.setTitle(wiki ? "\uD83D\uDD16 " + title : title);
             embed.setDescription(description);
+
             if (wiki) {
                 embed.setUrl(url);
                 embed.addField("Read More: ", url);
