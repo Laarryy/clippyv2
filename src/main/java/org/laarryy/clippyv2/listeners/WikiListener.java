@@ -52,7 +52,7 @@ public class WikiListener implements MessageCreateListener {
     @Override
     public void onMessageCreate(MessageCreateEvent event) {
         //noinspection OptionalGetWithoutIsPresent
-        if (event.getMessageAuthor().isWebhook() || event.getMessageAuthor().asUser().get().isBot()) return;
+        if (event.getMessageAuthor().isWebhook() || event.getMessageAuthor().isYourself()) return;
         Matcher matcher = pattern.matcher(event.getMessageContent());
         if (!matcher.matches()) return;
         String commandName = matcher.group(1);
@@ -233,7 +233,7 @@ public class WikiListener implements MessageCreateListener {
         commands.forEach(wikiCommand -> {
             if (wikiCommand.wiki) {
 
-                if (commands.indexOf(wikiCommand) <= commands.size() / 5) {
+                if (commands.indexOf(wikiCommand) <= commands.size() / 2) {
                     commands1.append("`!").append(wikiCommand.getName()).append("`\n");
                 } else {
                     commands2.append("`!").append(wikiCommand.getName()).append("`\n");
@@ -242,8 +242,8 @@ public class WikiListener implements MessageCreateListener {
             }
         });
         command.setFields(new WikiCommand.Field[]{
-                new WikiCommand.Field().setKey("\u200B").setValue(commands1.toString()).setInline(true),
-                new WikiCommand.Field().setKey("\u200B").setValue(commands2.toString()).setInline(true)
+                new WikiCommand.Field().setKey("\u200B").setValue(commands1.toString()).setInline(false),
+                new WikiCommand.Field().setKey("\u200B").setValue(commands2.toString()).setInline(false)
         });
         return command;
 
