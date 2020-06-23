@@ -7,6 +7,9 @@ import org.javacord.api.entity.message.embed.EmbedBuilder;
 import org.javacord.api.entity.message.embed.internal.EmbedBuilderDelegate;
 import org.javacord.api.event.message.MessageCreateEvent;
 import org.javacord.api.listener.message.MessageCreateListener;
+import org.laarryy.clippyv2.Main;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.awt.*;
 import java.io.IOException;
@@ -18,16 +21,30 @@ import java.util.regex.Pattern;
 
 public class WikiListener implements MessageCreateListener {
     private static final Pattern pattern = Pattern.compile("^[!.](\\w+)");
+    private static final String url = "https://raw.githubusercontent.com/Laarryy/clippyv2/master/src/main/resources/aaaawikicommands.json";
+    private static final Logger logger = LoggerFactory.getLogger(Main.class);
     List<WikiCommand> commands;
 
     public WikiListener(DiscordApi api) {
         try {
             ObjectMapper mapper = new ObjectMapper();
 
-            commands = Arrays.asList(mapper.readValue(new URL("https://raw.githubusercontent.com/LuckPerms/clippy/master/modules/commands/list.json"), WikiCommand[].class));
+            commands = Arrays.asList(mapper.readValue(new URL(url), WikiCommand[].class));
         } catch (IOException e) {
-            e.printStackTrace();
-            api.removeListener(this);
+            try {
+                logger.warn("Could not load command data from " + url + ". Attempting to load from JAR.");
+                Scanner commandData = new Scanner(WikiListener.class.getClassLoader().getResource("wikicommands.json").openStream());
+                StringBuilder json = new StringBuilder();
+                while (commandData.hasNext())
+                    json.append(commandData.next()).append(" ");
+                logger.info(json.toString());
+                commands = Arrays.asList(new ObjectMapper().readValue(json.toString(), WikiCommand[].class));
+                logger.info("Loaded command data from JAR successfully!");
+            } catch (IOException | NullPointerException e2) {
+                logger.error("Command data could not be loaded!");
+                e2.printStackTrace();
+                api.removeListener(this);
+            }
         }
     }
 
