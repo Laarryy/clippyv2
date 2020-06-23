@@ -1,6 +1,5 @@
 package org.laarryy.clippyv2.listeners;
 
-import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.javacord.api.DiscordApi;
 import org.javacord.api.entity.message.embed.EmbedBuilder;
@@ -19,12 +18,11 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class WikiListener implements MessageCreateListener {
+
     private static final Pattern pattern = Pattern.compile("^[!.](\\w+)");
     private static final String url = "https://raw.githubusercontent.com/Laarryy/clippyv2/master/src/main/resources/wikicommands.json";
     private static final Logger logger = LoggerFactory.getLogger(Main.class);
     List<WikiCommand> commands;
-    private boolean wiki;
-
 
     public WikiListener(DiscordApi api) {
         try {
@@ -37,8 +35,11 @@ public class WikiListener implements MessageCreateListener {
                 logger.warn("Could not load command data from " + url + ". Attempting to load from JAR.");
                 Scanner commandData = new Scanner(WikiListener.class.getClassLoader().getResource("wikicommands.json").openStream());
                 StringBuilder json = new StringBuilder();
-                while (commandData.hasNext())
+
+                while (commandData.hasNext()) {
                     json.append(commandData.next()).append(" ");
+                }
+
                 commands = Arrays.asList(new ObjectMapper().readValue(json.toString(), WikiCommand[].class));
                 logger.info("Loaded command data from JAR successfully!");
             } catch (IOException | NullPointerException e2) {
@@ -51,17 +52,26 @@ public class WikiListener implements MessageCreateListener {
 
     @Override
     public void onMessageCreate(MessageCreateEvent event) {
-        //noinspection OptionalGetWithoutIsPresent
-        if (event.getMessageAuthor().isWebhook() || event.getMessageAuthor().isYourself()) return;
+        // Only trigger for users
+        if (!event.getMessageAuthor().isUser()) {
+            return;
+        }
+
         Matcher matcher = pattern.matcher(event.getMessageContent());
-        if (!matcher.matches()) return;
+
+        if (!matcher.matches()) {
+            return;
+        }
+
         String commandName = matcher.group(1);
         WikiCommand command = null;
+
         for (WikiCommand commandLoop : commands) {
             if (commandLoop.name.equals(commandName)) {
                 command = commandLoop;
                 continue;
             }
+
             if (commandLoop.aliases != null) {
                 if (Arrays.asList(commandLoop.aliases).contains(commandName)) {
                     command = commandLoop;
@@ -69,11 +79,50 @@ public class WikiListener implements MessageCreateListener {
                 }
             }
         }
-        if (commandName.equalsIgnoreCase("help")) command = getHelpCommand();
-        if (command == null) return;
+
+        if (commandName.equalsIgnoreCase("help")) {
+            command = getHelpCommand();
+        }
+
+        if (command == null) {
+            return;
+        }
+
         event.getChannel().sendMessage(command.asEmbed()).join();
     }
 
+    private WikiCommand getHelpCommand() {
+        WikiCommand command = new WikiCommand();
+        command.setTitle("Available Commands");
+
+        StringBuilder commands1 = new StringBuilder();
+        StringBuilder commands2 = new StringBuilder();
+
+        int count = 0;
+
+        for (WikiCommand wikiCommand : commands) {
+            if (wikiCommand.wiki) {
+                count++;
+            }
+        }
+
+        for (WikiCommand wikiCommand : commands) {
+            if (wikiCommand.wiki) {
+                if (commands.indexOf(wikiCommand) <= (count / 2)) {
+                    commands1.append("\u200B").append(wikiCommand.getName()).append("`\n");
+                } else {
+                    commands2.append("\u200B").append(wikiCommand.getName()).append("`\n");
+                }
+            }
+        }
+
+        command.setFields(new WikiCommand.Field[]{
+                new WikiCommand.Field().setKey("\u200B").setValue(commands1.toString()).setInline(true),
+                new WikiCommand.Field().setKey("\u200B").setValue(commands2.toString()).setInline(true)
+        });
+
+        return command;
+    }
 
     static class WikiCommand {
         private String name;
@@ -224,6 +273,7 @@ public class WikiListener implements MessageCreateListener {
             }
         }
     }
+
 
     private WikiCommand getHelpCommand() {
         WikiCommand command = new WikiCommand();
