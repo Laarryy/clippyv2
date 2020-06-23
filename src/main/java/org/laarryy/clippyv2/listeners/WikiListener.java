@@ -1,10 +1,9 @@
 package org.laarryy.clippyv2.listeners;
 
+import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.javacord.api.DiscordApi;
-import org.javacord.api.entity.message.embed.Embed;
 import org.javacord.api.entity.message.embed.EmbedBuilder;
-import org.javacord.api.entity.message.embed.internal.EmbedBuilderDelegate;
 import org.javacord.api.event.message.MessageCreateEvent;
 import org.javacord.api.listener.message.MessageCreateListener;
 import org.laarryy.clippyv2.Main;
@@ -24,12 +23,15 @@ public class WikiListener implements MessageCreateListener {
     private static final String url = "https://raw.githubusercontent.com/Laarryy/clippyv2/master/src/main/resources/wikicommands.json";
     private static final Logger logger = LoggerFactory.getLogger(Main.class);
     List<WikiCommand> commands;
+    private boolean wiki;
+
 
     public WikiListener(DiscordApi api) {
         try {
             ObjectMapper mapper = new ObjectMapper();
 
             commands = Arrays.asList(mapper.readValue(new URL(url), WikiCommand[].class));
+            logger.info("Loading data from online source at " + url);
         } catch (IOException e) {
             try {
                 logger.warn("Could not load command data from " + url + ". Attempting to load from JAR.");
@@ -56,7 +58,7 @@ public class WikiListener implements MessageCreateListener {
         String commandName = matcher.group(1);
         WikiCommand command = null;
         for (WikiCommand commandLoop : commands) {
-            if (commandLoop.name.equals(commandName)){
+            if (commandLoop.name.equals(commandName)) {
                 command = commandLoop;
                 continue;
             }
@@ -72,23 +74,6 @@ public class WikiListener implements MessageCreateListener {
         event.getChannel().sendMessage(command.asEmbed()).join();
     }
 
-    private WikiCommand getHelpCommand() {
-        WikiCommand command = new WikiCommand();
-        command.setTitle("Available Commands");
-        StringBuilder commands1 = new StringBuilder();
-        StringBuilder commands2 = new StringBuilder();
-        commands.forEach(wikiCommand -> {
-            if (commands.indexOf(wikiCommand) <= commands.size()/2)
-                commands1.append("`!").append(wikiCommand.getName()).append("`\n");
-            else
-                commands2.append("`!").append(wikiCommand.getName()).append("`\n");
-        });
-        command.setFields(new WikiCommand.Field[]{
-                new WikiCommand.Field().setKey("\u200B").setValue(commands1.toString()).setInline(true),
-                new WikiCommand.Field().setKey("\u200B").setValue(commands2.toString()).setInline(true)
-        });
-        return command;
-    }
 
     static class WikiCommand {
         private String name;
@@ -117,6 +102,7 @@ public class WikiListener implements MessageCreateListener {
                 Arrays.asList(fields).forEach(field -> embed.addField(field.key, field.value, field.inline));
             return embed;
         }
+
 
         public String getName() {
             return name;
@@ -237,5 +223,29 @@ public class WikiListener implements MessageCreateListener {
                 return this;
             }
         }
+    }
+
+    private WikiCommand getHelpCommand() {
+        WikiCommand command = new WikiCommand();
+        command.setTitle("Available Commands");
+        StringBuilder commands1 = new StringBuilder();
+        StringBuilder commands2 = new StringBuilder();
+        commands.forEach(wikiCommand -> {
+            if (wikiCommand.wiki) {
+
+                if (commands.indexOf(wikiCommand) <= commands.size() / 5) {
+                    commands1.append("`!").append(wikiCommand.getName()).append("`\n");
+                } else {
+                    commands2.append("`!").append(wikiCommand.getName()).append("`\n");
+                }
+
+            }
+        });
+        command.setFields(new WikiCommand.Field[]{
+                new WikiCommand.Field().setKey("\u200B").setValue(commands1.toString()).setInline(true),
+                new WikiCommand.Field().setKey("\u200B").setValue(commands2.toString()).setInline(true)
+        });
+        return command;
+
     }
 }

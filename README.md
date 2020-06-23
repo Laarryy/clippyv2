@@ -1,6 +1,6 @@
 # Clippy the Second
 
-The dream modbot, assistant, and pancake chef for any discord.
+The dream modbot, assistant, and cake chef for any discord.
 
 ## Bot
 
@@ -13,14 +13,16 @@ It be Javacord
 ### What can Clippy II do that Clippy I could not?
 
 * personal tags for displaying information, full moderatable
-* pancakes, really well
 * serverwide tags for displaying luckperms info
 * fully editable command list that doesn't show everything (thank goodness)
 * role on join
 * full user mod
+* modlogs
+* bonus commands for patreons
 * some fun commands to ventriloquise with
 * embed support to make and display useful embeds both as tags, usertags, and commands
 * WolframAplha API connection, allowing for cool questions to get answered
 * bot status control
 * make cake!! yes finally!
+* bot avatar control
 * much, much more

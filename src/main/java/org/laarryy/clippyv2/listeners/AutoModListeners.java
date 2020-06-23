@@ -145,7 +145,7 @@ public class AutoModListeners implements MessageCreateListener, CommandExecutor 
 
     @Override
     public void onMessageCreate(MessageCreateEvent ev) {
-        if (ev.getMessage().getAuthor().isYourself() || ev.getMessage().getAuthor().canKickUsersFromServer()) {
+        if (ev.getMessage().getAuthor().isYourself() || ev.getMessage().getAuthor().canKickUsersFromServer() || ev.getMessageAuthor().canSeeChannel()) {
             active.put(ev.getMessage().getAuthor().getId(), Instant.now());
             return;
         }
