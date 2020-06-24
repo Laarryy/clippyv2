@@ -76,7 +76,7 @@ public class ErrorListener implements MessageCreateListener {
                             .setFooter(matcher.group() + " | Sent by " + event.getMessageAuthor().getDisplayName())
                             .setColor(Color.RED));
                 }
-            } catch (IOException e) {
+            } catch (IOException | NullPointerException e) {
                 logger.warn(e.getMessage());
             }
         }
