@@ -85,7 +85,6 @@ public class Main {
         api.addListener(new ErrorListener());
         //api.addReactionAddListener(new StarboardListener(api));
 
-        java.util.logging.Logger.getLogger(OkHttpClient.class.getName()).setLevel(Level.FINE);
     }
 
 }
