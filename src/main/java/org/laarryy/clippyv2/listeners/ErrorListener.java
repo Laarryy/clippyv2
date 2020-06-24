@@ -42,7 +42,17 @@ public class ErrorListener implements MessageCreateListener {
                 "https://github.com/lucko/LuckPerms/wiki/Storage-system-errors#mysql-no-operations-allowed-after-connection-closed-error",
                 Pattern.compile("me\\.lucko\\.luckperms\\.lib\\.hikari\\.pool\\.PoolBase - luckperms-hikari - Failed to validate connection me\\.lucko\\.luckperms\\.lib\\.mysql\\.jdbc\\.JDBC4Connection@\\w+ \\(No operations allowed after connection closed\\.\\)"),
                 Pattern.compile("me\\.lucko\\.luckperms\\.lib\\.hikari\\.pool\\.PoolBase - luckperms-hikari- Failed to validate connection me\\.lucko\\.luckperms\\.lib\\.mariadb\\.MariaDbConnection@\\w+ \\(\\w+ cannot be called on a closed connection\\)")));
+        checks.add(new Check("LuckPerms cannot connect to your MySQL server",
+                "https://github.com/lucko/LuckPerms/wiki/Storage-system-errors#luckperms-cannot-connect-to-my-mysql-server",
+                Pattern.compile("java\\.util\\.concurrent\\.CompletionException: java\\.sql\\.SQLTransientConnectionException: luckperms(?:-hikari)? - Connection is not available, request timed out after \\d+ms\\."),
+                Pattern.compile("java\\.sql\\.SQLTransientConnectionException: luckperms(?:-hikari)? - Connection is not available, request timed out after \\d+ms\\."),
+                Pattern.compile("luckperms - Failed to validate connection com\\.mysql\\.jdbc\\.JDBC4Connection@\\w+ \\(Communications link failure\\)"),
+                Pattern.compile("The last packet successfully received from the server was \\d+ milliseconds ago\\. The last packet sent successfully to the server was \\d+ milliseconds ago\\.")));
+        checks.add(new Check("MySQL SSL Error",
+                "https://github\\.com/lucko/LuckPerms/wiki/Storage-system-errors#mysql-ssl-errors",
+                Pattern.compile(("Establishing SSL connection without server's identity verification is not recommended\\."))));
     }
+
 
     @Override
     public void onMessageCreate(MessageCreateEvent event) {
