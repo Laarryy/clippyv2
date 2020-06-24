@@ -42,7 +42,6 @@ public class AutoUploadListener implements MessageCreateListener {
                         .build();
                 Response bytebinResponse = client.newCall(postRequest).execute();
                 if (!response.isSuccessful()) return;
-                // TODO MAKE WORK
                 event.getChannel().sendMessage(BYTEBIN_URL + "/" + bytebinResponse.header("Location", "null")).join();
 
             } catch (IOException ioException) {
