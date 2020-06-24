@@ -13,7 +13,6 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class AutoUploadListener implements MessageCreateListener {
-    private static final Pattern pattern = Pattern.compile("^[!.](\\w+)");
     private static final Logger logger = LoggerFactory.getLogger(Main.class);
 
     @Override
