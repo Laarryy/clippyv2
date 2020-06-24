@@ -10,6 +10,7 @@ import org.laarryy.clippyv2.Main;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.regex.*;
 import java.util.regex.Pattern;
@@ -32,27 +33,26 @@ public class ErrorListener implements MessageCreateListener {
 
     @Override
     public void onMessageCreate(MessageCreateEvent event) {
-        try {
-            String contents = event.getMessageContent();
-            for (Pattern pastebin : pastebins.keySet()) {
-                // All logic goes here!
-                // pastebins.get(pastebin) to get the GET URL
-                Matcher matcher = pastebin.matcher(event.getMessageContent());
-                if (!matcher.matches()) continue;
-                String urlToGet = pastebins.get(pastebin).replace("{code}", matcher.group(1));
-                Request request = new Request.Builder()
-                    .url(urlToGet)
-                    .build();
+        String contents = event.getMessageContent();
+        for (Pattern pastebin : pastebins.keySet()) {
+            // All logic goes here!
+            // pastebins.get(pastebin) to get the GET URL
+            Matcher matcher = pastebin.matcher(event.getMessageContent());
+            if (!matcher.matches()) continue;
+            String urlToGet = pastebins.get(pastebin).replace("{code}", matcher.group(1));
+            Request request = new Request.Builder()
+                .url(urlToGet)
+                .build();
+            try {
                 client.newCall(request).execute();
 
                 Response response = client.newCall(request).execute();
                 if (!response.isSuccessful()) continue;
                 if (response.body() == null) continue;
                 logger.debug(response.body().string());
-
+            } catch (IOException e) {
+                logger.warn(e.getMessage());
             }
-
-        } catch (Exception e) {
         }
     }
 }
