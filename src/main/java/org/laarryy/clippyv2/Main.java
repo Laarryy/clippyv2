@@ -2,6 +2,7 @@ package org.laarryy.clippyv2;
 
 import de.btobastian.sdcf4j.CommandHandler;
 import de.btobastian.sdcf4j.handler.JavacordHandler;
+import okhttp3.OkHttpClient;
 import org.javacord.api.DiscordApi;
 import org.javacord.api.DiscordApiBuilder;
 import org.laarryy.clippyv2.commands.*;
@@ -13,6 +14,8 @@ import org.laarryy.clippyv2.listeners.*;
 import org.laarryy.clippyv2.commands.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import java.util.logging.Level;
 
 public class Main {
 
@@ -82,6 +85,7 @@ public class Main {
         api.addListener(new ErrorListener());
         //api.addReactionAddListener(new StarboardListener(api));
 
+        java.util.logging.Logger.getLogger(OkHttpClient.class.getName()).setLevel(Level.FINE);
     }
 
 }

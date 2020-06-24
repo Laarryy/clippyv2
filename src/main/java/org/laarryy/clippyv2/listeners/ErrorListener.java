@@ -67,11 +67,10 @@ public class ErrorListener implements MessageCreateListener {
                 .url(urlToGet)
                 .build();
             try {
-                client.newCall(request).execute();
-
                 Response response = client.newCall(request).execute();
                 if (!response.isSuccessful()) continue;
                 String content = response.body().string();
+                response.body().close();
                 for (Check check : checks) {
                     boolean matched = false;
                     for (Pattern regex : check.getPatterns()) {
