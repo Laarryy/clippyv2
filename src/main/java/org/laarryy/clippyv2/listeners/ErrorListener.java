@@ -61,8 +61,7 @@ public class ErrorListener implements MessageCreateListener {
 
                 Response response = client.newCall(request).execute();
                 if (!response.isSuccessful()) continue;
-                ResponseBody body = response.body();
-                String content = body.string();
+                String content = response.body().string();
                 for (Check check : checks) {
                     boolean matched = false;
                     for (Pattern regex : check.getPatterns()) {
