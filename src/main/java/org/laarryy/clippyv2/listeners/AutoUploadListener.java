@@ -20,7 +20,7 @@ public class AutoUploadListener implements MessageCreateListener {
         if (!event.getMessageAuthor().isUser())
         return;
 
-        if (event.getMessage().getAttachments().contains(1));
+        if (event.getMessage().getAttachments().contains(true));
 
         logger.debug(String.valueOf(event.getMessageAttachments()));
 
