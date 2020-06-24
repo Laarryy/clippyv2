@@ -1,7 +1,9 @@
 package org.laarryy.clippyv2.listeners;
 
 
+import okhttp3.OkHttpClient;
 import okhttp3.Request;
+import okhttp3.Response;
 import org.javacord.api.event.message.MessageCreateEvent;
 import org.javacord.api.listener.message.MessageCreateListener;
 import org.laarryy.clippyv2.Main;
@@ -13,7 +15,7 @@ import java.util.regex.*;
 import java.util.regex.Pattern;
 
 public class ErrorListener implements MessageCreateListener {
-
+    private static final OkHttpClient client = new OkHttpClient();
     private static final Logger logger = LoggerFactory.getLogger(Main.class);
     private final HashMap<Pattern, String> pastebins = new HashMap<>();
 
@@ -38,7 +40,18 @@ public class ErrorListener implements MessageCreateListener {
                 Matcher matcher = pastebin.matcher(event.getMessageContent());
                 if (!matcher.matches()) continue;
                 String urlToGet = pastebins.get(pastebin).replace("{code}", matcher.group(1));
+                Request request = new Request.Builder()
+                    .url(urlToGet)
+                    .build();
+                client.newCall(request).execute();
+
+                Response response = client.newCall(request).execute();
+                if (!response.isSuccessful()) continue;
+                if (response.body() == null) continue;
+                logger.debug(response.body().string());
+
             }
+
         } catch (Exception e) {
         }
     }
