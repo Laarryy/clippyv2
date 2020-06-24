@@ -32,6 +32,9 @@ public class ErrorListener implements MessageCreateListener {
         for (Pattern pastebin : pastebins.keySet()) {
             // All logic goes here!
             // pastebins.get(pastebin) to get the GET URL
+            Matcher matcher = pastebin.matcher(event.getMessageContent());
+            if (!matcher.matches()) continue;
+            String urlToGet = pastebins.get(pastebin).replace("{code}", matcher.group(1));
         }
     }
 }
