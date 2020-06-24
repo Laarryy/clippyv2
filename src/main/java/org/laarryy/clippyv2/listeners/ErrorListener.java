@@ -4,6 +4,7 @@ package org.laarryy.clippyv2.listeners;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Response;
+import okhttp3.ResponseBody;
 import org.javacord.api.entity.message.embed.EmbedBuilder;
 import org.javacord.api.event.message.MessageCreateEvent;
 import org.javacord.api.listener.message.MessageCreateListener;
@@ -60,13 +61,14 @@ public class ErrorListener implements MessageCreateListener {
 
                 Response response = client.newCall(request).execute();
                 if (!response.isSuccessful()) continue;
-                if (response.body() == null) continue;
-                logger.debug(response.body().string());
+                ResponseBody body = response.body();
+                if (body== null) continue;
                 for (Check check : checks) {
                     boolean matched = false;
-                    for (Pattern regex : check.getPatterns())
-                        if (regex.matcher(response.body().string()).matches())
+                    for (Pattern regex : check.getPatterns()) {
+                        if (regex.matcher(body.string()).matches())
                             matched = true;
+                    }
 
                     if (!matched) continue;
                     event.getChannel().sendMessage(new EmbedBuilder()
