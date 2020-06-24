@@ -1,7 +1,6 @@
 package org.laarryy.clippyv2.listeners;
 
-import okhttp3.OkHttpClient;
-import okhttp3.Request;
+import okhttp3.*;
 import org.javacord.api.event.message.MessageCreateEvent;
 import org.javacord.api.listener.message.MessageCreateListener;
 import org.laarryy.clippyv2.Main;
@@ -12,12 +11,14 @@ import org.slf4j.Marker;
 import java.io.File;
 import java.io.IOException;
 import java.text.Format;
+import java.text.Normalizer;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class AutoUploadListener implements MessageCreateListener {
     private static final Logger logger = LoggerFactory.getLogger(Main.class);
     private static final OkHttpClient client = new OkHttpClient();
+
 
     @Override
     public void onMessageCreate(MessageCreateEvent event) {
@@ -34,6 +35,7 @@ public class AutoUploadListener implements MessageCreateListener {
                 logger.warn("IOException while attempting to reach " + messageAttachment.getUrl() + ": " + ioException.getMessage());
             }
         });
-
     }
 }
+
+
