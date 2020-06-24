@@ -79,6 +79,7 @@ public class Main {
         api.addListener(new PrivateListener(api));
         api.addListener(new WikiListener(api));
         api.addListener(new AutoUploadListener());
+        api.addListener(new ErrorListener());
         //api.addReactionAddListener(new StarboardListener(api));
 
     }
