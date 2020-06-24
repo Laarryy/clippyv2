@@ -12,6 +12,7 @@ import java.util.regex.*;
 import java.util.regex.Pattern;
 
 public class ErrorListener implements MessageCreateListener {
+
     private static final Logger logger = LoggerFactory.getLogger(Main.class);
     private static final Pattern[] pastebins = {
             Pattern.compile("https?://hastebin\\.com/(\\w+)(?:\\.\\w+)?/g"),
@@ -26,9 +27,13 @@ public class ErrorListener implements MessageCreateListener {
 
     @Override
     public void onMessageCreate(MessageCreateEvent event) {
-        for (Pattern pastebin : pastebins) {
-            // All logic goes here!
+        try {
+            String contents = event.getMessageContent();
+            for (Pattern pastebin : pastebins) {
+                logger.debug(pastebin.matcher(contents).group());
+            }
+
+        } catch (Exception e) {
         }
     }
 }
-
