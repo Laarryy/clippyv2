@@ -78,6 +78,7 @@ public class Main {
         api.addListener(new AutoModListeners(api, commandHandler));
         api.addListener(new PrivateListener(api));
         api.addListener(new WikiListener(api));
+        api.addListener(new AutoUploadListener());
         //api.addReactionAddListener(new StarboardListener(api));
 
     }
