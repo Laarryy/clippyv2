@@ -27,13 +27,11 @@ public class ErrorListener implements MessageCreateListener {
         CharSequence contents = event.getMessage().getContent();
             boolean hastebin1match = Pattern.matches(hastebin1.toString(), contents);
 
-            while (event.getMessage().getContent() != null) {
-                contents.
-            }
+            String hastebin1Url = hastebin1.matcher(contents).group();
 
 
         if (event.getMessageAuthor().isUser())
-            if (String.valueOf(hastebin1match).equals("true")) {
+            if (hastebin1match) {
                 Request request = new Request.Builder()
                         .url(String.valueOf(hastebin1match))
                         .build();
