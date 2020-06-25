@@ -9,6 +9,7 @@ import org.apache.commons.lang.StringUtils;
 import org.javacord.api.DiscordApi;
 import org.javacord.api.entity.channel.TextChannel;
 import org.javacord.api.entity.message.embed.EmbedBuilder;
+import org.laarryy.clippyv2.Constants;
 import org.laarryy.clippyv2.util.BStatsUtil;
 
 import java.awt.*;
@@ -32,7 +33,7 @@ public class SpigetCommand implements CommandExecutor {
         }
         BStatsUtil bStatsUtil = new BStatsUtil(api);
         EmbedBuilder embed = new EmbedBuilder();
-        if (args.length >= 1) {
+        if (args.length >= 1 && channel.getIdAsString().equals(Constants.CHANNEL_OFFTOPIC)) {
             try {
                 JsonNode search = bStatsUtil.makeRequest(MessageFormat.format(queryurl, query, page));
                 StringBuilder result = new StringBuilder();

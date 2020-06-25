@@ -82,6 +82,259 @@ the bot will prompt for a name. If the mentioned user is staff, they will not be
  Who can use it?
  
  - Anyone that can kick users from the server is able to prune.
+ ___
+ ## Other Commands
  
- ### 
+ ### Avatar Commands
+ ___
+ Usage: `!avatar <user tag>`
  
+ - Shows the user's avatar
+ 
+ Who can use it? 
+ 
+ - People that can ban users from the server.
+ 
+___
+  
+ Usage: `!setavatar <image url>`
+ 
+ - Sets the avatar of the bot to the url
+ ***MUST BE A URL!***
+ 
+ Who can use it?
+ 
+ - People who can ban users from the server
+ 
+ ### Cake Command
+ ___
+ Usage: `!cake [optional ingredients]`
+ 
+ - Bakes you a cake!
+ 
+ Who can use it?
+ 
+ - Anyone, in #off-topic or #patreons
+ 
+ ### Embed Command
+ ___
+ Usage: `!embed <embed url>`
+ 
+ - Preferably a gist, or some other unexpiring JSON link. The data will be gotten, 
+ made into an embed, and sent by the bot.
+ 
+ Who can use it?
+ 
+ - Anyone, in #off-topic or anywhere for people who can kick users from the server.
+ 
+ ### GitHub Command
+ ___
+ Usage: `!github <username|repo> [issue #]`
+ 
+ - Shows information about a repository, in the form of an embed. If an issue number is provided
+  then information about the specific issue will be provided. There are built-in shortcuts to:
+  
+  > - the LP repo (lp, lperms, luckperms)
+  > - the LPWeb repo (lpw, lpweb, luckpermsweb)
+  > - the VCF repo (vcf, vaultchatformatter)
+  > - the ExtraContexts repo (ec, extracontexts)
+  > - the api-cookbook (cookbook)
+  > - clippy (clippy)
+  
+ Who can use it? 
+ 
+ - Anyone, anywhere. Useful for displaying issue information by number, and calling up solutions.
+ 
+ - `.luck` or `.lucko` will send an embed with something for luck to be proud of :)
+ 
+ ### Mojang Command
+ ___
+ Usage: `!mojang`
+ 
+ - Shows the status of mojang authentication servers from `http://status.mojang.com/check`
+ 
+ Who can use it?
+ 
+ - Anyone, anywhere. Useful for checking if a failed mojang authentication error is caused by 
+ something else when users send a snapshot of the error.
+ 
+ ### Nickname Command
+ ___
+ Usage: `!setavatar <image url>`
+ 
+ - Sets the bot's nickname
+ 
+ Who can use it?
+ 
+ - Those that have the `staff` role.
+ 
+ ### Presence Command
+ ___
+ Usage: `!presence <WATCHING|PLAYING|STREAMING> <Thing doing> <streaming url>`
+ 
+ - Sets the bot's activity. If streaming, a `twitch.tv/accountname` or equivalent URL is required to 
+ direct to.
+ 
+ Who can use it?
+ 
+ - Anyone that is has staff role.
+ 
+ ### RoleReaction Command
+ ___
+ Usage `!rolepoll`
+ 
+ - Sends an embed with a message telling users to click the reaction to subscribe. If they click, a 
+ role is given to them which has no extra permissions and can be pinged with updates.
+ 
+ Who can use this?
+ 
+ - Anyone with permission to ban users from the server can use this command.
+ 
+ ### Say Command
+ ___
+ Usage: `!say [channel] <words>`
+ 
+ - Sends the words you specify to the channel you are in unless you mention a channel to say them in.
+ 
+ Who can use this? 
+ 
+ - Anyone that can kick users from the server.
+ 
+ ### SecretCommands Command
+ ___
+ Usage: `!secretcommands`
+ 
+ - Lists all registered commands and their descriptions/usages, in a paginated embed.
+ 
+ Who can use it? 
+ 
+ - Anyone that has permission to ban users from the server.
+ 
+ ### Spiget Command
+ ___
+ Usage: `!spiget <query>`
+ 
+ - Searches SpigotMC resources and lists the top five, with links and ratings to the hundredth decimal 
+ place.
+ 
+ Who can use it?
+ 
+ - Anyone, in #off-topic
+ 
+ ### Tag Command
+ Usage: 
+ 
+ - `!tagset <name> [marker]<contents>` sets a tag. [marker] is optional and can be `<embed>` 
+ or `<json>` and mark the following url (no spaces) to be made into an embed if json formatted
+ embed text is at the address. With no marker, the tag when called will just send the contents 
+ as a chat message.
+ - `tagunset <name>` unsets a tag
+ - `!tagname` calls upon the tag
+ - `!tagfile` gets the tagfile
+ - `!tags` lists all tags
+ - `!tagraw` gets a tag's raw content. If this is a url to embed, will send the url. 
+ 
+ Who can use it?
+ 
+ - Those with permission to kick users can set, unset, tagraw and list. Those that have permission
+ to ban users can get the tagfile.
+ 
+ ### UserTag Command
+ ___
+ Usage: `!utags`, `!utagset`, `!utagunset`, `!utaginfo`, and `!utw`. Very similar usage to those listed above.
+ `!utw` will add a user to the usertag whitelist, which allows individuals to use the utag commands.
+ 
+ Who can use it?
+ 
+ - Users who can see the patreons channel and have been added to the whitelist can add user tags. 
+ Anyone can use them once they are added. Users that own a utag or can kick people from the server
+ can remove utags.
+ 
+ ### WolframAlpha Command
+ ___
+ Usage: `!wolfram <query>`
+ 
+ - Searches WolframAlpha for the query and returns the result
+ 
+ Who can use it?
+ 
+ - This command can only be used in the patreons channel, due in part to it being a fun bonus, 
+ and also the hard 2000 request/month limit which could be reached if a bunch of people used it 
+ a bunch.
+ 
+ ### Xkcd Command
+ ___
+ Usage: `!xkcd <query>`
+ 
+ - Searches xkcd for the query.
+ 
+ Who can use it?
+ 
+ - This command can only be used in the staff channel and the patreons channel, as a fun added bonus!
+ ___
+ ___
+ ___
+ 
+ ## Listeners
+ ### AutoMod Listener
+ ___
+ Listens for a variety of things, acting upon/logging where appropriate.
+ - `!pingok` command will trigger the antiping to disable for the channel any mod runs it in, for that mod.
+ Users that can kick users or are listed as having a protected role (staff/helpful) are able to run this command.
+ 
+ - `!fileblacklist <arg>` command will add/remove a filetype to the blacklist, which will be deleted if sent. 
+ Users that can ban people from the server can add/remove blacklisted extensions.
+ 
+ - `!addcensor <word/regex>` will add a censored word, which will be deleted and logged if detected.
+ 
+ Listeners are active for:
+ - Censoring
+ - File blacklist removal
+ - Antiping (Users will be warned several times and then kicked. There is a cooldown so 
+ it does not last forever)
+ 
+ ### AutoUpload Listener
+ ___
+ This listener will get text files and upload them to bytebin
+ 
+ ### Error Listener
+ ___
+ This listener will get pastebin service links, scan them, and report on any known LP errors faster than 
+ any human can with a description and url to relevant wiki section.
+ 
+ ### ModLog Listeners
+ ___
+ This listener will log just about everything:
+ - Message delete
+ - Message edit
+ - Bans
+ - Kicks
+ - New members
+ - Leavers
+ - Name Changes
+ - Nickname Changes
+ - Role additions
+ - Role removals
+ 
+ ### Private Listener
+ ___
+ This listener will get any message beginning with the keyword `topsecret` and send it to the PRIVATE_CHANNEL 
+ defined in the Constants class. It will also send DMs to the bot to that channel. 
+ 
+ ### Wiki Listener
+ ___
+ This listener is responsible for all the previous wiki/help commands functioning as normal.
+ 
+ The `!help` command will show all wiki-labelled commands in an identically-formatted embed.
+ 
+ The available commands will not change, but not all will be listed in `!help` in order to shorten the list. 
+ 
+ Commands like `!nwc` will still function but will not be visible. The `!help` command information will take
+ the URL defined in the listener and scan it for the latest wiki commands. 
+ 
+ If the URL cannot be accessed,
+ a backup which is baked into the JAR will be used instead. 
+ ___
+ ___
+ ___
+ *Notice: a MANIFEST.MF is included if maven is not something you want to use to build the JAR.* 
