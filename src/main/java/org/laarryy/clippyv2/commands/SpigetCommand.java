@@ -33,7 +33,9 @@ public class SpigetCommand implements CommandExecutor {
         }
         BStatsUtil bStatsUtil = new BStatsUtil(api);
         EmbedBuilder embed = new EmbedBuilder();
-        if (args.length >= 1 && channel.getIdAsString().equals(Constants.CHANNEL_OFFTOPIC)) {
+        if (!(args.length >= 1 && channel.getIdAsString().equals(Constants.CHANNEL_OFFTOPIC))) {
+            return; }
+        else;
             try {
                 JsonNode search = bStatsUtil.makeRequest(MessageFormat.format(queryurl, query, page));
                 StringBuilder result = new StringBuilder();
@@ -57,7 +59,7 @@ public class SpigetCommand implements CommandExecutor {
                 e.printStackTrace();
                 embed.setTitle("No resources found!").setColor(Color.RED);
             }
-        }
+
         channel.sendMessage(embed);
     }
 }
