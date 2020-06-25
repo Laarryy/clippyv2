@@ -73,9 +73,8 @@ public class ModLogListeners implements MessageEditListener, MessageDeleteListen
 
         EmbedBuilder embed = new EmbedBuilder();
 
-        embed.setAuthor("Deletion");
+        embed.setAuthor("Deletion", "", "https://luckperms.net/logo.png");
         embed.setColor(Color.RED);
-        embed.setThumbnail("https://i.imgur.com/p9bhOZh.png");
 
         embed.addInlineField("Author", message.getAuthor().asUser().get().getMentionTag());
         embed.addInlineField("Channel", String.format("<#%s>", ev.getChannel().getId()));
@@ -96,9 +95,8 @@ public class ModLogListeners implements MessageEditListener, MessageDeleteListen
         }
         EmbedBuilder embed = new EmbedBuilder();
 
-        embed.setAuthor("Message Edited");
+        embed.setAuthor("Message Edited", "", "https://luckperms.net/logo.png");
         embed.setColor(Color.YELLOW);
-        embed.setThumbnail("https://i.imgur.com/ED8Gek4.png");
 
         embed.addInlineField("Author", ev.getMessage().get().getAuthor().asUser().get().getMentionTag());
         embed.addInlineField("Channel", String.format("<#%s>", ev.getChannel().getId()));
@@ -138,9 +136,8 @@ public class ModLogListeners implements MessageEditListener, MessageDeleteListen
 
         EmbedBuilder embed = new EmbedBuilder();
 
-        embed.setAuthor(ev.getUser());
+        embed.setAuthor(ev.getUser().toString(), "", "https://luckperms.net/logo.png");
         embed.setColor(Color.PINK);
-        embed.setThumbnail("https://i.imgur.com/IncrMxo.jpg");
 
         embed.addInlineField("Banned By: ", bannedBy);
         embed.addInlineField("ID", ev.getUser().getIdAsString());
@@ -167,7 +164,7 @@ public class ModLogListeners implements MessageEditListener, MessageDeleteListen
         // Log it
         EmbedBuilder embed = new EmbedBuilder();
 
-        embed.setAuthor(ev.getUser());
+        embed.setAuthor(ev.getUser().toString(), "", "https://luckperms.net/logo.png");
         embed.setTitle("Joined the server");
         embed.setColor(Color.GREEN);
         embed.setThumbnail(ev.getUser().getAvatar());
@@ -219,7 +216,7 @@ public class ModLogListeners implements MessageEditListener, MessageDeleteListen
             embed.setColor(Color.ORANGE);
         } else {
             embed.setColor(Color.PINK);
-            embed.setThumbnail("https://i.imgur.com/IncrMxo.jpg");
+            embed.setThumbnail("https://luckperms.net/logo.png");
 
             embed.addInlineField("Kicked By: ", kickedBy);
             embed.addField("Reason", kickReason);
@@ -236,7 +233,7 @@ public class ModLogListeners implements MessageEditListener, MessageDeleteListen
 
         embed.setAuthor("Name Changed");
         embed.setColor(Color.YELLOW);
-        embed.setThumbnail("https://i.imgur.com/IncrMxo.jpg");
+        embed.setThumbnail("https://luckperms.net/logo.png");
 
         embed.addInlineField("Old", ev.getOldName());
         embed.addInlineField("New", ev.getNewName());
@@ -254,9 +251,9 @@ public class ModLogListeners implements MessageEditListener, MessageDeleteListen
         Optional<String> newnick = ev.getNewNickname();
         String name = ev.getUser().getName();
 
-        embed.setAuthor("Nickname Changed");
+        embed.setAuthor("Nickname Changed", "", "https://luckperms.net/logo.png");
         embed.setColor(Color.YELLOW);
-        embed.setThumbnail("https://i.imgur.com/IncrMxo.jpg");
+        embed.setThumbnail("https://luckperms.net/logo.png");
 
         {
             if (newnick.isPresent()) {
