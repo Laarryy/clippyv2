@@ -42,7 +42,7 @@ public class Main {
         // To enable a command, add or uncomment it here. To disable, comment it out. Be sure to comment out the class file as well, to avoid problems.
 
 
-    //Staff-Only Commands:
+    // Staff-Only Commands:
         commandHandler.registerCommand(new TagCommand(api));
         commandHandler.registerCommand(new PresenceCommand());
         commandHandler.registerCommand(new BanCommand());
@@ -54,14 +54,14 @@ public class Main {
         commandHandler.registerCommand(new RoleReactionCommand(api));
         commandHandler.registerCommand(new MuteCommand());
 
-     //Everyone-Commands:
+     // Everyone-Commands:
         commandHandler.registerCommand(new GithubCommand());
         commandHandler.registerCommand(new SpigetCommand());
         commandHandler.registerCommand(new SecretCommandsCommand(commandHandler));
         //commandHandler.registerCommand(new RoleCheckCommand());
         //commandHandler.registerCommand(new FbiCommand());
 
-    //Everyone-Offtopic Commands:
+    // Everyone-Offtopic Commands:
         commandHandler.registerCommand(new MojangCommand());
         commandHandler.registerCommand(new CakeCommand());
         commandHandler.registerCommand(new EmbedCommand());
@@ -69,7 +69,7 @@ public class Main {
         //commandHandler.registerCommand(new SpaceXCommand());
         //commandHandler.registerCommand(new BStatsCommand());
 
-    //Patreon-Only Commands:
+    // Patreon-Only Commands:
         commandHandler.registerCommand(new UserTagCommand(api));
         commandHandler.registerCommand(new XkcdCommand());
         commandHandler.registerCommand(new WolframAlphaCommand());

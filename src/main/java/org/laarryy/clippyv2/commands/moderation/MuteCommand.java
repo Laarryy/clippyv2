@@ -21,7 +21,7 @@ public class MuteCommand implements CommandExecutor {
 
     @Command(aliases = {"!mute"}, usage = "!mute <username> <reason>", description = "Mutes a chosen user.")
     public void onCommand(TextChannel channel, String[] args, Message message, MessageAuthor messageAuthor, Server server) {
-        if (!messageAuthor.canKickUsersFromServer()) {
+        if (!(messageAuthor.canMuteMembersOnServer() && messageAuthor.isYourself())) {
             return;
         }
         if (message.getMentionedUsers().size() == 0) {

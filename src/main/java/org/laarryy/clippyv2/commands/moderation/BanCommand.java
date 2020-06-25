@@ -14,7 +14,7 @@ public class BanCommand implements CommandExecutor {
 
     @Command(aliases = {"!ban"}, usage = "!ban <username> <reason>", description = "Bans a chosen user.")
     public void onCommand(TextChannel channel, String[] args, Message message, MessageAuthor author) {
-        if (author.canBanUsersFromServer()) {
+        if (author.canBanUsersFromServer() && !author.isYourself()) {
             if (args.length >= 2) {
                 User user = message.getMentionedUsers().get(0);
                 String reason = String.join(" ", args).substring(args[0].length());

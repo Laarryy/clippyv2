@@ -13,7 +13,7 @@ public class KickCommand implements CommandExecutor {
 
     @Command(aliases = {"!kick"}, usage = "!kick <username> <reason>", description = "Kicks a chosen user.")
     public void onCommand(TextChannel channel, String[] args, Message message, MessageAuthor author) {
-        if (author.canKickUsersFromServer()) {
+        if (author.canKickUsersFromServer() && !author.isYourself()) {
             if (args.length >= 2) {
                 User user = message.getMentionedUsers().get(0);
 
