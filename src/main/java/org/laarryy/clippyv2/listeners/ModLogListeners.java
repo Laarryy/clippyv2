@@ -13,6 +13,8 @@ import org.javacord.api.event.message.MessageEditEvent;
 import org.javacord.api.event.server.member.ServerMemberBanEvent;
 import org.javacord.api.event.server.member.ServerMemberJoinEvent;
 import org.javacord.api.event.server.member.ServerMemberLeaveEvent;
+import org.javacord.api.event.server.role.UserRoleAddEvent;
+import org.javacord.api.event.server.role.UserRoleRemoveEvent;
 import org.javacord.api.event.user.UserChangeNameEvent;
 import org.javacord.api.event.user.UserChangeNicknameEvent;
 import org.javacord.api.listener.message.MessageDeleteListener;
@@ -20,19 +22,20 @@ import org.javacord.api.listener.message.MessageEditListener;
 import org.javacord.api.listener.server.member.ServerMemberBanListener;
 import org.javacord.api.listener.server.member.ServerMemberJoinListener;
 import org.javacord.api.listener.server.member.ServerMemberLeaveListener;
+import org.javacord.api.listener.server.role.UserRoleAddListener;
+import org.javacord.api.listener.server.role.UserRoleRemoveListener;
 import org.javacord.api.listener.user.UserChangeNameListener;
 import org.javacord.api.listener.user.UserChangeNicknameListener;
 import org.laarryy.clippyv2.Constants;
 
 import java.awt.*;
-import java.util.Date;
 import java.time.Duration;
 import java.time.Instant;
+import java.util.Date;
 import java.util.Optional;
-import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.Future;
 
-public class ModLogListeners implements MessageEditListener, MessageDeleteListener, ServerMemberBanListener, ServerMemberJoinListener, ServerMemberLeaveListener, UserChangeNicknameListener, UserChangeNameListener {
+public class ModLogListeners implements MessageEditListener, MessageDeleteListener, ServerMemberBanListener, ServerMemberJoinListener, ServerMemberLeaveListener, UserChangeNicknameListener, UserChangeNameListener, UserRoleAddListener, UserRoleRemoveListener {
 
     private DiscordApi api;
     private Optional<TextChannel> modChannel;
@@ -155,33 +158,34 @@ public class ModLogListeners implements MessageEditListener, MessageDeleteListen
         // Role on join
         Optional<org.javacord.api.entity.permission.Role> member = ev.getServer().getRoleById(Constants.ROLE_MEMBER);
         {
-        if (ev.getUser().getRoles(server).get(0).isEveryoneRole()) {
-            ev.getUser().addRole((member.get()));
-        };
+            if (ev.getUser().getRoles(server).get(0).isEveryoneRole()) {
+                ev.getUser().addRole((member.get()));
+            }
+            ;
 
-    }
-    // Log it
-    EmbedBuilder embed = new EmbedBuilder();
+        }
+        // Log it
+        EmbedBuilder embed = new EmbedBuilder();
 
         embed.setAuthor(ev.getUser());
         embed.setTitle("Joined the server");
         embed.setColor(Color.GREEN);
         embed.setThumbnail(ev.getUser().getAvatar());
-        embed.addField("Created",Date.from(ev.getUser().
+        embed.addField("Created", Date.from(ev.getUser().
 
-    getCreationTimestamp()).
+                getCreationTimestamp()).
 
-    toString());
+                toString());
 
         embed.setFooter(ev.getUser().
 
-    getIdAsString());
+                getIdAsString());
         embed.setTimestamp(Instant.now());
 
         modChannel.get().
 
-    sendMessage(embed);
-}
+                sendMessage(embed);
+    }
 
     //* TODO: Resolve minor bug here
     // where if a user joins, gets kicked/banned, joins, and then leaves BEFORE anything else happens in the audit log, it's logged as a kick/ban
@@ -274,6 +278,32 @@ public class ModLogListeners implements MessageEditListener, MessageDeleteListen
 
     public String stripGrave(String string) {
         return string.replace("`", "");
+    }
+
+    @Override
+    public void onUserRoleAdd(UserRoleAddEvent ev) {
+        EmbedBuilder embed = new EmbedBuilder();
+        Server server = ev.getServer();
+        embed.setAuthor("Role Add", "https://www.youtube.com/watch?v=dQw4w9WgXcQ", "https://luckperms.net/logo.png");
+        embed.setTimestampToNow();
+        embed.addField("Role Added:", ev.getRole().getMentionTag());
+        embed.addField("To:", ev.getUser().getMentionTag());
+        embed.setFooter("ID: " + ev.getUser().getIdAsString());
+        embed.setColor(new Color(0x0EEAE4));
+
+        modChannel.get().sendMessage(embed);
+    }
+    @Override
+    public void onUserRoleRemove(UserRoleRemoveEvent ev) {
+        EmbedBuilder embed = new EmbedBuilder();
+        embed.setAuthor("Role Removed", "https://www.youtube.com/watch?v=dQw4w9WgXcQ", "https://luckperms.net/logo.png");
+        embed.setTimestampToNow();
+        embed.addField("Role Removed:", ev.getRole().getMentionTag());
+        embed.addField("From:", ev.getUser().getMentionTag());
+        embed.setFooter("ID: " + ev.getUser().getIdAsString());
+        embed.setColor(new Color(0xF58308));
+
+        modChannel.get().sendMessage(embed);
     }
 
 }
