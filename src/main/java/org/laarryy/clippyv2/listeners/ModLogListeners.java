@@ -33,6 +33,7 @@ import java.time.Duration;
 import java.time.Instant;
 import java.util.Date;
 import java.util.Optional;
+import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Future;
 
 public class ModLogListeners implements MessageEditListener, MessageDeleteListener, ServerMemberBanListener, ServerMemberJoinListener, ServerMemberLeaveListener, UserChangeNicknameListener, UserChangeNameListener, UserRoleAddListener, UserRoleRemoveListener {
@@ -73,7 +74,7 @@ public class ModLogListeners implements MessageEditListener, MessageDeleteListen
 
         EmbedBuilder embed = new EmbedBuilder();
 
-        embed.setAuthor("Deletion", "", "https://luckperms.net/logo.png");
+        embed.setAuthor("Message Deleted", "", "https://luckperms.net/logo.png");
         embed.setColor(new Color(0xCD6A23));
 
         embed.addInlineField("Author", message.getAuthor().asUser().get().getMentionTag());
@@ -124,9 +125,13 @@ public class ModLogListeners implements MessageEditListener, MessageDeleteListen
         try {
             log = future.get();
             for (AuditLogEntry entry : log.getEntries()) {
-                if (entry.getTarget().get().getId() == ev.getUser().getId()) {
+                if (entry.getTarget().get().getId() == ev.getUser().getId() && entry.getReason().isPresent()) {
                     bannedBy = entry.getUser().get().getNicknameMentionTag();
                     banReason = entry.getReason().get();
+                    break;
+                } else if (entry.getTarget().get().getId() == ev.getUser().getId()) {
+                    bannedBy = entry.getUser().get().getNicknameMentionTag();
+                    banReason = "No reason provided!";
                     break;
                 }
             }
@@ -138,11 +143,9 @@ public class ModLogListeners implements MessageEditListener, MessageDeleteListen
 
         embed.setAuthor(ev.getUser().toString(), "", "https://luckperms.net/logo.png");
         embed.setColor(new Color(0xA70C0C));
-
         embed.addInlineField("Banned By: ", bannedBy);
         embed.addInlineField("ID", ev.getUser().getIdAsString());
         embed.addField("Reason", banReason);
-
         embed.setFooter(ev.getUser().getIdAsString());
         embed.setTimestamp(Instant.now());
 
@@ -158,8 +161,6 @@ public class ModLogListeners implements MessageEditListener, MessageDeleteListen
             if (ev.getUser().getRoles(server).get(0).isEveryoneRole()) {
                 ev.getUser().addRole((member.get()));
             }
-            ;
-
         }
         // Log it
         EmbedBuilder embed = new EmbedBuilder();
@@ -168,15 +169,8 @@ public class ModLogListeners implements MessageEditListener, MessageDeleteListen
         embed.setTitle("Joined the server");
         embed.setColor(new Color(0x13C108));
         embed.setThumbnail(ev.getUser().getAvatar());
-        embed.addField("Created", Date.from(ev.getUser().
-
-                getCreationTimestamp()).
-
-                toString());
-
-        embed.setFooter(ev.getUser().
-
-                getIdAsString());
+        embed.addField("Created", Date.from(ev.getUser().getCreationTimestamp()).toString());
+        embed.setFooter(ev.getUser().getIdAsString());
         embed.setTimestamp(Instant.now());
 
         modChannel.get().
@@ -195,16 +189,22 @@ public class ModLogListeners implements MessageEditListener, MessageDeleteListen
 
         Future<AuditLog> future = ev.getServer().getAuditLog(1, AuditLogActionType.MEMBER_KICK);
 
+
         try {
             log = future.get();
             for (AuditLogEntry entry : log.getEntries()) {
-                if (entry.getTarget().get().getId() == ev.getUser().getId()) {
+                if (entry.getTarget().get().getId() == ev.getUser().getId() && entry.getReason().isPresent()) {
                     kickedBy = entry.getUser().get().getNicknameMentionTag();
                     kickReason = entry.getReason().get();
-                    break;
+                } else {
+                    kickedBy = entry.getUser().get().getNicknameMentionTag();
+                    kickReason = "No reason provided!";
                 }
+                break;
             }
-        } catch (Exception e) {
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        } catch (ExecutionException e) {
             e.printStackTrace();
         }
 
@@ -290,6 +290,7 @@ public class ModLogListeners implements MessageEditListener, MessageDeleteListen
 
         modChannel.get().sendMessage(embed);
     }
+
     @Override
     public void onUserRoleRemove(UserRoleRemoveEvent ev) {
         EmbedBuilder embed = new EmbedBuilder();
