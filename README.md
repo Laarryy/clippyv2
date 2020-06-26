@@ -258,7 +258,7 @@ ___
  
  Who can use it?
  
- - This command can only be used in the patreons channel, due in part to it being a fun bonus, 
+ - This command can only be used in the patreons, staff, and helpful channels, due in part to it being a fun bonus, 
  and also the hard 2000 request/month limit which could be reached if a bunch of people used it 
  a bunch.
  

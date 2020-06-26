@@ -30,8 +30,7 @@ public class WolframAlphaCommand implements CommandExecutor {
         long epoch = System.currentTimeMillis();
         String url = query.replace("<QUERY>", String.join("%20", args))+key;
         String link = queryLink.replace("<QUERY>", String.join("%20", args));
-        if (!channel.getIdAsString().equals(Constants.CHANNEL_PATREONS)) {
-            channel.sendMessage("Sorry, can't do that!");
+        if (!(channel.getIdAsString().equals(Constants.CHANNEL_PATREONS) || channel.getIdAsString().equals(Constants.CHANNEL_HELPFUL) || channel.getIdAsString().equals(Constants.CHANNEL_STAFF))) {
             return;
         }
         channel.sendMessage(new EmbedBuilder().setTitle("Querying WolframAlpha")).thenAcceptAsync(message -> msg = message);
