@@ -13,6 +13,8 @@ import org.javacord.api.entity.permission.Role;
 import org.javacord.api.entity.server.Server;
 import org.javacord.api.entity.user.User;
 import org.laarryy.clippyv2.Constants;
+import org.laarryy.clippyv2.util.RoleUtil;
+import org.laarryy.clippyv2.util.RoleUtil.*;
 
 import java.awt.*;
 import java.time.Instant;
@@ -31,7 +33,8 @@ public class PresenceCommand implements CommandExecutor {
         modChannel = api.getTextChannelById(Constants.CHANNEL_LOGS);
         this.api = api;
 
-        if (hasPermission(user.getRoles(server)) && args.length >= 2) {
+
+        if (RoleUtil.isStaff(user.getRoles(server)) && args.length >= 2) {
             String type = args[0].toUpperCase();
             String url = args[args.length-1];
             LinkedList<String> status = new LinkedList(Arrays.asList(args));
@@ -39,7 +42,7 @@ public class PresenceCommand implements CommandExecutor {
 
             EmbedBuilder embed = new EmbedBuilder();
             embed.setAuthor("Bot Status Changed");
-            embed.setColor(Color.YELLOW);
+            embed.setColor(new Color(0x06EE27));
             embed.setThumbnail("https://i.imgur.com/2Hbdxuz.png");
             embed.addInlineField("Bot Status Changed By", message.getAuthor().asUser().get().getMentionTag());
             embed.addField("Their ID", messageAuthor.getIdAsString());
@@ -60,13 +63,4 @@ public class PresenceCommand implements CommandExecutor {
         }
     }
 
-    public Boolean hasPermission(List<Role> roles) { //TODO one class to rule them all
-        for (Role role : roles) {
-            String roleId = role.getIdAsString();
-            if ((roleId.equals(Constants.ROLE_STAFF))) {
-                return true;
-            }
-        }
-        return false;
-    }
 }

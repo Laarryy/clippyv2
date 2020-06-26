@@ -62,9 +62,9 @@ public class RoleReactionCommand implements CommandExecutor, ReactionAddListener
     }
 
     /*
-    TODO: Map the channels instead.
+    This is a pointless command! why not just resend it?! I'm commenting it out as I can't see a use case.
      */
-    @Command(aliases = {"!update", ".update"}, usage = "!update", description = "Polls users for update roles")
+    /*@Command(aliases = {"!update", ".update"}, usage = "!update", description = "Polls users for update roles")
     public void onUpdate(DiscordApi api, TextChannel channel, User user, Server server, String[] args, Message cmd, MessageAuthor messageAuthor) {
         if (messageAuthor.canBanUsersFromServer()) {
             cmd.delete();
@@ -81,7 +81,7 @@ public class RoleReactionCommand implements CommandExecutor, ReactionAddListener
                 e.printStackTrace();
             }
         }
-    }
+    }*/
 
     private void broadcast(String payload, TextChannel channel, Role role) {
         try {
@@ -129,7 +129,7 @@ public class RoleReactionCommand implements CommandExecutor, ReactionAddListener
         }
     }
 
-    public void updateRole(User user, String role, Server server, String type) { //TODO
+    public void updateRole(User user, String role, Server server, String type) {
         Role target = server.getRoleById(role).get();
         if (user.getRoles(server).stream().anyMatch(role1 -> role1.getIdAsString().equalsIgnoreCase(role)) && type.equalsIgnoreCase("remove")) {
             user.removeRole(target, "Role Poll");

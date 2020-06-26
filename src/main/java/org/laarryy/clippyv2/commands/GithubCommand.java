@@ -22,7 +22,7 @@ public class GithubCommand implements CommandExecutor {
     String issuerepos = "https://api.github.com/repos/%s/issues";
 
     public GithubCommand() {
-        shortcuts.put("lp", "lucko/LuckPerms"); //TODO: Make configurable
+        shortcuts.put("lp", "lucko/LuckPerms");
         shortcuts.put("lperms", "lucko/LuckPerms");
         shortcuts.put("luckperms", "lucko/Luckperms");
         shortcuts.put("lpw", "lucko/LuckPermsWeb");
@@ -39,7 +39,7 @@ public class GithubCommand implements CommandExecutor {
     @Command(aliases = {"!github", "!gh"}, usage = "!github <username/repo> [issue #]", description = "Shows some stats about the given repository.")
     public void onCommand(DiscordApi api, TextChannel channel, String[] args) {
 
-        if (args.length == 1) { //TODO: Fancier embed
+        if (args.length == 1) {
             if (shortcuts.containsKey(args[0])) {
                 channel.sendMessage(makeInfoEmbed(api, shortcuts.get(args[0])));
             } else {

@@ -10,6 +10,8 @@ import de.btobastian.sdcf4j.Command;
 import de.btobastian.sdcf4j.CommandExecutor;
 import org.laarryy.clippyv2.util.RoleUtil;
 
+import static org.laarryy.clippyv2.util.RoleUtil.*;
+
 public class BanCommand implements CommandExecutor {
 
     @Command(aliases = {"!ban"}, usage = "!ban <username> <reason>", description = "Bans a chosen user.")
@@ -19,7 +21,7 @@ public class BanCommand implements CommandExecutor {
                 User user = message.getMentionedUsers().get(0);
                 String reason = String.join(" ", args).substring(args[0].length());
 
-                if (RoleUtil.hasStaffMention(message)) {
+                if (hasStaffMention(message)) {
                     channel.sendMessage("Can't ban staff!");
                     return;
                 }
@@ -39,7 +41,7 @@ public class BanCommand implements CommandExecutor {
             if (args.length == 2 && StringUtils.isNumeric(args[1])) {
                 User user = message.getMentionedUsers().get(0);
 
-                if (RoleUtil.hasStaffMention(message)) {
+                if (hasStaffMention(message)) {
                     channel.sendMessage("Can't softban staff!");
                     return;
                 }

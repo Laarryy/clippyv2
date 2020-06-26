@@ -38,7 +38,7 @@ public class AvatarCommand implements CommandExecutor {
             }
             for (User user : server.getMembers()) {
                 if (user.getName().equalsIgnoreCase(args[0])) {
-                    channel.sendMessage(new EmbedBuilder().setImage(user.getAvatar())); //TODO LAAAARGER
+                    channel.sendMessage(new EmbedBuilder().setImage(user.getAvatar()));
                     return;
                 }
             }
