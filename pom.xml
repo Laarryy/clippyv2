@@ -117,7 +117,7 @@
                     </descriptorRefs>
                     <archive>
                         <manifest>
-                            <mainClass>org.laarryy.clippyv2.Main</mainClass>
+                            <mainClass>dev.laarryy.clippyv2.Main</mainClass>
                         </manifest>
                     </archive>
                 </configuration>
