@@ -74,7 +74,7 @@ public class ModLogListeners implements MessageEditListener, MessageDeleteListen
         EmbedBuilder embed = new EmbedBuilder();
 
         embed.setAuthor("Deletion", "", "https://luckperms.net/logo.png");
-        embed.setColor(Color.RED);
+        embed.setColor(new Color(0xCD6A23));
 
         embed.addInlineField("Author", message.getAuthor().asUser().get().getMentionTag());
         embed.addInlineField("Channel", String.format("<#%s>", ev.getChannel().getId()));
@@ -96,7 +96,7 @@ public class ModLogListeners implements MessageEditListener, MessageDeleteListen
         EmbedBuilder embed = new EmbedBuilder();
 
         embed.setAuthor("Message Edited", "", "https://luckperms.net/logo.png");
-        embed.setColor(Color.YELLOW);
+        embed.setColor(new Color(0x135E9C));
 
         embed.addInlineField("Author", ev.getMessage().get().getAuthor().asUser().get().getMentionTag());
         embed.addInlineField("Channel", String.format("<#%s>", ev.getChannel().getId()));
@@ -137,7 +137,7 @@ public class ModLogListeners implements MessageEditListener, MessageDeleteListen
         EmbedBuilder embed = new EmbedBuilder();
 
         embed.setAuthor(ev.getUser().toString(), "", "https://luckperms.net/logo.png");
-        embed.setColor(Color.PINK);
+        embed.setColor(new Color(0xA70C0C));
 
         embed.addInlineField("Banned By: ", bannedBy);
         embed.addInlineField("ID", ev.getUser().getIdAsString());
@@ -166,7 +166,7 @@ public class ModLogListeners implements MessageEditListener, MessageDeleteListen
 
         embed.setAuthor(ev.getUser().toString(), "", "https://luckperms.net/logo.png");
         embed.setTitle("Joined the server");
-        embed.setColor(Color.GREEN);
+        embed.setColor(new Color(0x13C108));
         embed.setThumbnail(ev.getUser().getAvatar());
         embed.addField("Created", Date.from(ev.getUser().
 
@@ -213,9 +213,9 @@ public class ModLogListeners implements MessageEditListener, MessageDeleteListen
 
         if (kickedBy.equalsIgnoreCase("unknown")) {
             embed.setTitle("Left the server");
-            embed.setColor(Color.ORANGE);
+            embed.setColor(new Color(0xEF8805));
         } else {
-            embed.setColor(Color.PINK);
+            embed.setColor(new Color(0xB44208));
             embed.setThumbnail("https://luckperms.net/logo.png");
 
             embed.addInlineField("Kicked By: ", kickedBy);
@@ -232,7 +232,7 @@ public class ModLogListeners implements MessageEditListener, MessageDeleteListen
         EmbedBuilder embed = new EmbedBuilder();
 
         embed.setAuthor("Name Changed");
-        embed.setColor(Color.YELLOW);
+        embed.setColor(new Color(0xFFCDD206));
         embed.setThumbnail("https://luckperms.net/logo.png");
 
         embed.addInlineField("Old", ev.getOldName());
@@ -252,7 +252,7 @@ public class ModLogListeners implements MessageEditListener, MessageDeleteListen
         String name = ev.getUser().getName();
 
         embed.setAuthor("Nickname Changed", "", "https://luckperms.net/logo.png");
-        embed.setColor(Color.YELLOW);
+        embed.setColor(new Color(0xC46F06));
         embed.setThumbnail("https://luckperms.net/logo.png");
 
         {
@@ -286,7 +286,7 @@ public class ModLogListeners implements MessageEditListener, MessageDeleteListen
         embed.addField("Role Added:", ev.getRole().getMentionTag());
         embed.addField("To:", ev.getUser().getMentionTag());
         embed.setFooter("ID: " + ev.getUser().getIdAsString());
-        embed.setColor(new Color(0x0EEAE4));
+        embed.setColor(new Color(0x1084A7));
 
         modChannel.get().sendMessage(embed);
     }
@@ -298,7 +298,7 @@ public class ModLogListeners implements MessageEditListener, MessageDeleteListen
         embed.addField("Role Removed:", ev.getRole().getMentionTag());
         embed.addField("From:", ev.getUser().getMentionTag());
         embed.setFooter("ID: " + ev.getUser().getIdAsString());
-        embed.setColor(new Color(0xF58308));
+        embed.setColor(new Color(0xD04E0F));
 
         modChannel.get().sendMessage(embed);
     }

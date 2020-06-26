@@ -129,7 +129,7 @@ ___
  
  ### GitHub Command
  ___
- Usage: `!github <username|repo> [issue #]`
+ Usage: `!github <username/repo> [issue #]`
  
  - Shows information about a repository, in the form of an embed. If an issue number is provided
   then information about the specific issue will be provided. There are built-in shortcuts to:

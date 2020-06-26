@@ -36,7 +36,7 @@ public class GithubCommand implements CommandExecutor {
         shortcuts.put("clippy", "LuckPerms/clippy");
     }
 
-    @Command(aliases = {"!github", "!gh"}, usage = "!github <username|repo> <issue #>", description = "Shows some stats about the given repository.")
+    @Command(aliases = {"!github", "!gh"}, usage = "!github <username/repo> [issue #]", description = "Shows some stats about the given repository.")
     public void onCommand(DiscordApi api, TextChannel channel, String[] args) {
 
         if (args.length == 1) { //TODO: Fancier embed
