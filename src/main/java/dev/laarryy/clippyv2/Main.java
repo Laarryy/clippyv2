@@ -10,8 +10,8 @@ import dev.laarryy.clippyv2.commands.moderation.BanCommand;
 import dev.laarryy.clippyv2.commands.moderation.KickCommand;
 import dev.laarryy.clippyv2.commands.moderation.MuteCommand;
 import dev.laarryy.clippyv2.commands.moderation.PruneCommand;
-import org.laarryy.clippyv2.listeners.*;
-import org.laarryy.clippyv2.commands.*;
+import dev.laarryy.clippyv2.listeners.*;
+import dev.laarryy.clippyv2.commands.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -81,8 +81,7 @@ public class Main {
         api.addListener(new WikiListener(api));
         api.addListener(new AutoUploadListener());
         api.addListener(new ErrorListener());
-        //api.addReactionAddListener(new StarboardListener(api));
-
+        api.addListener(new UpdateListener());
     }
 
 }

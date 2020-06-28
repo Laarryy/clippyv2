@@ -334,6 +334,12 @@ ___
  
  If the URL cannot be accessed,
  a backup which is baked into the JAR will be used instead. 
+ 
+ ### Update Listener
+ ___
+ This listener will gently remind people that Luckperms already works on 1.16 if they 
+ send a message that contains the keywords "1.16" and "update".
+ 
  ___
  ___
  ___
