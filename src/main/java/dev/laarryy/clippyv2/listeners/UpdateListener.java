@@ -8,7 +8,7 @@ public class UpdateListener implements MessageCreateListener {
 
     @Override
     public void onMessageCreate(MessageCreateEvent ev) {
-        if (ev.getMessageAuthor().isYourself()) {
+        if (ev.getMessageAuthor().isYourself() || ev.getMessageContent().contains("1.16.2")) {
             return;
         }
         if ((ev.getMessageContent().contains("1.16")) && (ev.getMessageContent().contains("update") || ev.getMessageContent().contains("luckperms") || ev.getMessageContent().contains("lp") || ev.getMessageContent().contains("when") || ev.getMessageContent().contains("luckyperms"))) {
