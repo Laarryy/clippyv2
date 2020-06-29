@@ -141,7 +141,7 @@ public class ModLogListeners implements MessageEditListener, MessageDeleteListen
 
         EmbedBuilder embed = new EmbedBuilder();
 
-        embed.setAuthor(ev.getUser().toString(), "", "https://luckperms.net/logo.png");
+        embed.setAuthor(ev.getUser().getName(), "", "https://luckperms.net/logo.png");
         embed.setColor(new Color(0xA70C0C));
         embed.addInlineField("Banned By: ", bannedBy);
         embed.addInlineField("ID", ev.getUser().getIdAsString());
@@ -165,7 +165,7 @@ public class ModLogListeners implements MessageEditListener, MessageDeleteListen
         // Log it
         EmbedBuilder embed = new EmbedBuilder();
 
-        embed.setAuthor(ev.getUser().toString(), "", "https://luckperms.net/logo.png");
+        embed.setAuthor(ev.getUser().getName(), "", "https://luckperms.net/logo.png");
         embed.setTitle("Joined the server");
         embed.setColor(new Color(0x13C108));
         embed.setThumbnail(ev.getUser().getAvatar());
