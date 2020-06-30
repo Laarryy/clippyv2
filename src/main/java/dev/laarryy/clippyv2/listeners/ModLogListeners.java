@@ -178,10 +178,10 @@ public class ModLogListeners implements MessageEditListener, MessageDeleteListen
         EmbedBuilder embed = new EmbedBuilder();
 
         embed.setAuthor("New Member", "", "https://luckperms.net/logo.png");
-        embed.setTitle(ev.getUser().getNicknameMentionTag());
+        embed.setTitle(ev.getUser().getName());
         embed.setColor(new Color(0x13C108));
         embed.setThumbnail(ev.getUser().getAvatar());
-        embed.addField("Created", Date.from(ev.getUser().getCreationTimestamp()).toString());
+        embed.addField("Account Created", Date.from(ev.getUser().getCreationTimestamp()).toString());
         embed.setFooter(ev.getUser().getIdAsString());
         embed.setTimestamp(Instant.now());
 
