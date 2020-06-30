@@ -1,10 +1,12 @@
 package dev.laarryy.clippyv2.listeners;
 
 import dev.laarryy.clippyv2.Constants;
+import dev.laarryy.clippyv2.Main;
 import org.javacord.api.DiscordApi;
 import org.javacord.api.entity.auditlog.AuditLog;
 import org.javacord.api.entity.auditlog.AuditLogActionType;
 import org.javacord.api.entity.auditlog.AuditLogEntry;
+import org.javacord.api.entity.auditlog.AuditLogEntryTarget;
 import org.javacord.api.entity.channel.TextChannel;
 import org.javacord.api.entity.message.Message;
 import org.javacord.api.entity.message.embed.EmbedBuilder;
@@ -27,14 +29,22 @@ import org.javacord.api.listener.server.role.UserRoleAddListener;
 import org.javacord.api.listener.server.role.UserRoleRemoveListener;
 import org.javacord.api.listener.user.UserChangeNameListener;
 import org.javacord.api.listener.user.UserChangeNicknameListener;
+import org.javacord.core.event.server.member.ServerMemberLeaveEventImpl;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.awt.*;
 import java.time.Duration;
 import java.time.Instant;
+import java.time.temporal.TemporalAccessor;
 import java.util.Date;
 import java.util.Optional;
+import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Future;
+import java.util.function.BiConsumer;
+
+import static java.time.temporal.ChronoUnit.SECONDS;
 
 public class ModLogListeners implements MessageEditListener, MessageDeleteListener, ServerMemberBanListener, ServerMemberJoinListener, ServerMemberLeaveListener, UserChangeNicknameListener, UserChangeNameListener, UserRoleAddListener, UserRoleRemoveListener {
 
@@ -46,6 +56,8 @@ public class ModLogListeners implements MessageEditListener, MessageDeleteListen
         modChannel = api.getTextChannelById(Constants.CHANNEL_LOGS);
         this.api = api;
     }
+
+    private static final Logger logger = LoggerFactory.getLogger(Main.class);
 
     @Override
     public void onMessageDelete(MessageDeleteEvent ev) {
@@ -165,8 +177,8 @@ public class ModLogListeners implements MessageEditListener, MessageDeleteListen
         // Log it
         EmbedBuilder embed = new EmbedBuilder();
 
-        embed.setAuthor(ev.getUser().getName(), "", "https://luckperms.net/logo.png");
-        embed.setTitle("Joined the server");
+        embed.setAuthor("New Member", "", "https://luckperms.net/logo.png");
+        embed.setTitle(ev.getUser().getNicknameMentionTag());
         embed.setColor(new Color(0x13C108));
         embed.setThumbnail(ev.getUser().getAvatar());
         embed.addField("Created", Date.from(ev.getUser().getCreationTimestamp()).toString());
@@ -178,35 +190,34 @@ public class ModLogListeners implements MessageEditListener, MessageDeleteListen
                 sendMessage(embed);
     }
 
-    //* TODO: Resolve minor bug here
-    // where if a user joins, gets kicked/banned, joins, and then leaves BEFORE anything else happens in the audit log, it's logged as a kick/ban
+    //* TODO: Make async
+
     @Override
     public void onServerMemberLeave(ServerMemberLeaveEvent ev) {
-        String kickedBy = "Unknown";
+        Instant eventtime = Instant.now();
+        String kickedBy = "unknown";
         String kickReason = "Because";
-
         AuditLog log;
-
-        Future<AuditLog> future = ev.getServer().getAuditLog(1, AuditLogActionType.MEMBER_KICK);
-
-
+        Future<AuditLog> future = ev.getServer().getAuditLog(5, AuditLogActionType.MEMBER_KICK);
         try {
-            log = future.get();
-            for (AuditLogEntry entry : log.getEntries()) {
-                if (entry.getTarget().get().getId() == ev.getUser().getId() && entry.getReason().isPresent()) {
-                    kickedBy = entry.getUser().get().getNicknameMentionTag();
-                    kickReason = entry.getReason().get();
-                } else {
-                    kickedBy = entry.getUser().get().getNicknameMentionTag();
-                    kickReason = "No reason provided!";
+                log = future.get();
+                for (AuditLogEntry entry : log.getEntries()) {
+                    if ((entry.getCreationTimestamp().plus(5, SECONDS).isAfter(eventtime)) && entry.getType().equals(AuditLogActionType.MEMBER_KICK) && (ev.getUser().getIdAsString().equals(entry.getTarget().get().getIdAsString()))) {
+                        kickedBy = entry.getUser().get().getNicknameMentionTag();
+                        kickReason = entry.getReason().orElse("No reason provided");
+
+                    } else {
+                        kickedBy = "unknown";
+                        kickReason = "NULL!";
+                    }
+                    break;
                 }
-                break;
+            } catch(InterruptedException e){
+                e.printStackTrace();
+            } catch(ExecutionException e){
+                e.printStackTrace();
             }
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        } catch (ExecutionException e) {
-            e.printStackTrace();
-        }
+
 
         EmbedBuilder embed = new EmbedBuilder();
         embed.setAuthor(ev.getUser());
@@ -216,12 +227,10 @@ public class ModLogListeners implements MessageEditListener, MessageDeleteListen
             embed.setColor(new Color(0xEF8805));
         } else {
             embed.setColor(new Color(0xB44208));
-            embed.setThumbnail("https://luckperms.net/logo.png");
-
             embed.addInlineField("Kicked By: ", kickedBy);
             embed.addField("Reason", kickReason);
         }
-
+        embed.setThumbnail("https://luckperms.net/logo.png");
         embed.setFooter(ev.getUser().getIdAsString());
         embed.setTimestamp(Instant.now());
         modChannel.get().sendMessage(embed);
