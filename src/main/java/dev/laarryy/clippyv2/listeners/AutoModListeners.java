@@ -6,6 +6,7 @@ import de.btobastian.sdcf4j.Command;
 import de.btobastian.sdcf4j.CommandExecutor;
 import de.btobastian.sdcf4j.CommandHandler;
 import dev.laarryy.clippyv2.Constants;
+import dev.laarryy.clippyv2.Main;
 import org.javacord.api.DiscordApi;
 import org.javacord.api.entity.channel.Channel;
 import org.javacord.api.entity.channel.TextChannel;
@@ -19,6 +20,8 @@ import org.javacord.api.entity.server.Server;
 import org.javacord.api.entity.user.User;
 import org.javacord.api.event.message.MessageCreateEvent;
 import org.javacord.api.listener.message.MessageCreateListener;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.awt.*;
 import java.io.File;
@@ -30,6 +33,8 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
 import java.util.TreeSet;
+import java.util.concurrent.Callable;
+import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ThreadLocalRandom;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicInteger;
@@ -39,6 +44,7 @@ import java.util.regex.Pattern;
 public class AutoModListeners implements MessageCreateListener, CommandExecutor {
 
     DiscordApi api;
+    private static final Logger logger = LoggerFactory.getLogger(Main.class);
     private ModerationData data;
     private Optional<TextChannel> modChannel;
     private Map<Long, Instant> active = new HashMap<>();
@@ -52,22 +58,12 @@ public class AutoModListeners implements MessageCreateListener, CommandExecutor 
     };
 
     String[] donts = {
-            "Do not",
-            "Don't",
-            "Stop",
-            "Huge Mistake",
-            "Bad Idea",
-            "No no no",
-            "apologize",
-            "Say sorry",
-            "You will now be terminated",
-            "Prepare for your termination",
-            "We're coming for you",
-            "You've been added to the naughty list",
-            "EXTERMINATE!",
-            "The ban-hammer awaits you",
-            "Hell will now be unleashed",
-            "Every day we stray further from god."
+            "Please, no longer",
+            "I beg of you, cease.",
+            "Could you not please?",
+            "Read the #rules",
+            "This is not allowed."
+
     };
 
     String[] nopes = {
@@ -142,7 +138,7 @@ public class AutoModListeners implements MessageCreateListener, CommandExecutor 
 
     @Override
     public void onMessageCreate(MessageCreateEvent ev) {
-        if (ev.getMessage().getAuthor().isYourself() || ev.getMessage().getAuthor().canKickUsersFromServer() || ev.getMessageAuthor().canSeeChannel()) {
+        if (ev.getMessage().getAuthor().isYourself() || ev.getMessage().getAuthor().canKickUsersFromServer()) {
             active.put(ev.getMessage().getAuthor().getId(), Instant.now());
             return;
         }
@@ -162,15 +158,16 @@ public class AutoModListeners implements MessageCreateListener, CommandExecutor 
                 }
             }
         }
-
-        for (MessageAttachment messageAttachment : ev.getMessage().getAttachments()) {
+        // deletes blacklisted filetypes. Optional but not preferred due to
+        // the wide variety of legitimate reasons to attach files to messages
+        /*for (MessageAttachment messageAttachment : ev.getMessage().getAttachments()) {
             String fileName = messageAttachment.getFileName();
             if (data.blacklistedFiles.contains(fileName.substring(fileName.lastIndexOf('.')))) {
                 ev.getMessage().delete("Blacklisted File: " + fileName);
                 logFileMessage(ev.getMessage().getUserAuthor(), fileName, ev.getChannel().getIdAsString());
                 return;
             }
-        }
+        }*/
 
         String message = ev.getMessage().getContent();
         for (String pattern : data.censoredWords) {
@@ -185,6 +182,7 @@ public class AutoModListeners implements MessageCreateListener, CommandExecutor 
 
     public void parsePings(Message message) {
         if (message.getMentionedUsers().size() >= 1) {
+            logger.debug("PING");
             User perp = message.getUserAuthor().get();
             Server server = message.getServer().get();
             Channel channel = message.getChannel();
@@ -198,8 +196,8 @@ public class AutoModListeners implements MessageCreateListener, CommandExecutor 
                     tracker.updatePings();
                     warn = true;
                 }
-                if (tracker.getCount() > 3) { //4th ping will kick the user.
-                    message.getServer().get().kickUser(perp, "Mass ping");
+                if (tracker.getCount() > 3) { //4th ping will ban the user.
+                    message.getServer().get().banUser(perp, 0, "Mass ping");
                     message.getChannel().sendMessage(new EmbedBuilder().setColor(Color.RED).setDescription(String.format("%s has been banned for not listening.", perp.getMentionTag())));
                     return;
                 }

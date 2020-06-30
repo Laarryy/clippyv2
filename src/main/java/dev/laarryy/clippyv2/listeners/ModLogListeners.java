@@ -50,7 +50,6 @@ public class ModLogListeners implements MessageEditListener, MessageDeleteListen
 
     private DiscordApi api;
     private Optional<TextChannel> modChannel;
-    private Object Role;
 
     public ModLogListeners(DiscordApi api) {
         modChannel = api.getTextChannelById(Constants.CHANNEL_LOGS);
@@ -185,9 +184,7 @@ public class ModLogListeners implements MessageEditListener, MessageDeleteListen
         embed.setFooter(ev.getUser().getIdAsString());
         embed.setTimestamp(Instant.now());
 
-        modChannel.get().
-
-                sendMessage(embed);
+        modChannel.get().sendMessage(embed);
     }
 
     //* TODO: Make async
@@ -195,46 +192,45 @@ public class ModLogListeners implements MessageEditListener, MessageDeleteListen
     @Override
     public void onServerMemberLeave(ServerMemberLeaveEvent ev) {
         Instant eventtime = Instant.now();
-        String kickedBy = "unknown";
-        String kickReason = "Because";
-        AuditLog log;
-        Future<AuditLog> future = ev.getServer().getAuditLog(5, AuditLogActionType.MEMBER_KICK);
-        try {
-                log = future.get();
-                for (AuditLogEntry entry : log.getEntries()) {
-                    if ((entry.getCreationTimestamp().plus(5, SECONDS).isAfter(eventtime)) && entry.getType().equals(AuditLogActionType.MEMBER_KICK) && (ev.getUser().getIdAsString().equals(entry.getTarget().get().getIdAsString()))) {
-                        kickedBy = entry.getUser().get().getNicknameMentionTag();
+        ev.getServer().getAuditLog(5, AuditLogActionType.MEMBER_KICK).thenAccept(auditLog -> {
+            for (AuditLogEntry entry : auditLog.getEntries()) {
+                logger.debug(entry.toString());
+                logger.debug(eventtime.toString());
+                if ((entry.getCreationTimestamp().plus(5, SECONDS).isAfter(eventtime))/* && entry.getType().equals(AuditLogActionType.MEMBER_KICK) && (ev.getUser().equals(entry.getTarget()))*/) {
+                    entry.getUser().thenAccept(user -> {
+                        logger.debug(entry.getTarget().toString());
+                        logger.debug(ev.getUser().getIdAsString());
+                        String kickedBy = "unknown";
+                        String kickReason;
                         kickReason = entry.getReason().orElse("No reason provided");
+                        kickedBy = ev.getUser().getName();
+                        EmbedBuilder embed = new EmbedBuilder();
+                        embed.setColor(new Color(0xB44208));
+                        embed.addInlineField("Kicked By: ", kickedBy);
+                        embed.addField("Reason", kickReason);
+                        embed.setAuthor(ev.getUser());
+                        if (!entry.getCreationTimestamp().plus(5, SECONDS).isAfter(eventtime) || !entry.getType().equals(AuditLogActionType.MEMBER_KICK)) {
+                                embed.setTitle("Left the server");
+                                embed.setColor(new Color(0xEF8805));
+                            } else {
+                                embed.setColor(new Color(0xB44208));
+                                embed.addInlineField("Kicked By: ", kickedBy);
+                                embed.addField("Reason", kickReason);
+                            }
+                            embed.setThumbnail("https://luckperms.net/logo.png");
+                            embed.setFooter(ev.getUser().getIdAsString());
+                            embed.setTimestamp(Instant.now());
+                            modChannel.get().sendMessage(embed);
 
-                    } else {
-                        kickedBy = "unknown";
-                        kickReason = "NULL!";
+                        });
+
+                        break;
                     }
-                    break;
                 }
-            } catch(InterruptedException e){
-                e.printStackTrace();
-            } catch(ExecutionException e){
-                e.printStackTrace();
-            }
+            });
 
-
-        EmbedBuilder embed = new EmbedBuilder();
-        embed.setAuthor(ev.getUser());
-
-        if (kickedBy.equalsIgnoreCase("unknown")) {
-            embed.setTitle("Left the server");
-            embed.setColor(new Color(0xEF8805));
-        } else {
-            embed.setColor(new Color(0xB44208));
-            embed.addInlineField("Kicked By: ", kickedBy);
-            embed.addField("Reason", kickReason);
         }
-        embed.setThumbnail("https://luckperms.net/logo.png");
-        embed.setFooter(ev.getUser().getIdAsString());
-        embed.setTimestamp(Instant.now());
-        modChannel.get().sendMessage(embed);
-    }
+
 
     @Override
     public void onUserChangeName(UserChangeNameEvent ev) {
