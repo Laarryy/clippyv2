@@ -194,42 +194,35 @@ public class ModLogListeners implements MessageEditListener, MessageDeleteListen
         Instant eventtime = Instant.now();
         ev.getServer().getAuditLog(5, AuditLogActionType.MEMBER_KICK).thenAccept(auditLog -> {
             for (AuditLogEntry entry : auditLog.getEntries()) {
-                logger.debug(entry.toString());
-                logger.debug(eventtime.toString());
-                if ((entry.getCreationTimestamp().plus(5, SECONDS).isAfter(eventtime))/* && entry.getType().equals(AuditLogActionType.MEMBER_KICK) && (ev.getUser().equals(entry.getTarget()))*/) {
-                    entry.getUser().thenAccept(user -> {
-                        logger.debug(entry.getTarget().toString());
-                        logger.debug(ev.getUser().getIdAsString());
-                        String kickedBy = "unknown";
-                        String kickReason;
-                        kickReason = entry.getReason().orElse("No reason provided");
-                        kickedBy = ev.getUser().getName();
-                        EmbedBuilder embed = new EmbedBuilder();
-                        embed.setColor(new Color(0xB44208));
-                        embed.addInlineField("Kicked By: ", kickedBy);
-                        embed.addField("Reason", kickReason);
-                        embed.setAuthor(ev.getUser());
-                        if (!entry.getCreationTimestamp().plus(5, SECONDS).isAfter(eventtime) || !entry.getType().equals(AuditLogActionType.MEMBER_KICK)) {
-                                embed.setTitle("Left the server");
-                                embed.setColor(new Color(0xEF8805));
-                            } else {
-                                embed.setColor(new Color(0xB44208));
-                                embed.addInlineField("Kicked By: ", kickedBy);
-                                embed.addField("Reason", kickReason);
-                            }
-                            embed.setThumbnail("https://luckperms.net/logo.png");
-                            embed.setFooter(ev.getUser().getIdAsString());
-                            embed.setTimestamp(Instant.now());
-                            modChannel.get().sendMessage(embed);
-
-                        });
-
-                        break;
+                entry.getUser().thenAccept(user -> {
+                    if (entry.getCreationTimestamp().plus(5, SECONDS).isAfter(eventtime) && entry.getType().equals(AuditLogActionType.MEMBER_KICK) || ev.getUser().equals(entry.getTarget())) {
+                        String kickedBy = user.getMentionTag();
+                        String isKickReason = entry.getReason().orElse("No reason provided.");
+                        EmbedBuilder kickembed = new EmbedBuilder();
+                        kickembed.setAuthor("Member Kicked", "", "https://luckperms.net/logo.png");
+                        kickembed.setColor(new Color(0xB44208));
+                        kickembed.addInlineField("Kicked Member:", ev.getUser().getMentionTag());
+                        kickembed.addInlineField("Kicked By: ", kickedBy);
+                        kickembed.addField("Reason", isKickReason);
+                        kickembed.setFooter(entry.getTarget().get().getIdAsString());
+                        kickembed.setTimestamp(Instant.now());
+                        modChannel.get().sendMessage(kickembed);
+                    } else {
+                        EmbedBuilder leaveembed = new EmbedBuilder();
+                        leaveembed.setAuthor("Member Left", "", "https://luckperms.net/logo.png");
+                        leaveembed.addInlineField("Farewell,", user.getMentionTag());
+                        leaveembed.setColor(new Color(0xEF8805));
+                        leaveembed.setThumbnail(user.getAvatar());
+                        leaveembed.setFooter(user.getIdAsString());
+                        leaveembed.setTimestamp(Instant.now());
+                        modChannel.get().sendMessage(leaveembed);
                     }
+                });
+                    break;
                 }
             });
-
         }
+
 
 
     @Override
