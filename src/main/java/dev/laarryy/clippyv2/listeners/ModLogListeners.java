@@ -6,11 +6,11 @@ import org.javacord.api.DiscordApi;
 import org.javacord.api.entity.auditlog.AuditLog;
 import org.javacord.api.entity.auditlog.AuditLogActionType;
 import org.javacord.api.entity.auditlog.AuditLogEntry;
-import org.javacord.api.entity.auditlog.AuditLogEntryTarget;
 import org.javacord.api.entity.channel.TextChannel;
 import org.javacord.api.entity.message.Message;
 import org.javacord.api.entity.message.embed.EmbedBuilder;
 import org.javacord.api.entity.server.Server;
+import org.javacord.api.entity.user.User;
 import org.javacord.api.event.message.MessageDeleteEvent;
 import org.javacord.api.event.message.MessageEditEvent;
 import org.javacord.api.event.server.member.ServerMemberBanEvent;
@@ -29,20 +29,17 @@ import org.javacord.api.listener.server.role.UserRoleAddListener;
 import org.javacord.api.listener.server.role.UserRoleRemoveListener;
 import org.javacord.api.listener.user.UserChangeNameListener;
 import org.javacord.api.listener.user.UserChangeNicknameListener;
-import org.javacord.core.event.server.member.ServerMemberLeaveEventImpl;
+import org.javacord.api.util.logging.ExceptionLogger;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
 import java.awt.*;
 import java.time.Duration;
 import java.time.Instant;
-import java.time.temporal.TemporalAccessor;
 import java.util.Date;
+import java.util.List;
 import java.util.Optional;
 import java.util.concurrent.CompletableFuture;
-import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Future;
-import java.util.function.BiConsumer;
 
 import static java.time.temporal.ChronoUnit.SECONDS;
 
@@ -128,9 +125,6 @@ public class ModLogListeners implements MessageEditListener, MessageDeleteListen
         String bannedBy = "Unknown";
         String banReason = "Being bad";
         AuditLog log;
-
-        // TODO: Resolve minor bug here
-        // where if a user joins, gets kicked/banned, joins, and then leaves BEFORE anything else happens in the audit log, it's logged as a kick/ban
         Future<AuditLog> future = ev.getServer().getAuditLog(1, AuditLogActionType.MEMBER_BAN_ADD);
 
         try {
@@ -152,10 +146,10 @@ public class ModLogListeners implements MessageEditListener, MessageDeleteListen
 
         EmbedBuilder embed = new EmbedBuilder();
 
-        embed.setAuthor(ev.getUser().getName(), "", "https://luckperms.net/logo.png");
+        embed.setAuthor("Member Banned", "", "https://luckperms.net/logo.png");
         embed.setColor(new Color(0xA70C0C));
+        embed.addInlineField("Banned Member:", ev.getUser().getMentionTag());
         embed.addInlineField("Banned By: ", bannedBy);
-        embed.addInlineField("ID", ev.getUser().getIdAsString());
         embed.addField("Reason", banReason);
         embed.setFooter(ev.getUser().getIdAsString());
         embed.setTimestamp(Instant.now());
@@ -187,41 +181,55 @@ public class ModLogListeners implements MessageEditListener, MessageDeleteListen
         modChannel.get().sendMessage(embed);
     }
 
-    //* TODO: Make async
-
     @Override
     public void onServerMemberLeave(ServerMemberLeaveEvent ev) {
-        Instant eventtime = Instant.now();
-        ev.getServer().getAuditLog(5, AuditLogActionType.MEMBER_KICK).thenAccept(auditLog -> {
-            for (AuditLogEntry entry : auditLog.getEntries()) {
-                entry.getUser().thenAccept(user -> {
-                    if (entry.getCreationTimestamp().plus(5, SECONDS).isAfter(eventtime) && entry.getType().equals(AuditLogActionType.MEMBER_KICK) || ev.getUser().equals(entry.getTarget())) {
-                        String kickedBy = user.getMentionTag();
-                        String isKickReason = entry.getReason().orElse("No reason provided.");
-                        EmbedBuilder kickembed = new EmbedBuilder();
-                        kickembed.setAuthor("Member Kicked", "", "https://luckperms.net/logo.png");
-                        kickembed.setColor(new Color(0xB44208));
-                        kickembed.addInlineField("Kicked Member:", ev.getUser().getMentionTag());
-                        kickembed.addInlineField("Kicked By: ", kickedBy);
-                        kickembed.addField("Reason", isKickReason);
-                        kickembed.setFooter(entry.getTarget().get().getIdAsString());
-                        kickembed.setTimestamp(Instant.now());
-                        modChannel.get().sendMessage(kickembed);
-                    } else {
-                        EmbedBuilder leaveembed = new EmbedBuilder();
-                        leaveembed.setAuthor("Member Left", "", "https://luckperms.net/logo.png");
-                        leaveembed.addInlineField("Farewell,", user.getMentionTag());
-                        leaveembed.setColor(new Color(0xEF8805));
-                        leaveembed.setThumbnail(user.getAvatar());
-                        leaveembed.setFooter(user.getIdAsString());
-                        leaveembed.setTimestamp(Instant.now());
-                        modChannel.get().sendMessage(leaveembed);
-                    }
-                });
+        handleAuditLog(Instant.now(), ev.getUser(), ev.getServer().getAuditLog(5, AuditLogActionType.MEMBER_KICK));
+    }
+
+    private void handleAuditLog(Instant eventtime, User leftUser, CompletableFuture<AuditLog> auditLogFuture) {
+        auditLogFuture.thenAcceptAsync(auditLog -> {
+            List<AuditLogEntry> entries = auditLog.getEntries();
+            for (int i = 0, i2 = entries.size(); i < i2; i++) {
+                AuditLogEntry entry = entries.get(i);
+                if (entry.getCreationTimestamp().plus(5, SECONDS).isBefore(eventtime)) {
+                    EmbedBuilder leaveembed = new EmbedBuilder();
+                    leaveembed.setAuthor("Member Left", null, "https://luckperms.net/logo.png");
+                    leaveembed.addInlineField("Farewell,", leftUser.getMentionTag());
+                    leaveembed.setColor(new Color(0xEF8805));
+                    leaveembed.setThumbnail(leftUser.getAvatar());
+                    leaveembed.setFooter(leftUser.getIdAsString());
+                    leaveembed.setTimestamp(Instant.now());
+                    modChannel.get()
+                            .sendMessage(leaveembed)
+                            .exceptionally(ExceptionLogger.get());
                     break;
                 }
-            });
-        }
+
+                User kickedUser = entry.getTarget().orElseThrow(AssertionError::new).asUser().join();
+                if (!kickedUser.equals(leftUser)) {
+                    if (i == i2 - 1) {
+                        handleAuditLog(eventtime, leftUser, entry.getAuditLogBefore(5, AuditLogActionType.MEMBER_KICK));
+                    }
+                    continue;
+                }
+
+                User kickingUser = entry.getUser().join();
+                String kickReason = entry.getReason().orElse("No reason provided.");
+                EmbedBuilder kickembed = new EmbedBuilder();
+                kickembed.setAuthor("Member Kicked", null, "https://luckperms.net/logo.png");
+                kickembed.setColor(new Color(0xB44208));
+                kickembed.addInlineField("Kicked Member:", leftUser.getMentionTag());
+                kickembed.addInlineField("Kicked By: ", kickingUser.getMentionTag());
+                kickembed.addField("Reason", kickReason);
+                kickembed.setFooter(leftUser.getIdAsString());
+                kickembed.setTimestamp(Instant.now());
+                modChannel.get()
+                        .sendMessage(kickembed)
+                        .exceptionally(ExceptionLogger.get());
+            }
+        }, leftUser.getApi().getThreadPool().getExecutorService())
+                .exceptionally(ExceptionLogger.get());
+    }
 
 
 

@@ -152,7 +152,7 @@ public class AutoModListeners implements MessageCreateListener, CommandExecutor 
                 for (String pattern : data.censoredWords) {
                     if (title.toLowerCase().contains(pattern)) {
                         ev.getMessage().delete("Pattern trigger: " + pattern);
-                        logCensorMessage(ev.getMessage().getUserAuthor(), pattern, ev.getChannel().getIdAsString());
+                        logCensorMessage(ev.getMessage().getUserAuthor(), pattern, ev.getChannel().getIdAsString(), ev.getMessage());
                         return;
                     }
                 }
@@ -174,7 +174,7 @@ public class AutoModListeners implements MessageCreateListener, CommandExecutor 
             Matcher mat = Pattern.compile(pattern).matcher(message.toLowerCase());
             if (mat.find()) {
                 ev.getMessage().delete("Pattern trigger: " + pattern);
-                logCensorMessage(ev.getMessage().getUserAuthor(), mat.group(), ev.getChannel().getIdAsString());
+                logCensorMessage(ev.getMessage().getUserAuthor(), mat.group(), ev.getChannel().getIdAsString(), ev.getMessage());
                 return;
             }
         }
@@ -185,7 +185,6 @@ public class AutoModListeners implements MessageCreateListener, CommandExecutor 
             logger.debug("PING");
             User perp = message.getUserAuthor().get();
             Server server = message.getServer().get();
-            Channel channel = message.getChannel();
             MessageTracker tracker = getTrackedUser(perp.getId());
             boolean warn = false;
             for (User user : message.getMentionedUsers()) {
@@ -197,7 +196,7 @@ public class AutoModListeners implements MessageCreateListener, CommandExecutor 
                     warn = true;
                 }
                 if (tracker.getCount() > 3) { //4th ping will ban the user.
-                    message.getServer().get().banUser(perp, 0, "Mass ping");
+                    message.getServer().get().kickUser(perp,"Mass ping");
                     message.getChannel().sendMessage(new EmbedBuilder().setColor(Color.RED).setDescription(String.format("%s has been banned for not listening.", perp.getMentionTag())));
                     return;
                 }
@@ -206,11 +205,11 @@ public class AutoModListeners implements MessageCreateListener, CommandExecutor 
                 EmbedBuilder embed = new EmbedBuilder();
                 embed.setColor(Color.RED);
                 embed.setDescription("Please do not ping staff!");
-                embed.setFooter(String.format(" Warning %d", tracker.getCount()) + " | " + donts[ThreadLocalRandom.current().nextInt(donts.length)]);
+                embed.setFooter(String.format("%d", tracker.getCount()) + " | " + donts[ThreadLocalRandom.current().nextInt(donts.length)]);
                 message.getChannel().sendMessage(perp.getMentionTag(), embed);
                 embed.setImage("https://i.imgur.com/j5P7kdV.png");
                 // DMs them a warning
-                perp.sendMessage(embed);
+                // perp.sendMessage(embed);
             }
             if (warn) {
                 EmbedBuilder embed = new EmbedBuilder();
@@ -224,7 +223,7 @@ public class AutoModListeners implements MessageCreateListener, CommandExecutor 
         }
     }
 
-    public void logCensorMessage(Optional<User> user, String pattern, String chanId) {
+    public void logCensorMessage(Optional<User> user, String pattern, String chanId, Message message) {
         EmbedBuilder embed = new EmbedBuilder();
 
         embed.setAuthor("Message Censored");
@@ -235,6 +234,7 @@ public class AutoModListeners implements MessageCreateListener, CommandExecutor 
         embed.addInlineField("Channel", String.format("<#%s>", chanId));
 
         embed.addField("Pattern", String.format("```%s```", pattern));
+        embed.addInlineField("Contents",message.getContent());
 
         embed.setFooter(user.get().getIdAsString());
         embed.setTimestamp(Instant.now());
