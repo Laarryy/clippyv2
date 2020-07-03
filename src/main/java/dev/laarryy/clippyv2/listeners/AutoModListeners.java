@@ -192,23 +192,26 @@ public class AutoModListeners implements MessageCreateListener, CommandExecutor 
                     if (data.exempts.containsKey(user.getId()) && data.exempts.get(user.getId()).contains(message.getChannel().getIdAsString())) {
                         continue;
                     }
-                    tracker.updatePings();
+                    if (user.isBot()) {
+                        continue;
+                    }
                     warn = true;
-                }
-                if (tracker.getCount() > 3) { //4th ping will ban the user.
-                    message.getServer().get().kickUser(perp,"Mass ping");
-                    message.getChannel().sendMessage(new EmbedBuilder().setColor(Color.RED).setDescription(String.format("%s has been banned for not listening.", perp.getMentionTag())));
-                    return;
                 }
             }
             if (warn) {
+                tracker.updatePings();
                 EmbedBuilder embed = new EmbedBuilder();
                 embed.setColor(Color.RED);
                 embed.setDescription("Please do not ping staff!");
                 embed.setFooter(String.format("%d", tracker.getCount()) + " | " + donts[ThreadLocalRandom.current().nextInt(donts.length)]);
+                if (tracker.getCount() > 3) { //4th ping will kick the user.
+                    message.getServer().get().kickUser(perp,"Mass ping");
+                    message.getChannel().sendMessage(new EmbedBuilder().setColor(Color.RED).setDescription(String.format("%s has been kicked for not listening.", perp.getMentionTag())));
+                    return;
+                }
                 message.getChannel().sendMessage(perp.getMentionTag(), embed);
                 embed.setImage("https://i.imgur.com/j5P7kdV.png");
-                // DMs them a warning
+                // DMs them the above warning:
                 // perp.sendMessage(embed);
             }
             if (warn) {

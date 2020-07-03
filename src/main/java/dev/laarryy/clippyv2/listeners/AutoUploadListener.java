@@ -36,7 +36,7 @@ public class AutoUploadListener implements MessageCreateListener {
                         .build();
                 Response bytebinResponse = client.newCall(postRequest).execute();
                 if (!response.isSuccessful()) return;
-                event.getChannel().sendMessage(BYTEBIN_URL + "/" + bytebinResponse.header("Location", "null")).join();
+                event.getChannel().sendMessage( "Please use a pastebin service, like bytebin, to upload logs or other text files! I've done it this time, just for you: " + BYTEBIN_URL + "/" + bytebinResponse.header("Location", "null")).join();
 
             } catch (IOException ioException) {
                 logger.warn("IOException while attempting to upload a file to bytebin:");

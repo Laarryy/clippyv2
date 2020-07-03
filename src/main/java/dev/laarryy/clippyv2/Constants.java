@@ -27,6 +27,7 @@ public class Constants {
     public static final String ROLE_PATREON = "724025797861572644";
     public static final String ROLE_VERIFIED = "724025797861572643";
     public static final String ROLE_MEMBER = "724025797861572641";
+    public static final String ROLE_BOT = "724025797861572648";
     public static final String ROLE_LUCKPERMS_UPDATES = "724157299114901584";
 
     // Emojis
