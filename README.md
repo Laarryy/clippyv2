@@ -147,6 +147,17 @@ ___
  
  - `.luck` or `.lucko` will send an embed with something for luck to be proud of :)
  
+ ### Inspiration Command
+ ___ 
+ Usage: `!inspireme`
+ 
+ - Will send a link from the inspirobot API, which generates random 'inspirational' sayings and 
+ sends them in the form of a .jpg link.
+ 
+ Who can use it?
+ 
+ -Anyone, in #off-topic, the patreon, or other non-support/LP conversational channels.
+ 
  ### Mojang Command
  ___
  Usage: `!mojang`
