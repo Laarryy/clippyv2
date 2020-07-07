@@ -79,7 +79,6 @@ public class ErrorListener implements MessageCreateListener {
         for (Pattern pastebin : pastebins.keySet()) {
             Matcher matcher = pastebin.matcher(event.getMessageContent());
             if (!matcher.matches()) continue;
-            logger.debug(matcher.toString());
             String urlToGet = pastebins.get(pastebin).replace("{code}", matcher.group(1));
             Request request = new Request.Builder()
                 .url(urlToGet)
@@ -94,9 +93,8 @@ public class ErrorListener implements MessageCreateListener {
                     for (Pattern regex : check.getPatterns()) {
                         if (regex.matcher(content).matches())
                             matched = true;
-                        logger.debug(String.valueOf(matched));
-                    }
 
+                    }
                     if (!matched) continue;
                     event.getChannel().sendMessage(new EmbedBuilder()
                             .setTitle(check.getTitle())

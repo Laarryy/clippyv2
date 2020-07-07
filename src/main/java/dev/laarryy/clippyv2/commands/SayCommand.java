@@ -10,11 +10,15 @@ public class SayCommand implements CommandExecutor {
 
     @Command(aliases = {"!say", ".say"}, usage = "!say <channel> <words>", description = "Say stuff")
     public void onSay(TextChannel channel, String[] args, MessageAuthor author, Message message) {
-        if (author.canKickUsersFromServer()) {
+        if (author.canBanUsersFromServer()) {
             if (message.getMentionedChannels().size() >= 1) {
                 message.getMentionedChannels().get(0).sendMessage(String.join(" ", args).substring(args[0].length()));
             } else {
-                 channel.sendMessage(String.join(" ", args));
+                if (message.getMentionedUsers().size() >= 1) {
+                    message.getMentionedUsers().get(0).sendMessage(String.join(" ", args).substring(args[0].length()));
+                } else {
+                    channel.sendMessage(String.join(" ", args));
+                }
             }
         }
     }

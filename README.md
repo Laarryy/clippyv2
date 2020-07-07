@@ -203,13 +203,13 @@ ___
  
  ### Say Command
  ___
- Usage: `!say [channel] <words>`
+ Usage: `!say [channel|user] <words>`
  
- - Sends the words you specify to the channel you are in unless you mention a channel to say them in.
+ - Sends the words you specify to the channel you are in unless you mention a channel to say them in or a user to DM them to.
  
  Who can use this? 
  
- - Anyone that can kick users from the server.
+ - Anyone that can ban users from the server.
  
  ### SecretCommands Command
  ___
