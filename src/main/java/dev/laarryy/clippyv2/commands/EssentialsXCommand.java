@@ -26,15 +26,15 @@ import java.util.Objects;
 public class EssentialsXCommand implements CommandExecutor {
 
 
-    private static String itemdbURL = "https://raw.githubusercontent.com/EssentialsX/Essentials/2.x/Essentials/src/items.json";
-    private static String commanddbURL = "https://raw.githubusercontent.com/Xeyame/essinfo.xeya.me/master/data/commands.json";
-    private static String permissionsdbURL = "https://raw.githubusercontent.com/Xeyame/essinfo.xeya.me/master/data/permissions.json";
+    private static final String itemdbURL = "https://raw.githubusercontent.com/EssentialsX/Essentials/2.x/Essentials/src/items.json";
+    private static final String commanddbURL = "https://raw.githubusercontent.com/Xeyame/essinfo.xeya.me/master/data/commands.json";
+    private static final String permissionsdbURL = "https://raw.githubusercontent.com/Xeyame/essinfo.xeya.me/master/data/permissions.json";
 
     private JsonNode essxCommands;
     private JsonNode essxPermissions;
-    private Map<String, List<String>> itemDb = new HashMap<>();
+    private final Map<String, List<String>> itemDb = new HashMap<>();
 
-    private ObjectMapper mapper = new ObjectMapper();
+    private final ObjectMapper mapper = new ObjectMapper();
     private static final OkHttpClient client = new OkHttpClient.Builder().build();
 
     public EssentialsXCommand() {

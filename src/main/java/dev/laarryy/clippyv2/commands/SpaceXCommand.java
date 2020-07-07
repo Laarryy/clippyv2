@@ -21,8 +21,8 @@ import java.util.Objects;
 
 public class SpaceXCommand implements CommandExecutor {
 
-    private ObjectMapper mapper = new ObjectMapper();
-    private OkHttpClient client = new OkHttpClient.Builder().build();
+    private final ObjectMapper mapper = new ObjectMapper();
+    private final OkHttpClient client = new OkHttpClient.Builder().build();
     String[] links = {"video_link","reddit_campaign", "reddit_launch", "reddit_recovery"};
     String API_NEXT = "https://api.spacexdata.com/v3/launches/next";
     String API_FUTURE = "https://api.spacexdata.com/v3/launches/upcoming";

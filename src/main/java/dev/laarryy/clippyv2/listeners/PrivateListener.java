@@ -16,7 +16,7 @@ import java.util.Optional;
 public class PrivateListener implements MessageCreateListener {
 
     DiscordApi api;
-    private Optional<TextChannel> privateChannel;
+    private final Optional<TextChannel> privateChannel;
 
     public PrivateListener(DiscordApi api) {
         this.api = api;
@@ -29,7 +29,9 @@ public class PrivateListener implements MessageCreateListener {
         if (message.toLowerCase().startsWith("topsecret")|| ev.getChannel().getType() == ChannelType.PRIVATE_CHANNEL) {
             EmbedBuilder embed = new EmbedBuilder();
             String attachments = "";
-
+            if (ev.getMessageAuthor().isYourself()) {
+                return;
+            }
             for (MessageAttachment attachment : ev.getMessage().getAttachments()) {
                 attachments += "**Name:** " + attachment.getFileName() + "\n" + attachment.getUrl()+"\n";
             }
@@ -49,10 +51,6 @@ public class PrivateListener implements MessageCreateListener {
             embed.addField("Attachments", attachments.isEmpty() ? "None" : attachments);
 
             embed.setTimestamp(Instant.now());
-
-            if (ev.getMessageAuthor().isYourself()) {
-                return;
-            }
 
             privateChannel.get().sendMessage(embed);
 

@@ -29,9 +29,9 @@ public class EmbedPaged {
     private final User user;
 
     private boolean buttonPaged = false;
-    private ConcurrentHashMap<Integer, EmbedBuilder> pages = new ConcurrentHashMap<>();
+    private final ConcurrentHashMap<Integer, EmbedBuilder> pages = new ConcurrentHashMap<>();
     private int page;
-    private AtomicReference<Message> sentMessage = new AtomicReference<>();
+    private final AtomicReference<Message> sentMessage = new AtomicReference<>();
 
     public EmbedPaged(Messageable messageable, List<EmbedBuilder> embeds) {
         this.messageable = messageable;

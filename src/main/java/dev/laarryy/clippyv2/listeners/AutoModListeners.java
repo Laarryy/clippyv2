@@ -46,11 +46,11 @@ public class AutoModListeners implements MessageCreateListener, CommandExecutor 
     DiscordApi api;
     private static final Logger logger = LoggerFactory.getLogger(Main.class);
     private ModerationData data;
-    private Optional<TextChannel> modChannel;
-    private Map<Long, Instant> active = new HashMap<>();
-    private Map<Long, MessageTracker> trackers = new HashMap<>();
-    private ObjectMapper mapper = new ObjectMapper();
-    private List<String> protectedRoles = new ArrayList<String>() {
+    private final Optional<TextChannel> modChannel;
+    private final Map<Long, Instant> active = new HashMap<>();
+    private final Map<Long, MessageTracker> trackers = new HashMap<>();
+    private final ObjectMapper mapper = new ObjectMapper();
+    private final List<String> protectedRoles = new ArrayList<String>() {
         {
             add(Constants.ROLE_STAFF);
             add(Constants.ROLE_HELPFUL);
@@ -271,7 +271,7 @@ public class AutoModListeners implements MessageCreateListener, CommandExecutor 
     }
 
     private MessageTracker getTrackedUser(long id) {
-        if (!trackers.keySet().contains(id)) {
+        if (!trackers.containsKey(id)) {
             trackers.put(id, new MessageTracker());
         }
         return trackers.get(id);
@@ -294,7 +294,7 @@ public class AutoModListeners implements MessageCreateListener, CommandExecutor 
 
     class MessageTracker {
 
-        private AtomicInteger count;
+        private final AtomicInteger count;
         private String lastMessage;
 
         public int updatePings () {

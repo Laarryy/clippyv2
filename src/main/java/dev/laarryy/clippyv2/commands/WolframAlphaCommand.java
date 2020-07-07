@@ -19,9 +19,9 @@ import java.util.stream.Collectors;
 
 public class WolframAlphaCommand implements CommandExecutor {
 
-    private String query = "https://api.wolframalpha.com/v1/result?i=<QUERY>&appid=PUJ6L4-JT7RJGL74K&";
-    private String queryLink = "https://www.wolframalpha.com/input/?i=<QUERY>";
-    private String key = "DEMO";
+    private final String query = "https://api.wolframalpha.com/v1/result?i=<QUERY>&appid=PUJ6L4-JT7RJGL74K&";
+    private final String queryLink = "https://www.wolframalpha.com/input/?i=<QUERY>";
+    private final String key = "DEMO";
 
     private Message msg;
 

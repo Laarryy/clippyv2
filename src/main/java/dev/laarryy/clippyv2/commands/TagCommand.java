@@ -28,9 +28,9 @@ import java.util.StringJoiner;
 
 public class TagCommand implements CommandExecutor, MessageCreateListener {
 
-    private Map<String, Factoid> tagMap = new HashMap<>();
+    private final Map<String, Factoid> tagMap = new HashMap<>();
     EmbedUtil util = new EmbedUtil();
-    private ObjectMapper mapper = new ObjectMapper();
+    private final ObjectMapper mapper = new ObjectMapper();
 
     public TagCommand(DiscordApi api) {
         api.addListener(this);

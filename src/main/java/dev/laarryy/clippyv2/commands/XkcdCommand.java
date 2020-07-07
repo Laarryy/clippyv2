@@ -18,9 +18,9 @@ import java.util.Objects;
 
 public class XkcdCommand implements CommandExecutor {
 
-    private String searchURL = "https://relevantxkcd.appspot.com/process?action=xkcd&query=%s";
-    private ObjectMapper mapper = new ObjectMapper();
-    private OkHttpClient client = new OkHttpClient.Builder().build();
+    private final String searchURL = "https://relevantxkcd.appspot.com/process?action=xkcd&query=%s";
+    private final ObjectMapper mapper = new ObjectMapper();
+    private final OkHttpClient client = new OkHttpClient.Builder().build();
 
     @Command(aliases = {"!xkcd", "!.xkcd"}, usage = "!xkcd <Query>", description = "Search xkcd")
     public void onCommand(DiscordApi api, User user, TextChannel channel, String[] args) {

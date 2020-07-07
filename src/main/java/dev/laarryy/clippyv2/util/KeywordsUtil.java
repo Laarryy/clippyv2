@@ -7,10 +7,10 @@ import java.time.Instant;
 
 public class KeywordsUtil {
 
-    private String template;
-    private User user;
-    private Server server;
-    private String[] args;
+    private final String template;
+    private final User user;
+    private final Server server;
+    private final String[] args;
 
     public KeywordsUtil(String template, User user, Server server, String... args) {
         this.template = template;

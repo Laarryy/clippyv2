@@ -29,14 +29,16 @@ public class AutoUploadListener implements MessageCreateListener {
                 if (!response.isSuccessful()) return;
                 if (response.body() == null) return;
                 //noinspection ConstantConditions
-                RequestBody requestBody = RequestBody.create(MediaType.get(response.header("Content-Type")), response.body().string());
+                RequestBody requestBody = RequestBody.create(MediaType.parse(response.header("Content-Type")), response.body().string());
                 Request postRequest = new Request.Builder()
                         .url(BYTEBIN_URL + "/post")
                         .post(requestBody)
                         .build();
                 Response bytebinResponse = client.newCall(postRequest).execute();
                 if (!response.isSuccessful()) return;
-                event.getChannel().sendMessage( "Please use a pastebin service, like bytebin, to upload logs or other text files! I've done it this time, just for you: " + BYTEBIN_URL + "/" + bytebinResponse.header("Location", "null")).join();
+                event.getChannel().sendMessage( "Please use a pastebin service, like bytebin, to upload logs or " +
+                        "other text files! I've done it this time, just for you: " + BYTEBIN_URL + "/" +
+                        bytebinResponse.header("Location", "null")).join();
 
             } catch (IOException ioException) {
                 logger.warn("IOException while attempting to upload a file to bytebin:");
@@ -45,5 +47,3 @@ public class AutoUploadListener implements MessageCreateListener {
         });
     }
 }
-
-

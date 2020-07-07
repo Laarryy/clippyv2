@@ -45,8 +45,8 @@ import static java.time.temporal.ChronoUnit.SECONDS;
 
 public class ModLogListeners implements MessageEditListener, MessageDeleteListener, ServerMemberBanListener, ServerMemberJoinListener, ServerMemberLeaveListener, UserChangeNicknameListener, UserChangeNameListener, UserRoleAddListener, UserRoleRemoveListener {
 
-    private DiscordApi api;
-    private Optional<TextChannel> modChannel;
+    private final DiscordApi api;
+    private final Optional<TextChannel> modChannel;
 
     public ModLogListeners(DiscordApi api) {
         modChannel = api.getTextChannelById(Constants.CHANNEL_LOGS);
@@ -226,6 +226,7 @@ public class ModLogListeners implements MessageEditListener, MessageDeleteListen
                 modChannel.get()
                         .sendMessage(kickembed)
                         .exceptionally(ExceptionLogger.get());
+                break;
             }
         }, leftUser.getApi().getThreadPool().getExecutorService())
                 .exceptionally(ExceptionLogger.get());

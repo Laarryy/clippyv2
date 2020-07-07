@@ -18,8 +18,8 @@ import java.util.Optional;
 
 public class AvatarCommand implements CommandExecutor {
 
-    private DiscordApi api;
-    private Optional<TextChannel> modChannel;
+    private final DiscordApi api;
+    private final Optional<TextChannel> modChannel;
 
     public AvatarCommand(DiscordApi api) {
         modChannel = api.getTextChannelById(Constants.CHANNEL_LOGS);

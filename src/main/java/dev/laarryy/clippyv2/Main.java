@@ -63,6 +63,7 @@ public class Main {
         commandHandler.registerCommand(new MojangCommand());
         commandHandler.registerCommand(new CakeCommand());
         commandHandler.registerCommand(new EmbedCommand());
+        commandHandler.registerCommand(new InspireCommand());
         //commandHandler.registerCommand(new EssentialsXCommand());
         //commandHandler.registerCommand(new SpaceXCommand());
         //commandHandler.registerCommand(new BStatsCommand());

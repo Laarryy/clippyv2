@@ -21,10 +21,10 @@ import org.slf4j.LoggerFactory;
 public class StarboardListener implements ReactionAddListener {
 
     private static final Logger logger = LoggerFactory.getLogger(StarboardListener.class);
-    private static Collection<String> starEmojis = Arrays.asList(Constants.EMOJI_STARS_UNICODE);
+    private static final Collection<String> starEmojis = Arrays.asList(Constants.EMOJI_STARS_UNICODE);
 
-    private DiscordApi api;
-    private StarboardStorage storage = new StarboardStorage();
+    private final DiscordApi api;
+    private final StarboardStorage storage = new StarboardStorage();
 
     public StarboardListener(DiscordApi dApi) {
         api = dApi;

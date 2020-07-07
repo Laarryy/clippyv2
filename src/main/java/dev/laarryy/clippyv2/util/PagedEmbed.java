@@ -33,10 +33,10 @@ public class PagedEmbed {
     private final EmbedBuilder embed;
     private final User user;
 
-    private ConcurrentHashMap<Integer, List<Field>> pages = new ConcurrentHashMap<>();
-    private List<Field> fields = new ArrayList<>();
+    private final ConcurrentHashMap<Integer, List<Field>> pages = new ConcurrentHashMap<>();
+    private final List<Field> fields = new ArrayList<>();
     private int page;
-    private AtomicReference<Message> sentMessage = new AtomicReference<>();
+    private final AtomicReference<Message> sentMessage = new AtomicReference<>();
 
     /**
      * Creates a new PagedEmbed object.

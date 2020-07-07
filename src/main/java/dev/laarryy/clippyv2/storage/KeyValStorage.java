@@ -14,11 +14,11 @@ import org.yaml.snakeyaml.Yaml;
 
 public class KeyValStorage {
 
-    private Yaml yaml = new Yaml();
+    private final Yaml yaml = new Yaml();
     private static final Logger logger = LoggerFactory.getLogger(KeyValStorage.class);
 
     private Map<String, Object> kvMap;
-    private File kvFile;
+    private final File kvFile;
 
     public KeyValStorage(String path) {
         kvFile = new File(path);
@@ -29,7 +29,7 @@ public class KeyValStorage {
     protected synchronized void loadYaml() {
         try {
             kvFile.createNewFile();
-            kvMap = (Map<String, Object>) yaml.load(new FileReader(kvFile));
+            kvMap = yaml.load(new FileReader(kvFile));
         } catch (IOException e) {
             logger.error("Could not load key-value file!", e);
         }

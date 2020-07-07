@@ -34,8 +34,8 @@ import java.util.TreeSet;
 public class UserTagCommand implements CommandExecutor, MessageCreateListener {
 
     private UserTagData data = new UserTagData();
-    private EmbedUtil embedUtil = new EmbedUtil();
-    private ObjectMapper mapper = new ObjectMapper();
+    private final EmbedUtil embedUtil = new EmbedUtil();
+    private final ObjectMapper mapper = new ObjectMapper();
 
     public UserTagCommand(DiscordApi api) {
         api.addListener(this);

@@ -56,22 +56,17 @@ public class WikiListener implements MessageCreateListener {
         if (!event.getMessageAuthor().isUser()) {
             return;
         }
-
         Matcher matcher = pattern.matcher(event.getMessageContent());
-
         if (!matcher.matches()) {
             return;
         }
-
         String commandName = matcher.group(1);
         WikiCommand command = null;
-
         for (WikiCommand commandLoop : commands) {
             if (commandLoop.name.equals(commandName)) {
                 command = commandLoop;
                 continue;
             }
-
             if (commandLoop.aliases != null) {
                 if (Arrays.asList(commandLoop.aliases).contains(commandName)) {
                     command = commandLoop;
@@ -79,15 +74,12 @@ public class WikiListener implements MessageCreateListener {
                 }
             }
         }
-
         if (commandName.equalsIgnoreCase("help")) {
             command = getHelpCommand();
         }
-
         if (command == null) {
             return;
         }
-
         event.getChannel().sendMessage(command.asEmbed()).join();
     }
 
