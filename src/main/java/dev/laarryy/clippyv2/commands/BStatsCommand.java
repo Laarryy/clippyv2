@@ -1,9 +1,8 @@
-/*
-package org.laarryy.clippyv2.commands;
-
+package dev.laarryy.clippyv2.commands;
 import com.fasterxml.jackson.databind.JsonNode;
 import de.btobastian.sdcf4j.Command;
 import de.btobastian.sdcf4j.CommandExecutor;
+import dev.laarryy.clippyv2.util.BStatsUtil;
 import org.apache.batik.transcoder.TranscoderException;
 import org.apache.batik.transcoder.TranscoderInput;
 import org.apache.batik.transcoder.TranscoderOutput;
@@ -13,7 +12,7 @@ import org.javacord.api.entity.channel.TextChannel;
 import org.javacord.api.entity.message.embed.EmbedBuilder;
 import org.javacord.api.exception.MissingPermissionsException;
 import org.javacord.api.util.logging.ExceptionLogger;
-import BStatsUtil;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -25,10 +24,10 @@ import java.io.InputStream;
 public class BStatsCommand implements CommandExecutor {
 
 
-    */
+
 /**
      * The logger for this class.
-     *//*
+     */
 
 
     private static final Logger logger = LoggerFactory.getLogger(BStatsCommand.class);
@@ -82,18 +81,18 @@ public class BStatsCommand implements CommandExecutor {
                     .exceptionally(ExceptionLogger.get(MissingPermissionsException.class));
         }
     }
-}
 
 
-*/
+
+
 /**
      * Converts a svg bStats signature image to a jpeg image.
      *
      * @param url The url to the signature image.
      * @return An input stream for the jpeg image.
-     *//*
-*/
-/*
+     */
+
+
 
     private InputStream convertSignatureImageToJpeg(String url) {
         // Create a JPEG transcoder
@@ -124,4 +123,4 @@ public class BStatsCommand implements CommandExecutor {
 
 }
 
-*/
+

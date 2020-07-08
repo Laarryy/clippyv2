@@ -12,12 +12,23 @@ public class RoleUtil {
         return message.getMentionedUsers().get(0).getRoles(message.getServer().get()).stream()
                 .anyMatch(role -> role.getIdAsString().equals(Constants.ROLE_STAFF));
     }
+
     public static Boolean isStaff(List<Role> roles) {
         for (Role role : roles) {
             String roleId = role.getIdAsString();
             if ((roleId.equals(Constants.ROLE_STAFF))) {
                 return true;
-            } else;
+            } else ;
+        }
+        return false;
+    }
+
+    public static Boolean isPatreon(List<Role> roles) {
+        for (Role role : roles) {
+            String roleId = role.getIdAsString();
+            if ((roleId.equals(Constants.ROLE_PATREON))) {
+                return true;
+            } else ;
         }
         return false;
     }

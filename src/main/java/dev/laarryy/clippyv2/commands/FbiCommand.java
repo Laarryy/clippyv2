@@ -1,17 +1,17 @@
-/*
-package org.laarryy.clippyv2.commands;
+package dev.laarryy.clippyv2.commands;
 
 import de.btobastian.sdcf4j.Command;
 import de.btobastian.sdcf4j.CommandExecutor;
+import dev.laarryy.clippyv2.Constants;
 import org.javacord.api.entity.channel.TextChannel;
 import org.javacord.api.entity.message.Message;
 import org.javacord.api.entity.message.MessageAuthor;
 import org.javacord.api.entity.message.embed.EmbedBuilder;
 import org.javacord.api.entity.server.Server;
 import org.javacord.api.entity.user.User;
-import Constants;
+
 import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+
 
 import java.awt.*;
 import java.time.Instant;
@@ -47,9 +47,8 @@ public class FbiCommand implements CommandExecutor {
 
         if (args.length >= 1) {
             message.getMentionedUsers();
-            Optional<org.javacord.api.entity.permission.Role> pirate = server.getRoleById(Constants.ROLE_PIRATE);
-            if (message.getMentionedUsers().get(0).getIdAsString().equals(Constants.USER_ZML))
-            return;
+            // Constants.ROLE_MEMBER would be added to the mentioned users in this case.
+            Optional<org.javacord.api.entity.permission.Role> pirate = server.getRoleById(Constants.ROLE_MEMBER);
             {
                 if (!pirate.isPresent()) {
                     logger.error("Could not find pirate role in Server {0}", server);
@@ -59,13 +58,10 @@ public class FbiCommand implements CommandExecutor {
                 return;
 
                 for (User user : message.getMentionedUsers()) {
-                    if (user.getIdAsString().equals(Constants.USER_ZML))
-                        continue;
-
                     user.addRole(pirate.get());
                 }
             }
         }
     }
 }
-*/
+

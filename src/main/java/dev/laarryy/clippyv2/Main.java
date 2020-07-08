@@ -30,14 +30,14 @@ public class Main {
         DiscordApi api = new DiscordApiBuilder().setToken(args[0]).login().join();
         logger.info("Logged in to Discord account {}", api.getYourself().getName());
 
-        // Create command handler
+    // Create command handler
         CommandHandler commandHandler = new JavacordHandler(api);
 
-        // Give bot owner all permissions.
+    // Give bot owner all permissions.
         commandHandler.addPermission(String.valueOf(api.getOwnerId()), "*");
 
     // Register commands
-        // To enable a command, add or uncomment it here. To disable, comment it out. Be sure to comment out the class file as well, to avoid problems.
+        // To enable a command, add or uncomment it here. To disable, comment it out.
 
 
     // Staff-Only Commands:
@@ -67,13 +67,12 @@ public class Main {
         //commandHandler.registerCommand(new EssentialsXCommand());
         //commandHandler.registerCommand(new SpaceXCommand());
         //commandHandler.registerCommand(new BStatsCommand());
+        //commandHandler.registerCommand(new EightBallCommand());
 
     // Patreon-Only Commands:
         commandHandler.registerCommand(new UserTagCommand(api));
         commandHandler.registerCommand(new XkcdCommand());
         commandHandler.registerCommand(new WolframAlphaCommand());
-        //commandHandler.registerCommand(new EightBallCommand());
-
 
     // Register listeners
         api.addListener(new ModLogListeners(api));
