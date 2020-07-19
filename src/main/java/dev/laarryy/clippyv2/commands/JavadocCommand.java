@@ -16,29 +16,22 @@
 package dev.laarryy.clippyv2.commands; // Change package name
 
 // Remove some imports
+
 import de.btobastian.sdcf4j.Command;
 import de.btobastian.sdcf4j.CommandExecutor;
+import dev.laarryy.clippyv2.util.javadoc.JavadocClass;
+import dev.laarryy.clippyv2.util.javadoc.JavadocMethod;
+import dev.laarryy.clippyv2.util.javadoc.JavadocParser;
 import org.javacord.api.DiscordApi;
 import org.javacord.api.entity.channel.TextChannel;
 import org.javacord.api.entity.message.Message;
 import org.javacord.api.entity.message.embed.EmbedBuilder;
 import org.javacord.api.entity.server.Server;
-import org.javacord.api.util.logging.ExceptionLogger;
-import dev.laarryy.clippyv2.util.javadoc.JavadocClass;
-import dev.laarryy.clippyv2.util.javadoc.JavadocMethod;
-import dev.laarryy.clippyv2.util.javadoc.JavadocParser;
 
 import java.awt.*;
 import java.io.IOException;
-import java.io.InputStream;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 import java.util.concurrent.CompletableFuture;
 import java.util.stream.Collectors;
 

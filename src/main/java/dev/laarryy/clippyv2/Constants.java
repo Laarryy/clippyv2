@@ -1,7 +1,5 @@
 package dev.laarryy.clippyv2;
 
-import org.javacord.api.entity.permission.Role;
-
 import java.awt.*;
 
 /*

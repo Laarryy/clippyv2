@@ -1,18 +1,18 @@
 package dev.laarryy.clippyv2.commands;
 
-import de.btobastian.sdcf4j.CommandExecutor;
 import de.btobastian.sdcf4j.Command;
+import de.btobastian.sdcf4j.CommandExecutor;
 import dev.laarryy.clippyv2.Constants;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Response;
-import okhttp3.ResponseBody;
 import org.javacord.api.entity.message.Message;
 import org.javacord.api.entity.message.embed.EmbedBuilder;
 import org.javacord.api.entity.server.Server;
 import org.javacord.api.entity.user.User;
+
+import java.awt.*;
 import java.io.IOException;
-import java.net.URL;
 import java.nio.channels.Channel;
 
 
@@ -35,7 +35,10 @@ public class InspireCommand implements CommandExecutor {
                 || message.getChannel().getIdAsString().equals(Constants.CHANNEL_STAFF)) {
             String content = response.body().string();
             response.body().close();
-            message.getChannel().sendMessage(content);
+            inspiration.setImage(content);
+            inspiration.setColor(new Color(0x09E214));
+            inspiration.setFooter("Called by "  + user.getName());
+            message.getChannel().sendMessage(inspiration);
             response.close();
         }
         return null;

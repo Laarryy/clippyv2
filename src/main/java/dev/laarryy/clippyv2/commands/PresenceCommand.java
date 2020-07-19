@@ -2,7 +2,6 @@ package dev.laarryy.clippyv2.commands;
 
 import de.btobastian.sdcf4j.Command;
 import de.btobastian.sdcf4j.CommandExecutor;
-
 import dev.laarryy.clippyv2.Constants;
 import dev.laarryy.clippyv2.util.RoleUtil;
 import org.javacord.api.DiscordApi;

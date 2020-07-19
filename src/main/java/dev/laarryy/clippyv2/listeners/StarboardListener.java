@@ -1,10 +1,5 @@
 package dev.laarryy.clippyv2.listeners;
 
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.List;
-import java.util.Optional;
-
 import dev.laarryy.clippyv2.Constants;
 import dev.laarryy.clippyv2.storage.StarboardStorage;
 import org.javacord.api.DiscordApi;
@@ -17,6 +12,11 @@ import org.javacord.api.event.message.reaction.ReactionAddEvent;
 import org.javacord.api.listener.message.reaction.ReactionAddListener;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.List;
+import java.util.Optional;
 
 public class StarboardListener implements ReactionAddListener {
 

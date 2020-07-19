@@ -9,9 +9,7 @@ import org.javacord.api.entity.message.MessageAuthor;
 import org.javacord.api.entity.message.embed.EmbedBuilder;
 import org.javacord.api.entity.server.Server;
 import org.javacord.api.entity.user.User;
-
 import org.slf4j.Logger;
-
 
 import java.awt.*;
 import java.time.Instant;

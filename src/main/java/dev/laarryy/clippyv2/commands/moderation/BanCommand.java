@@ -1,14 +1,13 @@
 package dev.laarryy.clippyv2.commands.moderation;
 
+import de.btobastian.sdcf4j.Command;
+import de.btobastian.sdcf4j.CommandExecutor;
 import dev.laarryy.clippyv2.util.RoleUtil;
 import org.apache.commons.lang.StringUtils;
 import org.javacord.api.entity.channel.TextChannel;
 import org.javacord.api.entity.message.Message;
 import org.javacord.api.entity.message.MessageAuthor;
 import org.javacord.api.entity.user.User;
-
-import de.btobastian.sdcf4j.Command;
-import de.btobastian.sdcf4j.CommandExecutor;
 
 public class BanCommand implements CommandExecutor {
 

@@ -1,8 +1,8 @@
 package dev.laarryy.clippyv2.util;
 
+import dev.laarryy.clippyv2.Constants;
 import org.javacord.api.entity.message.Message;
 import org.javacord.api.entity.permission.Role;
-import dev.laarryy.clippyv2.Constants;
 
 import java.util.List;
 

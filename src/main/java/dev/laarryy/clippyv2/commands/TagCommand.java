@@ -20,11 +20,7 @@ import java.io.File;
 import java.io.IOException;
 import java.sql.Date;
 import java.time.Instant;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.StringJoiner;
+import java.util.*;
 
 public class TagCommand implements CommandExecutor, MessageCreateListener {
 

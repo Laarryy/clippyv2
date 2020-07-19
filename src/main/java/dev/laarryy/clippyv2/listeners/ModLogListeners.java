@@ -32,6 +32,7 @@ import org.javacord.api.listener.user.UserChangeNicknameListener;
 import org.javacord.api.util.logging.ExceptionLogger;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
 import java.awt.*;
 import java.time.Duration;
 import java.time.Instant;

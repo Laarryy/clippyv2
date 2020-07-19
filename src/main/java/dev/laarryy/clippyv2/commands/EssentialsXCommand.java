@@ -16,12 +16,8 @@ import org.javacord.api.entity.user.User;
 import java.awt.*;
 import java.io.File;
 import java.io.FileNotFoundException;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
-import java.util.Map;
-import java.util.Objects;
+import java.util.*;
 
 public class EssentialsXCommand implements CommandExecutor {
 

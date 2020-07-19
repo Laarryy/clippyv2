@@ -3,15 +3,13 @@ package dev.laarryy.clippyv2;
 import de.btobastian.sdcf4j.CommandHandler;
 import de.btobastian.sdcf4j.handler.JavacordHandler;
 import dev.laarryy.clippyv2.commands.*;
-import dev.laarryy.clippyv2.listeners.*;
-import org.javacord.api.DiscordApi;
-import org.javacord.api.DiscordApiBuilder;
 import dev.laarryy.clippyv2.commands.moderation.BanCommand;
 import dev.laarryy.clippyv2.commands.moderation.KickCommand;
 import dev.laarryy.clippyv2.commands.moderation.MuteCommand;
 import dev.laarryy.clippyv2.commands.moderation.PruneCommand;
 import dev.laarryy.clippyv2.listeners.*;
-import dev.laarryy.clippyv2.commands.*;
+import org.javacord.api.DiscordApi;
+import org.javacord.api.DiscordApiBuilder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

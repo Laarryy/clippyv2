@@ -1,10 +1,9 @@
 package dev.laarryy.clippyv2.commands.moderation;
 
-import org.apache.commons.lang.StringUtils;
-import org.javacord.api.entity.channel.TextChannel;
-
 import de.btobastian.sdcf4j.Command;
 import de.btobastian.sdcf4j.CommandExecutor;
+import org.apache.commons.lang.StringUtils;
+import org.javacord.api.entity.channel.TextChannel;
 import org.javacord.api.entity.message.Message;
 import org.javacord.api.entity.message.MessageAuthor;
 import org.javacord.api.entity.message.MessageSet;
