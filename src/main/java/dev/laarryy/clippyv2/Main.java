@@ -54,7 +54,6 @@ public class Main {
         commandHandler.registerCommand(new GithubCommand());
         commandHandler.registerCommand(new SpigetCommand());
         commandHandler.registerCommand(new SecretCommandsCommand(commandHandler));
-        commandHandler.registerCommand(new JavadocCommand());
         //commandHandler.registerCommand(new RoleCheckCommand());
         //commandHandler.registerCommand(new FbiCommand());
 
