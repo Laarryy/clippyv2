@@ -281,7 +281,7 @@ ___
  
  Who can use it?
  
- - This command can only be used in the staff channel and the patreons channel, as a fun added bonus!
+ - This command can only be used in the staff, helpful channels and the patreons channel, as a fun added bonus!
  ___
  ___
  ___
@@ -349,7 +349,14 @@ ___
  ### Update Listener
  ___
  This listener will gently remind people that Luckperms already works on 1.16 if they 
- send a message that contains the keywords "1.16" and "update".
+ send a message that contains the keywords "1.16" and "update", among others.
+ 
+ ### Log Listener, Util, Storage Combo
+ ___
+ This listener prints the creation of every new message (except those in the logs channel) to a log file, as well as everything Clippy logs. It 
+ uses a custom format for fitting as much information in as little space as possible. Each log file will fill up
+ to approximately 1GB before the bot automatically rotates to a new one, and up to 100 log files will be created.
+ After 100 GB of pure text logs accumulate, it's definitely time to zip them up and move them out, to start fresh. 
  
  ___
  ___

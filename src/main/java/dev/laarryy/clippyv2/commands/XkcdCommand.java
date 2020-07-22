@@ -24,8 +24,11 @@ public class XkcdCommand implements CommandExecutor {
 
     @Command(aliases = {"!xkcd", "!.xkcd"}, usage = "!xkcd <Query>", description = "Search xkcd")
     public void onCommand(DiscordApi api, User user, TextChannel channel, String[] args) {
-        if (!channel.getIdAsString().equals(Constants.CHANNEL_PATREONS) && !channel.getIdAsString().equals(Constants.CHANNEL_STAFF)) {
-            channel.sendMessage("Sorry, can't do that!");
+        if (!channel.getIdAsString().equals(Constants.CHANNEL_PATREONS)
+                && !channel.getIdAsString().equals(Constants.CHANNEL_STAFF)
+                && !channel.getIdAsString().equals(Constants.CHANNEL_HELPFUL)
+                && !channel.getIdAsString().equals(Constants.CHANNEL_PEBKAC)
+        ) {
             return;
         }
         if (args.length >= 1) {
