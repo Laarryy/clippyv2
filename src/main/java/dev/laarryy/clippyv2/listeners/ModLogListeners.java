@@ -43,7 +43,6 @@ import java.util.Optional;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.Future;
 
-
 import static java.time.temporal.ChronoUnit.SECONDS;
 
 public class ModLogListeners implements MessageEditListener, MessageDeleteListener, ServerMemberBanListener, ServerMemberJoinListener, ServerMemberLeaveListener, UserChangeNicknameListener, UserChangeNameListener, UserRoleAddListener, UserRoleRemoveListener {

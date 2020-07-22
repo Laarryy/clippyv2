@@ -1,6 +1,7 @@
 package dev.laarryy.clippyv2.storage;
 
 import dev.laarryy.clippyv2.util.LogFormatUtil;
+
 import java.io.IOException;
 import java.util.logging.FileHandler;
 import java.util.logging.Logger;

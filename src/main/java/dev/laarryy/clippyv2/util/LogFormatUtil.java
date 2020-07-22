@@ -1,6 +1,7 @@
 package dev.laarryy.clippyv2.util;
 
-import java.io.*;
+import java.io.PrintWriter;
+import java.io.StringWriter;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
 import java.util.logging.Formatter;
