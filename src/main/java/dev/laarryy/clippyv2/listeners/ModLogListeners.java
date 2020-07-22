@@ -2,6 +2,7 @@ package dev.laarryy.clippyv2.listeners;
 
 import dev.laarryy.clippyv2.Constants;
 import dev.laarryy.clippyv2.Main;
+import dev.laarryy.clippyv2.storage.LogStorage;
 import org.javacord.api.DiscordApi;
 import org.javacord.api.entity.auditlog.AuditLog;
 import org.javacord.api.entity.auditlog.AuditLogActionType;
@@ -11,7 +12,6 @@ import org.javacord.api.entity.message.Message;
 import org.javacord.api.entity.message.embed.EmbedBuilder;
 import org.javacord.api.entity.server.Server;
 import org.javacord.api.entity.user.User;
-import org.javacord.api.event.message.MessageCreateEvent;
 import org.javacord.api.event.message.MessageDeleteEvent;
 import org.javacord.api.event.message.MessageEditEvent;
 import org.javacord.api.event.server.member.ServerMemberBanEvent;
@@ -21,7 +21,6 @@ import org.javacord.api.event.server.role.UserRoleAddEvent;
 import org.javacord.api.event.server.role.UserRoleRemoveEvent;
 import org.javacord.api.event.user.UserChangeNameEvent;
 import org.javacord.api.event.user.UserChangeNicknameEvent;
-import org.javacord.api.listener.message.MessageCreateListener;
 import org.javacord.api.listener.message.MessageDeleteListener;
 import org.javacord.api.listener.message.MessageEditListener;
 import org.javacord.api.listener.server.member.ServerMemberBanListener;
@@ -36,8 +35,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.awt.*;
-import java.io.File;
-import java.text.SimpleDateFormat;
 import java.time.Duration;
 import java.time.Instant;
 import java.util.Date;
@@ -53,6 +50,7 @@ public class ModLogListeners implements MessageEditListener, MessageDeleteListen
 
     private final DiscordApi api;
     private final Optional<TextChannel> modChannel;
+    private final LogStorage logStore = new LogStorage();
 
     public ModLogListeners(DiscordApi api) {
         modChannel = api.getTextChannelById(Constants.CHANNEL_LOGS);
@@ -102,6 +100,7 @@ public class ModLogListeners implements MessageEditListener, MessageDeleteListen
         embed.setTimestamp(Instant.now());
 
         modChannel.get().sendMessage(embed);
+        logStore.sendToLog("Message  [" + ev.getMessageId() + "]  Deleted:  " + ev.getMessageContent() + "  with contents: " + message.getAttachments());
     }
 
     @Override
@@ -124,6 +123,7 @@ public class ModLogListeners implements MessageEditListener, MessageDeleteListen
         embed.setTimestamp(Instant.now());
 
         modChannel.get().sendMessage(embed);
+        logStore.sendToLog("Message [" + ev.getMessageId() + "] Edited from " + ev.getOldContent() + " to: " + ev.getNewContent());
 
     }
 
@@ -162,6 +162,7 @@ public class ModLogListeners implements MessageEditListener, MessageDeleteListen
         embed.setTimestamp(Instant.now());
 
         modChannel.get().sendMessage(embed);
+        logStore.sendToLog("Member Banned: " + ev.getUser().getIdAsString());
     }
 
     @Override
@@ -186,14 +187,15 @@ public class ModLogListeners implements MessageEditListener, MessageDeleteListen
         embed.setTimestamp(Instant.now());
 
         modChannel.get().sendMessage(embed);
+        logStore.sendToLog("Member Joined: " + ev.getUser().getIdAsString());
     }
 
     @Override
     public void onServerMemberLeave(ServerMemberLeaveEvent ev) {
-        handleAuditLog(Instant.now(), ev.getUser(), ev.getServer().getAuditLog(5, AuditLogActionType.MEMBER_KICK));
+        onMemberLeaveKick(Instant.now(), ev.getUser(), ev.getServer().getAuditLog(5, AuditLogActionType.MEMBER_KICK));
     }
 
-    private void handleAuditLog(Instant eventtime, User leftUser, CompletableFuture<AuditLog> auditLogFuture) {
+    private void onMemberLeaveKick(Instant eventtime, User leftUser, CompletableFuture<AuditLog> auditLogFuture) {
         auditLogFuture.thenAcceptAsync(auditLog -> {
             List<AuditLogEntry> entries = auditLog.getEntries();
             for (int i = 0, i2 = entries.size(); i < i2; i++) {
@@ -209,13 +211,14 @@ public class ModLogListeners implements MessageEditListener, MessageDeleteListen
                     modChannel.get()
                             .sendMessage(leaveembed)
                             .exceptionally(ExceptionLogger.get());
+                    logStore.sendToLog("Member left: " + leftUser.getIdAsString());
                     break;
                 }
 
                 User kickedUser = entry.getTarget().orElseThrow(AssertionError::new).asUser().join();
                 if (!kickedUser.equals(leftUser)) {
                     if (i == i2 - 1) {
-                        handleAuditLog(eventtime, leftUser, entry.getAuditLogBefore(5, AuditLogActionType.MEMBER_KICK));
+                        onMemberLeaveKick(eventtime, leftUser, entry.getAuditLogBefore(5, AuditLogActionType.MEMBER_KICK));
                     }
                     continue;
                 }
@@ -233,6 +236,7 @@ public class ModLogListeners implements MessageEditListener, MessageDeleteListen
                 modChannel.get()
                         .sendMessage(kickembed)
                         .exceptionally(ExceptionLogger.get());
+                logStore.sendToLog("Member kicked: " + leftUser.getIdAsString());
                 break;
             }
         }, leftUser.getApi().getThreadPool().getExecutorService())
@@ -256,6 +260,7 @@ public class ModLogListeners implements MessageEditListener, MessageDeleteListen
         embed.setTimestamp(Instant.now());
 
         modChannel.get().sendMessage(embed);
+        logStore.sendToLog("Member [" + ev.getUser().getIdAsString() + "] name change from " + ev.getOldName() + " to: " + ev.getNewName());
     }
 
     @Override
@@ -285,6 +290,7 @@ public class ModLogListeners implements MessageEditListener, MessageDeleteListen
         embed.setTimestamp(Instant.now());
 
         modChannel.get().sendMessage(embed);
+        logStore.sendToLog("Member [" + ev.getUser().getIdAsString() + "] nickname change from " + ev.getOldNickname() + " to: " + ev.getNewNickname());
     }
 
     public String stripGrave(String string) {
@@ -303,6 +309,7 @@ public class ModLogListeners implements MessageEditListener, MessageDeleteListen
         embed.setColor(new Color(0x1084A7));
 
         modChannel.get().sendMessage(embed);
+        logStore.sendToLog("Role add to member [" + ev.getUser().getIdAsString() + "]: " + ev.getRole().getName());
     }
 
     @Override
@@ -316,5 +323,6 @@ public class ModLogListeners implements MessageEditListener, MessageDeleteListen
         embed.setColor(new Color(0xD04E0F));
 
         modChannel.get().sendMessage(embed);
+        logStore.sendToLog("Role remove from member [" + ev.getUser().getIdAsString() + "]: " + ev.getRole().getName());
     }
 }
