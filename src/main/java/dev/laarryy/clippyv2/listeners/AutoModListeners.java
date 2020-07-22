@@ -173,7 +173,6 @@ public class AutoModListeners implements MessageCreateListener, CommandExecutor 
 
     public void parsePings(Message message) {
         if (message.getMentionedUsers().size() >= 1) {
-            logger.debug("PING");
             User perp = message.getUserAuthor().get();
             Server server = message.getServer().get();
             MessageTracker tracker = getTrackedUser(perp.getId());

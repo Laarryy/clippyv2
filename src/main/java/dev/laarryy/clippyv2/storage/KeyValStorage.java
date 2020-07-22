@@ -15,6 +15,7 @@ import java.util.Map;
 public class KeyValStorage {
 
     private final Yaml yaml = new Yaml();
+    private final LogStorage logStore = new LogStorage();
     private static final Logger logger = LoggerFactory.getLogger(KeyValStorage.class);
 
     private Map<String, Object> kvMap;
@@ -23,6 +24,7 @@ public class KeyValStorage {
     public KeyValStorage(String path) {
         kvFile = new File(path);
         loadYaml();
+        logStore.loadLog();
     }
 
     @SuppressWarnings("unchecked")
@@ -36,7 +38,6 @@ public class KeyValStorage {
 
         if (kvMap == null) kvMap = new HashMap<String, Object>();
 
-        logger.debug("Loaded from {}: {}", kvFile.getPath(), kvMap);
     }
 
     protected synchronized void saveYaml() {

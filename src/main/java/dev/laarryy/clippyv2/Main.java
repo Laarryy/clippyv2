@@ -80,6 +80,7 @@ public class Main {
         api.addListener(new AutoUploadListener());
         api.addListener(new ErrorListener());
         api.addListener(new UpdateListener());
+        api.addListener(new LogListener());
     }
 
 }
