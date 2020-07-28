@@ -14,6 +14,7 @@ import org.javacord.api.entity.server.Server;
 import org.javacord.api.entity.user.User;
 
 import java.awt.*;
+import java.text.DateFormat;
 import java.time.Instant;
 import java.util.Arrays;
 import java.util.LinkedList;
@@ -39,10 +40,9 @@ public class PresenceCommand implements CommandExecutor {
             EmbedBuilder embed = new EmbedBuilder();
             embed.setAuthor("Bot Status Changed");
             embed.setColor(new Color(0x06EE27));
-            embed.setThumbnail("https://i.imgur.com/2Hbdxuz.png");
+            embed.setThumbnail(api.getYourself().getAvatar());
             embed.addInlineField("Bot Status Changed By", user.getMentionTag());
             embed.addField("ID", user.getIdAsString());
-            embed.setFooter("Done by " + user.getName());
             embed.setTimestamp(Instant.now());
             modChannel.get().sendMessage(embed);
 

@@ -54,18 +54,14 @@ public class Main {
         commandHandler.registerCommand(new GithubCommand());
         commandHandler.registerCommand(new SpigetCommand());
         commandHandler.registerCommand(new SecretCommandsCommand(commandHandler));
-        //commandHandler.registerCommand(new RoleCheckCommand());
-        //commandHandler.registerCommand(new FbiCommand());
+        commandHandler.registerCommand(new RoleCheckCommand());
 
     // Everyone-Offtopic Commands:
         commandHandler.registerCommand(new MojangCommand());
         commandHandler.registerCommand(new CakeCommand());
         commandHandler.registerCommand(new EmbedCommand());
         commandHandler.registerCommand(new InspireCommand());
-        //commandHandler.registerCommand(new EssentialsXCommand());
-        //commandHandler.registerCommand(new SpaceXCommand());
-        //commandHandler.registerCommand(new BStatsCommand());
-        //commandHandler.registerCommand(new EightBallCommand());
+        commandHandler.registerCommand(new EightBallCommand());
 
     // Patreon-Only Commands:
         commandHandler.registerCommand(new UserTagCommand(api));
