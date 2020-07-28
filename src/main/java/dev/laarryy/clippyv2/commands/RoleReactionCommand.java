@@ -85,7 +85,7 @@ public class RoleReactionCommand implements CommandExecutor, ReactionAddListener
     }
 
     public void onReactionAdd(ReactionAddEvent event) {
-        if (event.getUser().isYourself()) {
+        if (event.getUser().isYourself() || !storage.isPoll(event.getMessageId())) {
             return;
         }
         if (!event.getReaction().isPresent()) {
