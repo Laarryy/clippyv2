@@ -4,6 +4,7 @@ import de.btobastian.sdcf4j.Command;
 import de.btobastian.sdcf4j.CommandExecutor;
 import dev.laarryy.clippyv2.Constants;
 import dev.laarryy.clippyv2.storage.RolePollStorage;
+import dev.laarryy.clippyv2.util.RoleUtil;
 import org.javacord.api.DiscordApi;
 import org.javacord.api.entity.channel.TextChannel;
 import org.javacord.api.entity.message.Message;
@@ -33,20 +34,22 @@ public class RoleReactionCommand implements CommandExecutor, ReactionAddListener
     }
 
     @Command(aliases = {"!rolepoll", ".rolepoll"}, usage = "!rolepoll", description = "Polls users for update roles")
-    public void onCommand(DiscordApi api, TextChannel channel, User user, Server server, Message cmd, MessageAuthor messageAuthor) {
-        if (messageAuthor.canBanUsersFromServer()) {
+    public void onCommand(DiscordApi api, TextChannel channel, User user, Server server, Message cmd) {
+        if (RoleUtil.isStaff(user, server)) {
             cmd.delete();
             try {
                 Message msg = channel.sendMessage(createPoll()).get();
                 roleMap.keySet().forEach(msg::addReaction);
                 storage.set(msg.getIdAsString(), msg.getChannel().getIdAsString());
             } catch (Exception e) {}
+        } else {
+            cmd.addReaction("\uD83D\uDEAB");
         }
     }
 
     @Command(aliases = {"!rpupdate", ".rpupdate"}, usage = "!rpupdate", description = "Updates all roll polls.")
-    public void onRPUpdate(DiscordApi api, TextChannel channel, User user, Server server, Message cmd, MessageAuthor messageAuthor) {
-        if (messageAuthor.canBanUsersFromServer()) {
+    public void onRPUpdate(DiscordApi api, TextChannel channel, User user, Server server, Message cmd) {
+        if (RoleUtil.isStaff(user, server)) {
             cmd.delete();
             try {
                 for (String key : storage.getMap().keySet()) {
@@ -60,28 +63,6 @@ public class RoleReactionCommand implements CommandExecutor, ReactionAddListener
             }
         }
     }
-
-    /*
-    This is a pointless command! why not just resend it?! I'm commenting it out as I can't see a use case.
-     */
-    /*@Command(aliases = {"!update", ".update"}, usage = "!update", description = "Polls users for update roles")
-    public void onUpdate(DiscordApi api, TextChannel channel, User user, Server server, String[] args, Message cmd, MessageAuthor messageAuthor) {
-        if (messageAuthor.canBanUsersFromServer()) {
-            cmd.delete();
-            try {
-                switch (channel.getIdAsString()) {
-                    case "724158751262638100": //announcements
-                        broadcast(String.join(" ", args), channel, server.getRoleById(Constants.ROLE_LUCKPERMS_UPDATES).get());
-                        break;
-                    default:
-                        channel.sendMessage(user.getMentionTag(), new EmbedBuilder().setTitle("Invalid update channel").setColor(Color.RED));
-                }
-            } catch (Exception e) {
-                channel.sendMessage(new EmbedBuilder().setColor(Color.RED).setTitle("Failed"));
-                e.printStackTrace();
-            }
-        }
-    }*/
 
     private void broadcast(String payload, TextChannel channel, Role role) {
         try {
@@ -108,15 +89,17 @@ public class RoleReactionCommand implements CommandExecutor, ReactionAddListener
             return;
         }
         if (!event.getReaction().isPresent()) {
+            event.requestReaction().thenAccept(reaction -> {
+                if (reaction.isPresent() && storage.isPoll(event.getMessageId()) && reaction.get().containsYou()) {
+                        updateRole(event.getUser(), roleMap.get(reaction.get().getEmoji().asUnicodeEmoji().get()), event.getServer().get(), "add");
+                } else {
+                    event.removeReaction();
+                }
+            });
+        } else if (storage.isPoll(event.getMessageId()) && event.getReaction().get().containsYou()) {
+            updateRole(event.getUser(), roleMap.get(event.getReaction().get().getEmoji().asUnicodeEmoji().get()), event.getServer().get(), "add");
+        } else {
             event.removeReaction();
-            return;
-        }
-        if (storage.ispoll(event.getMessageId())) {
-            if (event.getReaction().get().containsYou()) {
-                updateRole(event.getUser(), roleMap.get(event.getReaction().get().getEmoji().asUnicodeEmoji().get()), event.getServer().get(), "add");
-            } else {
-                event.removeReaction();
-            }
         }
     }
 
@@ -124,7 +107,7 @@ public class RoleReactionCommand implements CommandExecutor, ReactionAddListener
         if (event.getUser().isYourself()) {
             return;
         }
-        if (storage.ispoll(event.getMessageId()) && event.getReaction().isPresent() && event.getReaction().get().containsYou()) {
+        if (storage.isPoll(event.getMessageId()) && event.getReaction().isPresent() && event.getReaction().get().containsYou()) {
             updateRole(event.getUser(), roleMap.get(event.getReaction().get().getEmoji().asUnicodeEmoji().get()), event.getServer().get(), "remove");
         }
     }

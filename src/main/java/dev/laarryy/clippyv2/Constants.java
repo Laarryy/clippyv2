@@ -13,7 +13,7 @@ public class Constants {
     // Channels
     public static final String CHANNEL_STAFF = "724025798616547370";
     public static final String CHANNEL_LOGS = "724025798616547375";
-    public static final String CHANNEL_REPORTS = "724100606759010315";
+    public static final String CHANNEL_BOT = "724100606759010315";
     public static final String CHANNEL_OFFTOPIC = "724025798339592277";
     public static final String CHANNEL_PEBKAC = "724025798616547376";
     public static final String CHANNEL_PATREONS = "724025798339592279";

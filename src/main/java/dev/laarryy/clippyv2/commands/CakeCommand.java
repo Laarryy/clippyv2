@@ -3,9 +3,13 @@ package dev.laarryy.clippyv2.commands;
 import de.btobastian.sdcf4j.Command;
 import de.btobastian.sdcf4j.CommandExecutor;
 import dev.laarryy.clippyv2.Constants;
+import dev.laarryy.clippyv2.util.ChannelUtil;
+import dev.laarryy.clippyv2.util.RoleUtil;
 import org.javacord.api.DiscordApi;
 import org.javacord.api.entity.channel.TextChannel;
+import org.javacord.api.entity.message.Message;
 import org.javacord.api.entity.message.embed.EmbedBuilder;
+import org.javacord.api.entity.server.Server;
 import org.javacord.api.entity.user.User;
 
 import java.awt.*;
@@ -34,9 +38,11 @@ public class CakeCommand implements CommandExecutor{
     }
 
     @Command(aliases = {"!cake"}, usage = "!cake", description = "Maybe some cake?")
-    public void onCommand(DiscordApi api, TextChannel channel, User user, String[] args) {
-        if (!(channel.getIdAsString().equals(Constants.CHANNEL_OFFTOPIC) || channel.getIdAsString().equals(Constants.CHANNEL_PATREONS) || channel.getIdAsString().equals(Constants.CHANNEL_HELPFUL)))
+    public void onCommand(TextChannel channel, User user, String[] args, Server server, Message cmdMessage) {
+        if (!(RoleUtil.isStaff(user, server) || ChannelUtil.isNonPublicChannel(channel) || ChannelUtil.isOffTopic(channel))) {
+            cmdMessage.addReaction("\uD83D\uDEAB");
             return;
+        }
         if (args.length == 13) {
             channel.sendMessage(user.getMentionTag() + " 13 Ingredients? No thank you!");
             return;

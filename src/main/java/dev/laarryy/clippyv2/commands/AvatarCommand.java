@@ -3,6 +3,8 @@ package dev.laarryy.clippyv2.commands;
 import de.btobastian.sdcf4j.Command;
 import de.btobastian.sdcf4j.CommandExecutor;
 import dev.laarryy.clippyv2.Constants;
+import dev.laarryy.clippyv2.util.ChannelUtil;
+import dev.laarryy.clippyv2.util.RoleUtil;
 import org.javacord.api.DiscordApi;
 import org.javacord.api.entity.channel.TextChannel;
 import org.javacord.api.entity.message.Message;
@@ -29,31 +31,31 @@ public class AvatarCommand implements CommandExecutor {
 
 
     @Command(aliases = {"!avatar", ".avatar"}, usage = "!avatar <User>", description = "Shows the users' avatar")
-    public void onCommand(DiscordApi api, String[] args, TextChannel channel, Message message, Server server, MessageAuthor messageAuthor) {
-        if (args.length >= 1 && messageAuthor.canBanUsersFromServer()) {
+    public void onCommand(DiscordApi api, String[] args, TextChannel channel, Message message, Server server, User cmdUser) {
+        if (args.length >= 1 && RoleUtil.isStaff(cmdUser, server)) {
             if (message.getMentionedUsers().size() >= 1) {
                 channel.sendMessage(new EmbedBuilder().setImage(message.getMentionedUsers().get(0).getAvatar()));
                 return;
-            }
+            } else message.addReaction("\uD83D\uDEAB");
             for (User user : server.getMembers()) {
                 if (user.getName().equalsIgnoreCase(args[0])) {
                     channel.sendMessage(new EmbedBuilder().setImage(user.getAvatar()));
                     return;
-                }
+                } else message.addReaction("\uD83D\uDEAB");
             }
-        }
+        } else message.addReaction("\uD83D\uDEAB");
     }
 
     @Command(aliases = {"!setavatar"}, usage = "!setavatar <img>", description = "Sets the bot's avatar")
-    public void onSetAvatar(DiscordApi api, String[] args, TextChannel channel, Message message, MessageAuthor messageAuthor) {
-        if (args.length >= 1 && messageAuthor.canBanUsersFromServer()) {
+    public void onSetAvatar(DiscordApi api, String[] args, TextChannel channel, Message message, User user, Server server) {
+        if (args.length >= 1 && RoleUtil.isStaff(user, server)) {
             EmbedBuilder embed = new EmbedBuilder();
             embed.setAuthor("Bot Avatar Changed");
             embed.setColor(Color.YELLOW);
             embed.setThumbnail("https://i.imgur.com/2Hbdxuz.png");
             embed.addInlineField("Bot Avatar Changed By", message.getAuthor().asUser().get().getMentionTag());
-            embed.addField("Their ID", messageAuthor.getIdAsString());
-            embed.setFooter("Done by "+messageAuthor.getName());
+            embed.addField("ID", user.getIdAsString());
+            embed.setFooter("Done by "+ user.getName());
             embed.setTimestamp(Instant.now());
             modChannel.get().sendMessage(embed);
             try {
@@ -64,6 +66,6 @@ public class AvatarCommand implements CommandExecutor {
             } catch (Exception e) {
                 channel.sendMessage(new EmbedBuilder().setColor(Color.RED).setTitle("Unable to set avatar").setDescription("`!setavatar <url>`"));
             }
-        }
+        } else message.addReaction("\uD83D\uDEAB");
     }
 }

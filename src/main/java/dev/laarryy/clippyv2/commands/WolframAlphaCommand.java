@@ -3,6 +3,7 @@ package dev.laarryy.clippyv2.commands;
 import de.btobastian.sdcf4j.Command;
 import de.btobastian.sdcf4j.CommandExecutor;
 import dev.laarryy.clippyv2.Constants;
+import dev.laarryy.clippyv2.util.ChannelUtil;
 import org.javacord.api.DiscordApi;
 import org.javacord.api.entity.channel.TextChannel;
 import org.javacord.api.entity.message.Message;
@@ -26,11 +27,12 @@ public class WolframAlphaCommand implements CommandExecutor {
     private Message msg;
 
     @Command(aliases = {"!wolfram", "!wa"}, usage = "!wolfram <Query>", description = "Search wolframalpha")
-    public void onCommand(DiscordApi api, User user, TextChannel channel, String[] args) {
+    public void onCommand(DiscordApi api, User user, TextChannel channel, String[] args, Message cmdMessage) {
         long epoch = System.currentTimeMillis();
         String url = query.replace("<QUERY>", String.join("%20", args))+key;
         String link = queryLink.replace("<QUERY>", String.join("%20", args));
-        if (!(channel.getIdAsString().equals(Constants.CHANNEL_PATREONS) || channel.getIdAsString().equals(Constants.CHANNEL_HELPFUL) || channel.getIdAsString().equals(Constants.CHANNEL_STAFF))) {
+        if (!ChannelUtil.isNonPublicChannel(channel)) {
+            cmdMessage.addReaction("\uD83D\uDEAB");
             return;
         }
         channel.sendMessage(new EmbedBuilder().setTitle("Querying WolframAlpha")).thenAcceptAsync(message -> msg = message);

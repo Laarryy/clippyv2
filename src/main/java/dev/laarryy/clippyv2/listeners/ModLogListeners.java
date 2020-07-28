@@ -122,6 +122,7 @@ public class ModLogListeners implements MessageEditListener, MessageDeleteListen
         embed.setTimestamp(Instant.now());
 
         modChannel.get().sendMessage(embed);
+        
         logStore.sendToLog("Message [" + ev.getMessageId() + "] Edited from " + ev.getOldContent() + " to: " + ev.getNewContent());
 
     }

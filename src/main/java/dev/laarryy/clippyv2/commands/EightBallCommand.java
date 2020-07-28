@@ -3,9 +3,13 @@ package dev.laarryy.clippyv2.commands;
 import de.btobastian.sdcf4j.Command;
 import de.btobastian.sdcf4j.CommandExecutor;
 import dev.laarryy.clippyv2.Constants;
+import dev.laarryy.clippyv2.util.ChannelUtil;
+import dev.laarryy.clippyv2.util.RoleUtil;
 import org.javacord.api.DiscordApi;
 import org.javacord.api.entity.channel.TextChannel;
+import org.javacord.api.entity.message.Message;
 import org.javacord.api.entity.message.embed.EmbedBuilder;
+import org.javacord.api.entity.server.Server;
 import org.javacord.api.entity.user.User;
 
 import java.awt.*;
@@ -34,9 +38,9 @@ public class EightBallCommand implements CommandExecutor {
     }
 
     @Command(aliases = {"!8ball"}, usage = "!8ball", description = "Asks the all knowing 8ball")
-    public void onCommand(DiscordApi api, TextChannel channel, User user, String[] args) {
-        if (args.length == 0 || !channel.getIdAsString().equals(Constants.CHANNEL_OFFTOPIC)) {
-            channel.sendMessage(user.getMentionTag() + " The 8ball can only be consulted in #off-topic and `!8ball <question>` must be used.");
+    public void onCommand(Server server, TextChannel channel, User user, String[] args, Message cmdMessage) {
+        if (!(args.length == 0 || ChannelUtil.isNonPublicChannel(channel) || ChannelUtil.isOffTopic(channel))) {
+            cmdMessage.addReaction("\uD83D\uDEAB");
             return;
         }
         channel.sendMessage(new EmbedBuilder().setTitle("Clippy shakes the magic 8ball..").setImage(img)).thenAcceptAsync(message -> {

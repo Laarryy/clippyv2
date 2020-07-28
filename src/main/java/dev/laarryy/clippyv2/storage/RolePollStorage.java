@@ -12,7 +12,7 @@ public class RolePollStorage extends KeyValStorage {
         return replaced;
     }
 
-    public boolean ispoll(long messageId) {
+    public boolean isPoll(long messageId) {
         return exists(Long.toString(messageId));
     }
 

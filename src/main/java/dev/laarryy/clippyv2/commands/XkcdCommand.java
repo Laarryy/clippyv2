@@ -5,11 +5,13 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import de.btobastian.sdcf4j.Command;
 import de.btobastian.sdcf4j.CommandExecutor;
 import dev.laarryy.clippyv2.Constants;
+import dev.laarryy.clippyv2.util.ChannelUtil;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import org.apache.commons.lang.StringUtils;
 import org.javacord.api.DiscordApi;
 import org.javacord.api.entity.channel.TextChannel;
+import org.javacord.api.entity.message.Message;
 import org.javacord.api.entity.message.embed.EmbedBuilder;
 import org.javacord.api.entity.user.User;
 
@@ -23,12 +25,9 @@ public class XkcdCommand implements CommandExecutor {
     private final OkHttpClient client = new OkHttpClient.Builder().build();
 
     @Command(aliases = {"!xkcd", "!.xkcd"}, usage = "!xkcd <Query>", description = "Search xkcd")
-    public void onCommand(DiscordApi api, User user, TextChannel channel, String[] args) {
-        if (!channel.getIdAsString().equals(Constants.CHANNEL_PATREONS)
-                && !channel.getIdAsString().equals(Constants.CHANNEL_STAFF)
-                && !channel.getIdAsString().equals(Constants.CHANNEL_HELPFUL)
-                && !channel.getIdAsString().equals(Constants.CHANNEL_PEBKAC)
-        ) {
+    public void onCommand(Message message, User user, TextChannel channel, String[] args) {
+        if (!ChannelUtil.isNonPublicChannel(channel)) {
+            message.addReaction("\uD83D\uDEAB");
             return;
         }
         if (args.length >= 1) {

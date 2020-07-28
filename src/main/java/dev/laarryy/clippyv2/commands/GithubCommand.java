@@ -11,6 +11,7 @@ import org.javacord.api.exception.MissingPermissionsException;
 import org.javacord.api.util.logging.ExceptionLogger;
 
 import java.awt.*;
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -20,6 +21,8 @@ public class GithubCommand implements CommandExecutor {
 
     String repos = "https://api.github.com/repos/%s";
     String issuerepos = "https://api.github.com/repos/%s/issues";
+    String closedIssues = "https://api.github.com/search/issues?q=repo:%s/+type:issue+state:closed";
+    String openIssues = "https://api.github.com/search/issues?q=repo:%s/+type:issue+state:open";
 
     public GithubCommand() {
         shortcuts.put("lp", "lucko/LuckPerms");
@@ -38,7 +41,6 @@ public class GithubCommand implements CommandExecutor {
 
     @Command(aliases = {"!github", "!gh"}, usage = "!github <username/repo> [issue #]", description = "Shows some stats about the given repository.")
     public void onCommand(DiscordApi api, TextChannel channel, String[] args) {
-
         if (args.length == 1) {
             if (shortcuts.containsKey(args[0])) {
                 channel.sendMessage(makeInfoEmbed(api, shortcuts.get(args[0])));
@@ -73,6 +75,69 @@ public class GithubCommand implements CommandExecutor {
             e.printStackTrace();
         }
     }
+    @Command(aliases = {".issuesclosed", ".ic", "!ic", "!issuesclosed"}, usage = "!issuesclosed", description = "Shows developer commitment to a repo")
+    public void onIc(DiscordApi api, TextChannel channel, String[] args) {
+        if (args.length == 1 && shortcuts.containsKey(args[0].toLowerCase())) {
+            try {
+                JsonNode repo = new BStatsUtil(api).makeRequest(String.format(closedIssues, shortcuts.get(args[0].toLowerCase())));
+                channel.sendMessage(new EmbedBuilder()
+                        .setColor(Color.GREEN)
+                        .setTitle(String.format(shortcuts.get(args[0]) + " has %s closed issues", repo.get("total_count").asText()))
+                        .setUrl("https://github.com/" + shortcuts.get(args[0]))
+                );
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        } else {
+            try {
+                JsonNode repo = new BStatsUtil(api).makeRequest(String.format(closedIssues, args[0]));
+                channel.sendMessage(new EmbedBuilder()
+                        .setColor(Color.GREEN)
+                        .setTitle(String.format(args[0] + " has %s closed issues", repo.get("total_count").asText()))
+                        .setUrl("https://github.com/" + args[0])
+                );
+            } catch (NullPointerException ex) {
+                EmbedBuilder embed = new EmbedBuilder();
+                embed.setTitle("Repository not found!");
+                embed.setColor(new Color(0xFF0000));
+                channel.sendMessage(embed);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+    @Command(aliases = {".issuesopen", ".io", "!io", "!issuesopen"}, usage = "!issuesclosed", description = "Shows dark side of developer commitment to a repo")
+    public void onIo(DiscordApi api, TextChannel channel, String[] args) {
+        if (args.length == 1 && shortcuts.containsKey(args[0].toLowerCase())) {
+            try {
+                JsonNode repo = new BStatsUtil(api).makeRequest(String.format(openIssues, shortcuts.get(args[0].toLowerCase())));
+                channel.sendMessage(new EmbedBuilder()
+                        .setColor(Color.RED)
+                        .setTitle(String.format(shortcuts.get(args[0]) + " has %s open issues", repo.get("total_count").asText()))
+                        .setUrl("https://github.com/" + shortcuts.get(args[0]))
+                );
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        } else {
+            try {
+                JsonNode repo = new BStatsUtil(api).makeRequest(String.format(openIssues, args[0]));
+                channel.sendMessage(new EmbedBuilder()
+                        .setColor(Color.RED)
+                        .setTitle(String.format(args[0] + " has %s open issues", repo.get("total_count").asText()))
+                        .setUrl("https://github.com/" + args[0])
+                );
+            } catch (NullPointerException ex) {
+                EmbedBuilder embed = new EmbedBuilder();
+                embed.setTitle("Repository not found!");
+                embed.setColor(new Color(0xFF0000));
+                channel.sendMessage(embed);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
 
     public EmbedBuilder makeInfoEmbed(DiscordApi api, String repository) {
         BStatsUtil bStatsUtil = new BStatsUtil(api);

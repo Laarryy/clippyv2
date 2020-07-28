@@ -3,6 +3,8 @@ package dev.laarryy.clippyv2.util;
 import dev.laarryy.clippyv2.Constants;
 import org.javacord.api.entity.message.Message;
 import org.javacord.api.entity.permission.Role;
+import org.javacord.api.entity.server.Server;
+import org.javacord.api.entity.user.User;
 
 import java.util.List;
 
@@ -13,12 +15,13 @@ public class RoleUtil {
                 .anyMatch(role -> role.getIdAsString().equals(Constants.ROLE_STAFF));
     }
 
-    public static Boolean isStaff(List<Role> roles) {
-        for (Role role : roles) {
+    public static Boolean isStaff(User user, Server server) {
+        List<Role> userRoles = user.getRoles(server);
+        for (Role role : userRoles) {
             String roleId = role.getIdAsString();
             if ((roleId.equals(Constants.ROLE_STAFF))) {
                 return true;
-            } else ;
+            }
         }
         return false;
     }

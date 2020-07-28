@@ -20,7 +20,7 @@ public class PrivateListener implements MessageCreateListener {
 
     public PrivateListener(DiscordApi api) {
         this.api = api;
-        privateChannel = api.getTextChannelById(Constants.CHANNEL_REPORTS);
+        privateChannel = api.getTextChannelById(Constants.CHANNEL_BOT);
     }
 
     @Override

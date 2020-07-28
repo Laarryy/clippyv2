@@ -25,12 +25,12 @@ public class PresenceCommand implements CommandExecutor {
     private Optional<TextChannel> modChannel;
 
     @Command(aliases = {"!presence", ".presence"}, usage = "!presence <status>", description = "Sets the status presence of the bot")
-    public void onCommand(DiscordApi api, String[] args, TextChannel channel, User user, Server server, MessageAuthor messageAuthor, Message message) {
+    public void onCommand(DiscordApi api, String[] args, TextChannel channel, User user, Server server) {
         modChannel = api.getTextChannelById(Constants.CHANNEL_LOGS);
         this.api = api;
 
 
-        if (RoleUtil.isStaff(user.getRoles(server)) && args.length >= 2) {
+        if (RoleUtil.isStaff(user, server) && args.length >= 2) {
             String type = args[0].toUpperCase();
             String url = args[args.length-1];
             LinkedList<String> status = new LinkedList(Arrays.asList(args));
@@ -40,9 +40,9 @@ public class PresenceCommand implements CommandExecutor {
             embed.setAuthor("Bot Status Changed");
             embed.setColor(new Color(0x06EE27));
             embed.setThumbnail("https://i.imgur.com/2Hbdxuz.png");
-            embed.addInlineField("Bot Status Changed By", message.getAuthor().asUser().get().getMentionTag());
-            embed.addField("Their ID", messageAuthor.getIdAsString());
-            embed.setFooter("Done by " + messageAuthor.getName());
+            embed.addInlineField("Bot Status Changed By", user.getMentionTag());
+            embed.addField("ID", user.getIdAsString());
+            embed.setFooter("Done by " + user.getName());
             embed.setTimestamp(Instant.now());
             modChannel.get().sendMessage(embed);
 

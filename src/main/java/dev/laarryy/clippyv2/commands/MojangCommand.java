@@ -11,7 +11,7 @@ import org.javacord.api.entity.message.embed.EmbedBuilder;
 public class MojangCommand implements CommandExecutor {
 
     @Command(aliases = {"!mojang", "!mcstatus"}, usage = "!mojang", description = "Shows Mojang AuthServer Status")
-    public void onCommand(DiscordApi api, TextChannel channel, String[] args) {
+    public void onCommand(DiscordApi api, TextChannel channel) {
         BStatsUtil bStatsUtil = new BStatsUtil(api);
         EmbedBuilder embed = new EmbedBuilder();
         try {
