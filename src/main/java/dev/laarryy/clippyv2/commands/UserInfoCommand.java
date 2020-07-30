@@ -14,7 +14,7 @@ import java.awt.*;
 import java.util.Date;
 
 public class UserInfoCommand implements CommandExecutor {
-    @Command(aliases = {"!userinfo", ".userinfo", "!uinfo", ".uinfo", ""}, usage = "!uinfo <name>", description = "Gets info of a user")
+    @Command(aliases = {"!userinfo", ".userinfo", "!uinfo", ".uinfo"}, usage = "!uinfo <name>", description = "Gets info of a user")
     public void onCommand(String[] args, User cmdSender, Server server, Message message, TextChannel channel) {
         if (RoleUtil.isStaff(cmdSender, server)) {
             if (args.length >= 1 && message.getMentionedUsers().size() >= 1) {
