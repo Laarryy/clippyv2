@@ -16,7 +16,7 @@
   </component>
   <component name="JavacSettings">
     <option name="ADDITIONAL_OPTIONS_OVERRIDE">
-      <module name="clippyv2" options="--add-exports java.base/jdk.internal.logger=ALL-UNNAMED" />
+      <module name="clippyv2" options="" />
     </option>
   </component>
 </project>

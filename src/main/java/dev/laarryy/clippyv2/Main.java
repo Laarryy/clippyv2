@@ -49,6 +49,7 @@ public class Main {
         commandHandler.registerCommand(new NicknameCommand());
         commandHandler.registerCommand(new RoleReactionCommand(api));
         commandHandler.registerCommand(new MuteCommand());
+        commandHandler.registerCommand(new UserInfoCommand());
 
      // Everyone-Commands:
         commandHandler.registerCommand(new GithubCommand());
