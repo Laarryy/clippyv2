@@ -29,9 +29,11 @@ public class EmbedPaged {
     private final User user;
 
     private boolean buttonPaged = false;
-    private final ConcurrentHashMap<Integer, EmbedBuilder> pages = new ConcurrentHashMap<>();
+    private ConcurrentHashMap<Integer, EmbedBuilder> pages = new ConcurrentHashMap<>();
     private int page;
-    private final AtomicReference<Message> sentMessage = new AtomicReference<>();
+    private String footer;
+    private String footerImage;
+    private AtomicReference<Message> sentMessage = new AtomicReference<>();
 
     public EmbedPaged(Messageable messageable, List<EmbedBuilder> embeds) {
         this.messageable = messageable;
@@ -59,6 +61,15 @@ public class EmbedPaged {
         return this;
     }
 
+    public EmbedPaged setFooter(String footer) {
+        this.footer = footer;
+        return this;
+    }
+    public EmbedPaged setFooterImage(String footerImage) {
+        this.footerImage = footerImage;
+        return this;
+    }
+
 
     /**
      * Builds & sends the PagedEmbed.
@@ -68,7 +79,7 @@ public class EmbedPaged {
     @SuppressWarnings("Duplicates")
     public CompletableFuture<Message> build() {
         page = 1;
-        CompletableFuture<Message> future = messageable.sendMessage(getPageInfo(), pages.get(page));
+        CompletableFuture<Message> future = messageable.sendMessage(pages.get(page));
 
         future.thenAcceptAsync(message -> {
             sentMessage.set(message);
@@ -83,6 +94,7 @@ public class EmbedPaged {
                 }
                 message.addReactionAddListener(this::onReactionClick);
                 message.addReactionRemoveListener(this::onReactionClick);
+                refreshMessage();
             }
 
             message.addMessageDeleteListener(delete -> message.getMessageAttachableListeners()
@@ -105,7 +117,7 @@ public class EmbedPaged {
      */
     private void refreshMessage() {
         if (sentMessage.get() != null) {
-            sentMessage.get().edit(getPageInfo(), pages.get(page));
+            sentMessage.get().edit(pages.get(page).setFooter(footer != null ? String.format(footer, getPageInfo()) : "", footerImage != null ? footerImage : ""));
         }
     }
 

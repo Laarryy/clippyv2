@@ -56,6 +56,7 @@ public class Main {
         commandHandler.registerCommand(new SpigetCommand());
         commandHandler.registerCommand(new SecretCommandsCommand(commandHandler));
         commandHandler.registerCommand(new RoleCheckCommand());
+        commandHandler.registerCommand(new JavaDocCommand());
 
     // Everyone-Offtopic Commands:
         commandHandler.registerCommand(new MojangCommand());
