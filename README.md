@@ -147,6 +147,18 @@ ___
  
  - `.luck` or `.lucko` will send an embed with something for luck to be proud of :)
  
+ ### JavaDoc Command
+ ___
+ Usage: `!javadoc [class|method] <search>`
+ 
+ - Queries the JavaDoc and sends related links, lists
+   - (if class is specified) all classes that match the search with all their methods
+   - (if method is specified) all methods that match the search with their class name
+   - (default) all classes that match the search with their methods and all methods that match the search with their class name
+ 
+Who can use it?
+- Everyone
+
  ### Inspiration Command
  ___ 
  Usage: `!inspireme`
